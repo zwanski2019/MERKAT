@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Merkat AI Assistant | Retail OS</title>
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Geist:wght@400;500;600;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error-container": "#93000a",
+                    "surface-tint": "#006c49",
+                    "on-error": "#ffffff",
+                    "background": "#f4fbf4",
+                    "on-secondary": "#ffffff",
+                    "on-primary-container": "#00422b",
+                    "secondary-fixed-dim": "#c8c5ca",
+                    "on-secondary-fixed": "#1b1b1e",
+                    "error": "#ba1a1a",
+                    "surface-dim": "#d4dcd5",
+                    "on-tertiary-fixed-variant": "#842225",
+                    "inverse-surface": "#2b322d",
+                    "tertiary": "#a43a3a",
+                    "secondary-fixed": "#e4e1e6",
+                    "surface-container-highest": "#dde4dd",
+                    "on-primary-fixed": "#002113",
+                    "tertiary-container": "#fc7c78",
+                    "primary-fixed": "#6ffbbe",
+                    "surface-container": "#e8f0e9",
+                    "surface": "#f4fbf4",
+                    "tertiary-fixed": "#ffdad7",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-container": "#711419",
+                    "on-secondary-container": "#656467",
+                    "inverse-primary": "#4edea3",
+                    "surface-bright": "#f4fbf4",
+                    "on-tertiary": "#ffffff",
+                    "outline-variant": "#bbcabf",
+                    "outline": "#6c7a71",
+                    "primary-fixed-dim": "#4edea3",
+                    "primary": "#006c49",
+                    "on-primary": "#ffffff",
+                    "on-surface-variant": "#3c4a42",
+                    "on-secondary-fixed-variant": "#47464a",
+                    "tertiary-fixed-dim": "#ffb3af",
+                    "secondary-container": "#e4e1e6",
+                    "on-primary-fixed-variant": "#005236",
+                    "surface-variant": "#dde4dd",
+                    "on-tertiary-fixed": "#410005",
+                    "on-surface": "#161d19",
+                    "primary-container": "#10b981",
+                    "on-background": "#161d19",
+                    "surface-container-high": "#e3eae3",
+                    "inverse-on-surface": "#ebf3eb",
+                    "error-container": "#ffdad6",
+                    "secondary": "#5f5e61",
+                    "surface-container-low": "#eef6ee"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "sidebar_width": "260px",
+                    "lg": "24px",
+                    "xs": "4px",
+                    "header_height": "64px",
+                    "sm": "8px",
+                    "md": "16px",
+                    "container_gutter": "24px",
+                    "base": "4px",
+                    "xl": "32px"
+            },
+            "fontFamily": {
+                    "page-title": ["Geist"],
+                    "body-md": ["Inter"],
+                    "section-header": ["Geist"],
+                    "data-tabular": ["Geist"],
+                    "meta": ["Inter"],
+                    "body-sm": ["Inter"]
+            },
+            "fontSize": {
+                    "page-title": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "section-header": ["16px", {"lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "data-tabular": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                    "meta": ["12px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+            font-size: 20px;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #bbcabf; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #6c7a71; }
+        
+        .chat-container {
+            mask-image: linear-gradient(to bottom, transparent, black 5%, black 90%, transparent);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden">
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-0 h-full w-[260px] bg-surface border-r border-outline-variant flex flex-col p-md gap-sm z-50">
+<!-- Header -->
+<div class="flex items-center gap-sm px-sm py-md">
+<div class="w-8 h-8 rounded bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">dataset</span>
+</div>
+<div>
+<h1 class="font-page-title text-page-title text-primary leading-tight">Merkat</h1>
+<p class="font-meta text-meta text-on-surface-variant">Retail OS</p>
+</div>
+</div>
+<button class="mx-sm my-md bg-primary-container text-on-primary-container font-body-md font-semibold py-sm px-md rounded-lg flex items-center justify-center gap-xs hover:opacity-90 transition-all shadow-sm">
+<span class="material-symbols-outlined">add</span>
+            New Transaction
+        </button>
+<!-- Navigation Links -->
+<nav class="flex-1 flex flex-col gap-1 overflow-y-auto">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg font-body-sm" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg font-body-sm" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+                Inventory
+            </a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg font-body-sm" href="#">
+<span class="material-symbols-outlined">payments</span>
+                Sales
+            </a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg font-body-sm" href="#">
+<span class="material-symbols-outlined">local_shipping</span>
+                Logistics
+            </a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg font-body-sm" href="#">
+<span class="material-symbols-outlined">groups</span>
+                Customers
+            </a>
+<!-- Active State: Reports (AI Assistant Context) -->
+<a class="flex items-center gap-md px-md py-sm bg-primary-container text-on-primary-container font-semibold rounded-lg font-body-sm" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">analytics</span>
+                Reports
+            </a>
+</nav>
+<!-- Footer -->
+<div class="border-t border-outline-variant pt-sm mt-auto">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg font-body-sm" href="#">
+<span class="material-symbols-outlined">settings</span>
+                Settings
+            </a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg font-body-sm" href="#">
+<span class="material-symbols-outlined">help</span>
+                Support
+            </a>
+</div>
+</aside>
+<!-- Main Workspace -->
+<main class="ml-[260px] flex flex-col h-screen bg-surface-container-lowest relative">
+<!-- TopAppBar -->
+<header class="h-[64px] flex items-center justify-between px-lg border-b border-outline-variant z-40 bg-surface-container-lowest">
+<div class="flex items-center flex-1 max-w-2xl">
+<div class="relative w-full flex items-center group">
+<span class="material-symbols-outlined absolute left-md text-on-surface-variant">search</span>
+<input class="w-full pl-xl pr-md py-xs bg-surface-container border-none rounded-lg focus:ring-2 focus:ring-primary transition-all font-body-sm" placeholder="Ask Merkat anything about your operations..." type="text"/>
+<div class="absolute right-xs p-1 bg-white rounded border border-outline-variant flex items-center gap-1">
+<span class="text-[10px] font-bold text-on-surface-variant px-1">⌘</span>
+<span class="text-[10px] font-bold text-on-surface-variant px-1">K</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined">smart_toy</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="h-8 w-[1px] bg-outline-variant"></div>
+<div class="flex items-center gap-sm cursor-pointer hover:bg-surface-container px-sm py-xs rounded-lg transition-colors">
+<img class="w-8 h-8 rounded-full bg-surface-dim" data-alt="A professional studio portrait of a modern retail analyst, clean lighting, soft background, wearing a minimalist grey blazer, professional and competent expression." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNQ8lkWKtXRF5I_zrupUDiMD7LogWp1Um6ltTEUlxO5ZzCQH7zherWT584AIEttTQ4RqLXNQbo4yOhdb9aro69xUYc1L8u6aBmxBOsjiQ5dQ9M3s9ODN__BG-s0d1G9rHls7egL9zXvUBShCmtzcKWaSbaYTkXqGwKPQMW7KtVcVJad8-_enCTxG4sm0F0M8aXZfa-NVYRfkePEuzD_uSIdx1c9jw_CvxsatDuWQNLNVnHKxNjaagC"/>
+<span class="font-body-sm font-semibold">Alex Rivers</span>
+</div>
+</div>
+</header>
+<!-- Conversation Area -->
+<div class="flex-1 overflow-y-auto px-lg pb-[200px] pt-xl">
+<div class="max-w-4xl mx-auto space-y-xl">
+<!-- System Intro / Date Header -->
+<div class="flex justify-center">
+<span class="font-meta text-meta text-on-surface-variant bg-surface-container px-md py-xs rounded-full">Today, Oct 12</span>
+</div>
+<!-- User Message -->
+<div class="flex flex-col items-end gap-sm group">
+<div class="bg-surface-container-high px-lg py-md rounded-2xl rounded-tr-none max-w-lg border border-outline-variant">
+<p class="font-body-md text-on-surface">Which products are underperforming this month?</p>
+</div>
+<span class="font-meta text-meta text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">10:42 AM</span>
+</div>
+<!-- AI Assistant Message -->
+<div class="flex gap-lg">
+<div class="w-10 h-10 flex-shrink-0 bg-primary rounded-full flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+</div>
+<div class="flex-1 space-y-md">
+<!-- Paragraph Analysis -->
+<div class="space-y-sm">
+<p class="font-body-md text-on-surface leading-relaxed">
+                                Based on trailing 30-day sales data, I have identified <span class="font-semibold">4 core SKUs</span> that are significantly underperforming compared to seasonal projections. These items have a sales velocity decline of more than 15% WoW and are currently contributing to elevated inventory holding costs in the Northern Distribution Center.
+                            </p>
+</div>
+<!-- High-Density Data Table -->
+<div class="bg-white border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low border-b border-outline-variant">
+<tr>
+<th class="px-md py-sm font-meta text-meta text-on-surface-variant uppercase tracking-wider">Product Name</th>
+<th class="px-md py-sm font-meta text-meta text-on-surface-variant uppercase tracking-wider text-right">Sales Velocity</th>
+<th class="px-md py-sm font-meta text-meta text-on-surface-variant uppercase tracking-wider text-right">Inventory Cost</th>
+<th class="px-md py-sm font-meta text-meta text-on-surface-variant uppercase tracking-wider">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-md py-sm font-body-sm font-semibold">Ergo-Core Office Chair</td>
+<td class="px-md py-sm font-data-tabular text-right text-on-surface">-18.4%</td>
+<td class="px-md py-sm font-data-tabular text-right text-on-surface">$12,450.00</td>
+<td class="px-md py-sm">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-tertiary-fixed-dim text-on-tertiary-fixed-variant">SLOW MOVER</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-md py-sm font-body-sm font-semibold">Lumix Desk Lamp V2</td>
+<td class="px-md py-sm font-data-tabular text-right text-on-surface">-22.1%</td>
+<td class="px-md py-sm font-data-tabular text-right text-on-surface">$4,120.00</td>
+<td class="px-md py-sm">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-tertiary-fixed-dim text-on-tertiary-fixed-variant">SLOW MOVER</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-md py-sm font-body-sm font-semibold">Nordic Shelving Unit</td>
+<td class="px-md py-sm font-data-tabular text-right text-on-surface">-14.8%</td>
+<td class="px-md py-sm font-data-tabular text-right text-on-surface">$28,900.00</td>
+<td class="px-md py-sm">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-surface-container-highest text-on-surface-variant">MONITORING</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-md py-sm font-body-sm font-semibold">Minimalist Oak Credenza</td>
+<td class="px-md py-sm font-data-tabular text-right text-on-surface">-31.0%</td>
+<td class="px-md py-sm font-data-tabular text-right text-on-surface">$15,200.00</td>
+<td class="px-md py-sm">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-tertiary-fixed-dim text-on-tertiary-fixed-variant">SLOW MOVER</span>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="bg-surface-container-low px-md py-xs border-t border-outline-variant flex justify-between items-center">
+<span class="font-meta text-[10px] text-on-surface-variant">Source: Global Inventory API v4.2</span>
+<button class="flex items-center gap-xs font-meta text-[10px] text-primary hover:underline">
+<span class="material-symbols-outlined text-[14px]">download</span>
+                                    Export CSV
+                                </button>
+</div>
+</div>
+<p class="font-body-sm text-on-surface-variant italic">
+                            Would you like me to suggest markdown promotions for these items or investigate logistics delays?
+                        </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Persistent Input Area -->
+<div class="absolute bottom-0 left-0 right-0 p-lg bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest to-transparent pointer-events-none">
+<div class="max-w-4xl mx-auto space-y-md pointer-events-auto">
+<!-- Quick Action Prompt Chips -->
+<div class="flex items-center gap-sm overflow-x-auto pb-sm no-scrollbar">
+<button class="whitespace-nowrap px-md py-sm bg-white border border-outline-variant rounded-full font-body-sm text-on-surface hover:bg-surface-container transition-all flex items-center gap-xs shadow-sm">
+<span class="material-symbols-outlined text-primary">inventory</span>
+                        Reorder suggestions
+                    </button>
+<button class="whitespace-nowrap px-md py-sm bg-white border border-outline-variant rounded-full font-body-sm text-on-surface hover:bg-surface-container transition-all flex items-center gap-xs shadow-sm">
+<span class="material-symbols-outlined text-primary">trending_up</span>
+                        Sales this week
+                    </button>
+<button class="whitespace-nowrap px-md py-sm bg-white border border-outline-variant rounded-full font-body-sm text-on-surface hover:bg-surface-container transition-all flex items-center gap-xs shadow-sm">
+<span class="material-symbols-outlined text-primary">pause_circle</span>
+                        Slow movers
+                    </button>
+<button class="whitespace-nowrap px-md py-sm bg-white border border-outline-variant rounded-full font-body-sm text-on-surface hover:bg-surface-container transition-all flex items-center gap-xs shadow-sm">
+<span class="material-symbols-outlined text-primary">warning</span>
+                        Expiring stock
+                    </button>
+</div>
+<!-- Chat Input Field -->
+<div class="relative bg-white border border-outline-variant rounded-2xl shadow-xl p-xs flex items-center gap-xs">
+<button class="p-sm text-on-surface-variant hover:bg-surface-container rounded-xl transition-colors">
+<span class="material-symbols-outlined">attach_file</span>
+</button>
+<input class="flex-1 border-none focus:ring-0 bg-transparent py-md px-sm font-body-md text-on-surface placeholder:text-on-surface-variant/50" placeholder="Send a message to your analyst assistant..." type="text"/>
+<button class="flex items-center justify-center w-12 h-12 bg-primary text-white rounded-xl hover:opacity-90 transition-all shadow-md">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">send</span>
+</button>
+</div>
+<p class="text-center font-meta text-[10px] text-on-surface-variant/60 uppercase tracking-widest pb-xs">
+                    Merkat Intelligence • Operational Assistant • Secure Sandbox Environment
+                </p>
+</div>
+</div>
+</main>
+<!-- Micro-interaction Scripts -->
+<script>
+        // Simple input focus effect
+        const chatInput = document.querySelector('input[placeholder*="Send a message"]');
+        const inputContainer = chatInput?.parentElement;
+
+        chatInput?.addEventListener('focus', () => {
+            inputContainer.classList.add('ring-2', 'ring-primary/20', 'border-primary');
+        });
+
+        chatInput?.addEventListener('blur', () => {
+            inputContainer.classList.remove('ring-2', 'ring-primary/20', 'border-primary');
+        });
+
+        // Horizontal scroll for chips using mouse wheel
+        const chipContainer = document.querySelector('.overflow-x-auto');
+        chipContainer?.addEventListener('wheel', (evt) => {
+            evt.preventDefault();
+            chipContainer.scrollLeft += evt.deltaY;
+        });
+    </script>
+</body></html>

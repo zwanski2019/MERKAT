@@ -1,0 +1,8 @@
+node_modules
+dist
+build
+.next
+pnpm-lock.yaml
+src-tauri/target
+stitch_merkat_retail_design_system
+stitch_merkat_retail_design_system 2

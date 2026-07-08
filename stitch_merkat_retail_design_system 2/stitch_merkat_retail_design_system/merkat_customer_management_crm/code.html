@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Merkat OS | Customers</title>
+<!-- Google Fonts: Inter & Geist -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Geist:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container": "#e8f0e9",
+                    "primary-container": "#10b981",
+                    "secondary-container": "#e4e1e6",
+                    "surface-container-highest": "#dde4dd",
+                    "tertiary-fixed": "#ffdad7",
+                    "on-secondary-fixed-variant": "#47464a",
+                    "secondary": "#5f5e61",
+                    "surface-container-low": "#eef6ee",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary-fixed-dim": "#ffb3af",
+                    "surface-bright": "#f4fbf4",
+                    "on-error-container": "#93000a",
+                    "surface-dim": "#d4dcd5",
+                    "on-surface-variant": "#3c4a42",
+                    "tertiary": "#a43a3a",
+                    "secondary-fixed": "#e4e1e6",
+                    "outline": "#6c7a71",
+                    "on-tertiary-container": "#711419",
+                    "surface": "#f4fbf4",
+                    "error": "#ba1a1a",
+                    "on-secondary-fixed": "#1b1b1e",
+                    "on-primary-fixed": "#002113",
+                    "surface-variant": "#dde4dd",
+                    "inverse-on-surface": "#ebf3eb",
+                    "primary-fixed": "#6ffbbe",
+                    "tertiary-container": "#fc7c78",
+                    "secondary-fixed-dim": "#c8c5ca",
+                    "on-primary": "#ffffff",
+                    "inverse-surface": "#2b322d",
+                    "on-tertiary-fixed-variant": "#842225",
+                    "on-primary-container": "#00422b",
+                    "surface-container-high": "#e3eae3",
+                    "on-tertiary": "#ffffff",
+                    "primary-fixed-dim": "#4edea3",
+                    "on-error": "#ffffff",
+                    "primary": "#006c49",
+                    "on-primary-fixed-variant": "#005236",
+                    "background": "#f4fbf4",
+                    "on-tertiary-fixed": "#410005",
+                    "on-secondary-container": "#656467",
+                    "outline-variant": "#bbcabf",
+                    "on-surface": "#161d19",
+                    "inverse-primary": "#4edea3",
+                    "on-secondary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "surface-tint": "#006c49",
+                    "on-background": "#161d19"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xs": "4px",
+                    "xl": "32px",
+                    "container_gutter": "24px",
+                    "sm": "8px",
+                    "base": "4px",
+                    "sidebar_width": "260px",
+                    "md": "16px",
+                    "header_height": "64px",
+                    "lg": "24px"
+            },
+            "fontFamily": {
+                    "meta": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "data-tabular": ["Geist"],
+                    "body-md": ["Inter"],
+                    "page-title": ["Geist"],
+                    "section-header": ["Geist"]
+            },
+            "fontSize": {
+                    "meta": ["12px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "data-tabular": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "page-title": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "section-header": ["16px", {"lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { background-color: #f4fbf4; color: #161d19; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+            font-size: 20px;
+        }
+        .data-tabular { font-variant-numeric: tabular-nums; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #bbcabf; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #6c7a71; }
+    </style>
+</head>
+<body class="font-body-md overflow-hidden">
+<!-- Sidebar -->
+<aside class="fixed left-0 top-0 h-screen w-sidebar_width bg-surface-container-low border-r border-outline-variant flex flex-col h-full py-lg z-50">
+<div class="px-lg mb-xl">
+<h1 class="font-page-title text-page-title font-bold text-primary">Merkat</h1>
+<p class="font-meta text-meta text-on-surface-variant">Retail Operations</p>
+</div>
+<nav class="flex-1 space-y-1 px-md">
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined">point_of_sale</span>
+<span class="font-body-sm">POS</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-body-sm">Products</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="font-body-sm">Orders</span>
+</a>
+<!-- Active Tab: Customers -->
+<a class="flex items-center gap-3 px-4 py-2 bg-primary-container text-on-primary-container rounded-lg font-bold" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">group</span>
+<span class="font-body-sm">Customers</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-body-sm">Reports</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="font-body-sm">AI Assistant</span>
+</a>
+</nav>
+<div class="px-md mt-auto pt-lg border-t border-outline-variant/30">
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-sm">Settings</span>
+</a>
+</div>
+</aside>
+<!-- Top Bar -->
+<header class="fixed top-0 right-0 h-header_height w-[calc(100%-260px)] ml-sidebar_width bg-surface border-b border-outline-variant z-40 flex justify-between items-center px-lg">
+<div class="flex items-center gap-4 flex-1 max-w-xl">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-container-low border border-outline-variant rounded-lg pl-10 pr-4 py-2 text-body-sm focus:ring-1 focus:ring-primary focus:border-primary transition-all outline-none" placeholder="Search anything..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-surface-container transition-colors active:scale-95">
+<span class="material-symbols-outlined text-primary">auto_awesome</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-surface-container transition-colors relative active:scale-95">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+<span class="absolute top-2.5 right-2.5 w-2 h-2 bg-error rounded-full border-2 border-surface"></span>
+</button>
+<div class="h-8 w-[1px] bg-outline-variant mx-2"></div>
+<div class="flex items-center gap-3 cursor-pointer group">
+<img class="w-9 h-9 rounded-full object-cover border border-outline-variant" data-alt="A professional headshot of a retail operations manager in a high-end corporate setting. The lighting is soft and natural, reflecting a calm, modern office environment. The style is minimalist and clean, using a palette of soft greens and neutral greys to match the Merkat OS aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLgeVak7HRFCax-xrzKLs1WuLz6xtHOgwWXazi59-LvrFuKN5wkQ9N19NP8zV07_yXDe7qVcJryk6r_I6dXC7rw8P4fecp4Z4-iNDP0CaDpNJlkXwM11xJ85t0dM4ZM-xESwByq9W3weKsvy1mHe2QbckF0YW6SRtchJxVsDu5hmG23ep46XLlu9_Sh7FfG6G_7zJ2s1iJGdAlrECYjfLqLHa-TdE_uo6eRHtQnrGOvk0S7CtOZ6oy"/>
+<div class="hidden lg:block">
+<p class="font-meta text-meta text-on-surface leading-none">Admin User</p>
+<p class="font-meta text-[10px] text-on-surface-variant">Branch 042</p>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-sidebar_width pt-header_height h-screen overflow-hidden flex flex-col">
+<!-- Page Header & Controls -->
+<div class="p-lg space-y-md shrink-0">
+<div class="flex justify-between items-center">
+<h2 class="font-page-title text-page-title text-on-surface">Customers</h2>
+<button class="bg-primary-container hover:bg-primary-container/90 text-on-primary-container px-6 py-2.5 rounded-lg font-meta flex items-center gap-2 transition-all active:scale-95 shadow-sm">
+<span class="material-symbols-outlined">add</span>
+                    Add customer
+                </button>
+</div>
+<div class="flex flex-col md:flex-row gap-4 items-center">
+<!-- Search -->
+<div class="relative w-full md:w-80">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/70 text-sm">filter_alt</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg pl-10 pr-4 py-2 text-body-sm focus:ring-1 focus:ring-primary outline-none" placeholder="Filter by name or tag..." type="text"/>
+</div>
+<!-- Chips -->
+<div class="flex items-center gap-2">
+<button class="px-4 py-1.5 rounded-full bg-primary-container text-on-primary-container font-meta text-meta shadow-sm">All</button>
+<button class="px-4 py-1.5 rounded-full bg-surface-container-high text-on-surface-variant font-meta text-meta hover:bg-primary-container/10 transition-colors">VIP</button>
+<button class="px-4 py-1.5 rounded-full bg-surface-container-high text-on-surface-variant font-meta text-meta hover:bg-primary-container/10 transition-colors">New</button>
+<button class="px-4 py-1.5 rounded-full bg-surface-container-high text-on-surface-variant font-meta text-meta hover:bg-primary-container/10 transition-colors">Inactive</button>
+</div>
+</div>
+</div>
+<!-- Content Split (Table + Drawer) -->
+<div class="flex-1 flex overflow-hidden relative">
+<!-- Main Table Section -->
+<div class="flex-1 overflow-auto px-lg pb-lg">
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead class="sticky top-0 bg-surface-container-high/90 backdrop-blur z-10">
+<tr class="border-b border-outline-variant">
+<th class="p-4 font-meta text-meta text-on-surface-variant uppercase tracking-wider">Name</th>
+<th class="p-4 font-meta text-meta text-on-surface-variant uppercase tracking-wider">Contact</th>
+<th class="p-4 font-meta text-meta text-on-surface-variant uppercase tracking-wider">Total Spend</th>
+<th class="p-4 font-meta text-meta text-on-surface-variant uppercase tracking-wider">Orders</th>
+<th class="p-4 font-meta text-meta text-on-surface-variant uppercase tracking-wider">Last Visit</th>
+<th class="p-4 font-meta text-meta text-on-surface-variant uppercase tracking-wider">Loyalty</th>
+<th class="p-4 w-10"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/50">
+<!-- Row 1 (Selected) -->
+<tr class="hover:bg-surface-container-low cursor-pointer transition-colors bg-surface-container" onclick="toggleDrawer()">
+<td class="p-4">
+<div class="flex items-center gap-3">
+<img class="w-9 h-9 rounded-full object-cover bg-surface-container" data-alt="A portrait of a sophisticated woman with a warm, professional expression. She is set against a clean, softly lit backdrop that emphasizes clarity and high-end retail service. The image uses a natural, muted color palette with subtle hints of emerald green to align with the brand's sophisticated and calm operator-grade identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPVSoZh2PUGR0pWKpohtcXe0gFgKHRYgvKJ29OHq6wOYjXwKB98SNc0IOTgOR8BqxmD8JO_P7XDWkFpgbKzrn4P1FVXAzjbzvqrTBR-jppsKxgR5BMFm9w4fGVfURxw83u_AlEAEo8pAdptpkEUdYCsLc-jfiPtbPdR6mmwHAdOZ-sXsF4AP2DKSvJKGfOOmjWJ30yV-ogN0ubTJBC4Q3svX9_p-38FkFL_mryBU_gHxMYg2fBA5HY"/>
+<div>
+<p class="font-body-md font-bold text-on-surface">Elena Vance</p>
+<p class="text-[11px] text-primary flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> VIP Member
+                                            </p>
+</div>
+</div>
+</td>
+<td class="p-4">
+<p class="text-body-sm text-on-surface">elena.vance@example.com</p>
+<p class="text-meta text-on-surface-variant">+1 (555) 012-3456</p>
+</td>
+<td class="p-4">
+<span class="font-data-tabular text-data-tabular">$12,450.00</span>
+</td>
+<td class="p-4 text-center">
+<span class="font-data-tabular text-data-tabular">34</span>
+</td>
+<td class="p-4">
+<span class="text-body-sm text-on-surface">2 days ago</span>
+</td>
+<td class="p-4">
+<span class="px-2 py-1 bg-primary-container/20 text-on-primary-container text-[11px] font-bold rounded uppercase">850 pts</span>
+</td>
+<td class="p-4">
+<span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+</td>
+</tr>
+<!-- More Rows -->
+<tr class="hover:bg-surface-container-low cursor-pointer transition-colors">
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-secondary-container flex items-center justify-center font-bold text-on-secondary-container text-xs">JD</div>
+<div>
+<p class="font-body-md font-bold text-on-surface">Julian Drake</p>
+<p class="text-[11px] text-on-surface-variant">Regular</p>
+</div>
+</div>
+</td>
+<td class="p-4">
+<p class="text-body-sm text-on-surface">j.drake@provider.net</p>
+<p class="text-meta text-on-surface-variant">+1 (555) 987-6543</p>
+</td>
+<td class="p-4">
+<span class="font-data-tabular text-data-tabular">$3,120.45</span>
+</td>
+<td class="p-4 text-center">
+<span class="font-data-tabular text-data-tabular">12</span>
+</td>
+<td class="p-4">
+<span class="text-body-sm text-on-surface">Last week</span>
+</td>
+<td class="p-4">
+<span class="px-2 py-1 bg-surface-container-highest text-on-surface-variant text-[11px] font-bold rounded uppercase">120 pts</span>
+</td>
+<td class="p-4">
+<span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low cursor-pointer transition-colors">
+<td class="p-4">
+<div class="flex items-center gap-3">
+<img class="w-9 h-9 rounded-full object-cover" data-alt="A medium shot of a stylish young professional man with a friendly, welcoming expression. The lighting is crisp and modern, featuring high-key illumination typical of a tech-forward retail space. The color palette centers around neutrals and emerald accents, creating a sense of reliability and modern minimalist professionalism." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGltGwHFCxuU_uujSsXlvx4DxX2kVvvRK7F82U5DrosIfTTXvdQyHjPUwhValqjEFD7633ZNOxXtjPDPaYuT_bRSLvWERmRxW-EJDaSEiGAm2AGGfn73JZxH5nfIO8vpmfz1kBBjfjy_rdn3ePW2iFMD-omQ8q8QxennUqahkUneSyo7_L2sUEa1rpJgNO4FHTIyz1xAUmH-nMlAw5uzm-xxCrfTpcNC3OM7faP10H4_b1HXpAPO2D"/>
+<div>
+<p class="font-body-md font-bold text-on-surface">Marcus Thorne</p>
+<p class="text-[11px] text-tertiary">New Member</p>
+</div>
+</div>
+</td>
+<td class="p-4">
+<p class="text-body-sm text-on-surface">mthorne@company.io</p>
+<p class="text-meta text-on-surface-variant">+1 (555) 234-5678</p>
+</td>
+<td class="p-4">
+<span class="font-data-tabular text-data-tabular">$150.00</span>
+</td>
+<td class="p-4 text-center">
+<span class="font-data-tabular text-data-tabular">1</span>
+</td>
+<td class="p-4">
+<span class="text-body-sm text-on-surface">Today</span>
+</td>
+<td class="p-4">
+<span class="px-2 py-1 bg-surface-container-highest text-on-surface-variant text-[11px] font-bold rounded uppercase">25 pts</span>
+</td>
+<td class="p-4">
+<span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+</td>
+</tr>
+<!-- Additional placeholder rows for density -->
+<tr class="hover:bg-surface-container-low cursor-pointer transition-colors opacity-70">
+<td class="p-4"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-full bg-outline-variant/30"></div><div class="h-4 w-24 bg-outline-variant/20 rounded"></div></div></td>
+<td class="p-4"><div class="h-4 w-32 bg-outline-variant/20 rounded"></div></td>
+<td class="p-4"><div class="h-4 w-16 bg-outline-variant/20 rounded"></div></td>
+<td class="p-4"><div class="h-4 w-8 bg-outline-variant/20 rounded mx-auto"></div></td>
+<td class="p-4"><div class="h-4 w-16 bg-outline-variant/20 rounded"></div></td>
+<td class="p-4"><div class="h-6 w-16 bg-outline-variant/20 rounded"></div></td>
+<td class="p-4"></td>
+</tr>
+<tr class="hover:bg-surface-container-low cursor-pointer transition-colors opacity-50">
+<td class="p-4"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-full bg-outline-variant/30"></div><div class="h-4 w-24 bg-outline-variant/20 rounded"></div></div></td>
+<td class="p-4"><div class="h-4 w-32 bg-outline-variant/20 rounded"></div></td>
+<td class="p-4"><div class="h-4 w-16 bg-outline-variant/20 rounded"></div></td>
+<td class="p-4"><div class="h-4 w-8 bg-outline-variant/20 rounded mx-auto"></div></td>
+<td class="p-4"><div class="h-4 w-16 bg-outline-variant/20 rounded"></div></td>
+<td class="p-4"><div class="h-6 w-16 bg-outline-variant/20 rounded"></div></td>
+<td class="p-4"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Profile Drawer Overlay -->
+<div class="absolute inset-y-0 right-0 w-[420px] bg-surface-container-lowest border-l border-outline-variant shadow-2xl z-20 translate-x-0 transition-transform duration-300 ease-out flex flex-col" id="customerDrawer">
+<!-- Drawer Header -->
+<div class="p-lg border-b border-outline-variant flex items-start justify-between bg-surface-container-low/50">
+<div class="flex items-center gap-4">
+<img class="w-16 h-16 rounded-xl object-cover border-2 border-primary-container" data-alt="A close-up portrait of Elena Vance, focusing on her friendly yet professional demeanor. The image is styled with high-end photographic lighting that creates soft shadows and bright highlights, emphasizing a data-confident and calm aesthetic. The backdrop is a minimalist retail environment with neutral tones and emerald green accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQc3vvDen3JxIs9cc5aULL1zNugxlcA8piRtvDoMGTvPNcaBfJvQESjOCYgw2ogIEfo0OTKXux75hLmwMHAJ6jzY10ANF2eRMT38Cy9axs38rglWDHaxqX332M0RXDZS4uD4xUnaq72F9NdzL8rlKfPTrQebcTyhG94g1wXHFZI8AiWzHPJo45tsU92vUkM4Q-vPTwaM4r7HVKHr_hOnurnFz-cFYAM012n9nHUKRWT0QbogXytZVc"/>
+<div>
+<h3 class="font-page-title text-xl text-on-surface">Elena Vance</h3>
+<p class="text-meta text-primary font-bold">Premium VIP Member</p>
+<div class="flex gap-2 mt-2">
+<button class="p-1.5 rounded bg-surface-container hover:bg-primary-container/20 transition-colors">
+<span class="material-symbols-outlined text-sm">mail</span>
+</button>
+<button class="p-1.5 rounded bg-surface-container hover:bg-primary-container/20 transition-colors">
+<span class="material-symbols-outlined text-sm">call</span>
+</button>
+<button class="p-1.5 rounded bg-surface-container hover:bg-primary-container/20 transition-colors">
+<span class="material-symbols-outlined text-sm">more_horiz</span>
+</button>
+</div>
+</div>
+</div>
+<button class="text-on-surface-variant hover:text-on-surface" onclick="toggleDrawer()">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="flex-1 overflow-y-auto p-lg space-y-lg">
+<!-- Stats Grid -->
+<div class="grid grid-cols-3 gap-3">
+<div class="bg-surface-container-low p-3 rounded-lg border border-outline-variant/30">
+<p class="text-[10px] text-on-surface-variant uppercase font-bold">Lifetime Value</p>
+<p class="font-data-tabular text-lg text-on-surface mt-1">$12.4k</p>
+</div>
+<div class="bg-surface-container-low p-3 rounded-lg border border-outline-variant/30">
+<p class="text-[10px] text-on-surface-variant uppercase font-bold">Avg Order</p>
+<p class="font-data-tabular text-lg text-on-surface mt-1">$365</p>
+</div>
+<div class="bg-surface-container-low p-3 rounded-lg border border-outline-variant/30">
+<p class="text-[10px] text-on-surface-variant uppercase font-bold">Score</p>
+<p class="font-data-tabular text-lg text-primary mt-1">98%</p>
+</div>
+</div>
+<!-- Loyalty Section -->
+<div class="space-y-sm">
+<div class="flex justify-between items-center">
+<h4 class="font-section-header text-section-header">Loyalty Tier</h4>
+<span class="text-meta text-primary font-bold">Diamond Elite</span>
+</div>
+<div class="h-2 bg-surface-container rounded-full overflow-hidden border border-outline-variant/20">
+<div class="h-full bg-primary-container" style="width: 85%"></div>
+</div>
+<div class="flex justify-between text-[11px] text-on-surface-variant font-meta">
+<span>850 Points</span>
+<span>150 points until next reward</span>
+</div>
+</div>
+<!-- AI Summary -->
+<div class="bg-primary/5 border border-primary/20 p-4 rounded-xl flex gap-3">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+<p class="text-body-sm text-on-primary-container font-medium">
+                            Buys matte lipsticks monthly — due for a reorder nudge.
+                        </p>
+</div>
+<!-- Order History Timeline -->
+<div class="space-y-md">
+<h4 class="font-section-header text-section-header">Order History</h4>
+<div class="space-y-4 relative before:absolute before:left-[11px] before:top-2 before:bottom-0 before:w-[1px] before:bg-outline-variant/40">
+<div class="relative pl-8">
+<div class="absolute left-0 top-1 w-6 h-6 rounded-full bg-primary-container flex items-center justify-center z-10 border-4 border-surface-container-lowest">
+<span class="w-1.5 h-1.5 bg-white rounded-full"></span>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<p class="text-body-sm font-bold text-on-surface">Order #MK-9021</p>
+<p class="text-[11px] text-on-surface-variant">May 12, 2024</p>
+</div>
+<p class="font-data-tabular text-body-sm text-on-surface">$412.00</p>
+</div>
+</div>
+<div class="relative pl-8">
+<div class="absolute left-0 top-1 w-6 h-6 rounded-full bg-outline-variant flex items-center justify-center z-10 border-4 border-surface-container-lowest">
+<span class="w-1.5 h-1.5 bg-white rounded-full"></span>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<p class="text-body-sm font-bold text-on-surface">Order #MK-8845</p>
+<p class="text-[11px] text-on-surface-variant">Apr 08, 2024</p>
+</div>
+<p class="font-data-tabular text-body-sm text-on-surface text-on-surface-variant/70">$295.50</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Notes Section -->
+<div class="space-y-sm">
+<h4 class="font-section-header text-section-header">Staff Notes</h4>
+<textarea class="w-full h-24 bg-surface-container-low border border-outline-variant rounded-lg p-3 text-body-sm focus:ring-1 focus:ring-primary outline-none transition-all resize-none" placeholder="Add a note about this customer..."></textarea>
+</div>
+</div>
+<!-- Drawer Footer -->
+<div class="p-lg border-t border-outline-variant bg-surface-container-low/30">
+<button class="w-full py-2.5 bg-on-surface text-surface border border-on-surface rounded-lg font-meta hover:bg-on-surface/90 transition-all active:scale-95">
+                        View Detailed Full Profile
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<script>
+        function toggleDrawer() {
+            const drawer = document.getElementById('customerDrawer');
+            if (drawer.style.transform === 'translateX(0px)' || drawer.style.transform === '') {
+                drawer.style.transform = 'translateX(100%)';
+            } else {
+                drawer.style.transform = 'translateX(0px)';
+            }
+        }
+
+        // Initially shown for the "Elena Vance" profile as per prompt
+        document.addEventListener('DOMContentLoaded', () => {
+            // Keep it open by default to showcase the layout
+        });
+    </script>
+</body></html>

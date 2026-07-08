@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Merkat OS - Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Geist:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-primary": "#4edea3",
+                    "inverse-surface": "#2b322d",
+                    "primary-fixed-dim": "#4edea3",
+                    "error-container": "#ffdad6",
+                    "secondary-container": "#e4e1e6",
+                    "error": "#ba1a1a",
+                    "on-tertiary-fixed-variant": "#842225",
+                    "secondary-fixed-dim": "#c8c5ca",
+                    "tertiary-fixed": "#ffdad7",
+                    "on-primary": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "outline": "#6c7a71",
+                    "on-primary-fixed-variant": "#005236",
+                    "tertiary": "#a43a3a",
+                    "outline-variant": "#bbcabf",
+                    "primary-fixed": "#6ffbbe",
+                    "surface-container-high": "#e3eae3",
+                    "on-error": "#ffffff",
+                    "on-primary-fixed": "#002113",
+                    "on-surface": "#161d19",
+                    "inverse-on-surface": "#ebf3eb",
+                    "surface-tint": "#006c49",
+                    "tertiary-container": "#fc7c78",
+                    "tertiary-fixed-dim": "#ffb3af",
+                    "on-secondary": "#ffffff",
+                    "primary-container": "#10b981",
+                    "surface-container": "#e8f0e9",
+                    "surface-container-low": "#eef6ee",
+                    "on-surface-variant": "#3c4a42",
+                    "on-secondary-container": "#656467",
+                    "primary": "#006c49",
+                    "surface-container-highest": "#dde4dd",
+                    "on-tertiary-container": "#711419",
+                    "on-error-container": "#93000a",
+                    "secondary": "#5f5e61",
+                    "background": "#f4fbf4",
+                    "on-tertiary": "#ffffff",
+                    "on-tertiary-fixed": "#410005",
+                    "secondary-fixed": "#e4e1e6",
+                    "surface-variant": "#dde4dd",
+                    "on-secondary-fixed": "#1b1b1e",
+                    "on-secondary-fixed-variant": "#47464a",
+                    "on-primary-container": "#00422b",
+                    "surface-bright": "#f4fbf4",
+                    "surface-dim": "#d4dcd5",
+                    "surface": "#f4fbf4",
+                    "on-background": "#161d19",
+                    "warning-accent": "#f59e0b"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container_gutter": "24px",
+                    "sidebar_width": "260px",
+                    "header_height": "64px",
+                    "base": "4px",
+                    "lg": "24px",
+                    "xl": "32px",
+                    "xs": "4px",
+                    "sm": "8px",
+                    "md": "16px"
+            },
+            "fontFamily": {
+                    "data-tabular": ["Geist", "monospace"],
+                    "body-md": ["Inter", "sans-serif"],
+                    "body-sm": ["Inter", "sans-serif"],
+                    "section-header": ["Geist", "sans-serif"],
+                    "meta": ["Inter", "sans-serif"],
+                    "page-title": ["Geist", "sans-serif"]
+            },
+            "fontSize": {
+                    "data-tabular": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "section-header": ["16px", {"lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "meta": ["12px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "page-title": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #FAFAFA;
+            color: #161d19;
+            -webkit-font-smoothing: antialiased;
+        }
+        .data-tabular { font-variant-numeric: tabular-nums; }
+        .ai-gradient-border {
+            position: relative;
+            background: #fff;
+            border-radius: 8px;
+        }
+        .ai-gradient-border::before {
+            content: "";
+            position: absolute;
+            inset: -1px;
+            z-index: -1;
+            background: linear-gradient(45deg, #10b981, #6ffbbe, #10b981);
+            background-size: 200% 200%;
+            border-radius: 9px;
+            animation: border-flow 4s ease infinite;
+        }
+        @keyframes border-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #dde4dd; border-radius: 3px; }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-hidden">
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-0 h-full w-[260px] bg-surface-container dark:bg-inverse-surface border-r border-outline-variant flex flex-col p-md z-50">
+<div class="mb-xl flex items-center gap-sm">
+<div class="w-8 h-8 bg-primary rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+</div>
+<div>
+<h1 class="font-page-title text-page-title font-bold text-primary dark:text-inverse-primary leading-tight">Merkat</h1>
+<p class="font-meta text-meta text-on-surface-variant opacity-70">Retail Operations</p>
+</div>
+</div>
+<nav class="flex-1 space-y-xs overflow-y-auto custom-scrollbar">
+<!-- Active Tab: Dashboard -->
+<a class="flex items-center gap-md px-md py-sm bg-primary-container text-on-primary-container font-semibold rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-body-sm text-body-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest rounded-lg transition-colors group" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-body-sm text-body-sm">Inventory</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest rounded-lg transition-colors group" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-body-sm text-body-sm">Sales</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest rounded-lg transition-colors group" href="#">
+<span class="material-symbols-outlined">local_shipping</span>
+<span class="font-body-sm text-body-sm">Logistics</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest rounded-lg transition-colors group" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-body-sm text-body-sm">Analytics</span>
+</a>
+</nav>
+<button class="my-md bg-primary text-on-primary w-full py-sm rounded-lg font-semibold flex items-center justify-center gap-sm active:scale-[0.98] duration-150 shadow-sm">
+<span class="material-symbols-outlined text-[20px]">add_circle</span>
+<span>New Order</span>
+</button>
+<div class="mt-auto border-t border-outline-variant pt-md space-y-xs">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-sm text-body-sm">Settings</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">help_outline</span>
+<span class="font-body-sm text-body-sm">Support</span>
+</a>
+</div>
+</aside>
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 right-0 h-header_height w-[calc(100%-260px)] bg-surface dark:bg-background border-b border-outline-variant flex items-center justify-between px-lg z-40">
+<div class="flex items-center gap-lg flex-1">
+<div class="flex items-center gap-sm">
+<span class="font-section-header text-section-header text-primary font-bold">Merkat OS</span>
+<span class="text-outline-variant">/</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Main Dashboard</span>
+</div>
+<!-- AI Command Bar / Search -->
+<div class="ai-gradient-border max-w-md w-full ml-xl">
+<div class="flex items-center gap-sm px-md py-2 bg-white rounded-lg">
+<span class="material-symbols-outlined text-primary text-[20px]">auto_awesome</span>
+<input class="bg-transparent border-none focus:ring-0 w-full text-body-sm placeholder:text-outline-variant" placeholder="Ask Merkat: 'How are sales trending?'" type="text"/>
+<kbd class="hidden md:inline-flex items-center px-2 py-0.5 border border-outline-variant rounded bg-surface-container-low text-on-surface-variant font-meta text-[10px]">⌘K</kbd>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="p-sm hover:bg-surface-container-high rounded-full transition-colors relative">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-white"></span>
+</button>
+<div class="h-8 w-px bg-outline-variant"></div>
+<div class="flex items-center gap-sm cursor-pointer group">
+<div class="text-right">
+<p class="font-meta text-meta font-bold text-on-surface">Alex Chen</p>
+<p class="font-meta text-[10px] text-on-surface-variant uppercase tracking-wider">Floor Manager</p>
+</div>
+<img class="w-9 h-9 rounded-full object-cover border border-outline-variant group-hover:border-primary transition-colors" data-alt="A professional headshot of a corporate manager, clean lighting, minimalist background, friendly expression, modern business attire, high resolution studio photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKDn3ahtHji4lT9r0Z5OF5rCsWNfGdrEsiVpZLhmY6gFmWhuOd6KYdq7pX3F-FAkmW-cepBpKFCrP-LOrqvOqkFziQ-RtgaMb3amjsn8fcrCPZLPQM9dMu9y-DJZD-jpELYzMNPZ-ZvYOoR4MsIkoeWXbJwHq6vucFrCRB2cpUlS9d3uXBldBkr3x0ap1DsPFNyIrt9kHnZgrVotjOBvlUF1O3pUxj6-eAhgY8BmpJ4Ar642azj1yN"/>
+</div>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="ml-[260px] mt-header_height h-[calc(100vh-64px)] overflow-y-auto p-lg custom-scrollbar">
+<div class="max-w-[1400px] mx-auto space-y-lg">
+<!-- Daily Overview Metrics -->
+<section>
+<div class="flex items-center justify-between mb-md">
+<h2 class="font-section-header text-section-header">Daily Overview</h2>
+<button class="flex items-center gap-xs font-meta text-primary hover:underline">
+<span>View Detailed Report</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+<!-- Total Sales Card -->
+<div class="bg-white p-lg rounded-xl border border-outline-variant flex flex-col gap-sm">
+<div class="flex items-center justify-between">
+<span class="font-meta text-meta text-on-surface-variant">Total Sales</span>
+<span class="flex items-center font-data-tabular text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded text-xs">
+<span class="material-symbols-outlined text-[14px]">trending_up</span>
+                                +12.4%
+                            </span>
+</div>
+<div class="flex items-baseline gap-xs">
+<span class="font-page-title text-page-title text-primary">$</span>
+<span class="font-page-title text-[32px] tracking-tight data-tabular">42,890.00</span>
+</div>
+<div class="h-1 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[75%] rounded-full"></div>
+</div>
+</div>
+<!-- Orders Card -->
+<div class="bg-white p-lg rounded-xl border border-outline-variant flex flex-col gap-sm">
+<div class="flex items-center justify-between">
+<span class="font-meta text-meta text-on-surface-variant">Active Orders</span>
+<span class="flex items-center font-data-tabular text-on-surface-variant bg-surface-container px-2 py-0.5 rounded text-xs">
+                                vs 384 yesterday
+                            </span>
+</div>
+<div class="flex items-baseline gap-xs">
+<span class="font-page-title text-[32px] tracking-tight data-tabular">412</span>
+</div>
+<p class="font-meta text-meta text-on-surface-variant">Processing in last 12 hours</p>
+</div>
+<!-- Average Ticket Card -->
+<div class="bg-white p-lg rounded-xl border border-outline-variant flex flex-col gap-sm">
+<div class="flex items-center justify-between">
+<span class="font-meta text-meta text-on-surface-variant">Avg. Ticket Size</span>
+<span class="flex items-center font-data-tabular text-red-600 bg-red-50 px-2 py-0.5 rounded text-xs">
+<span class="material-symbols-outlined text-[14px]">trending_down</span>
+                                -2.1%
+                            </span>
+</div>
+<div class="flex items-baseline gap-xs">
+<span class="font-page-title text-page-title text-primary">$</span>
+<span class="font-page-title text-[32px] tracking-tight data-tabular">104.10</span>
+</div>
+<p class="font-meta text-meta text-on-surface-variant">Based on 1,240 transactions</p>
+</div>
+</div>
+</section>
+<!-- Grid Content: Performance & Alerts -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-lg items-start">
+<!-- Recent Sales Performance (Left/Large Column) -->
+<section class="xl:col-span-8 bg-white rounded-xl border border-outline-variant overflow-hidden">
+<div class="p-lg border-b border-outline-variant flex items-center justify-between">
+<h2 class="font-section-header text-section-header">Sales Performance</h2>
+<div class="flex items-center gap-sm">
+<div class="flex bg-surface-container rounded-lg p-0.5">
+<button class="px-md py-1 text-xs font-semibold bg-white rounded shadow-sm">Real-time</button>
+<button class="px-md py-1 text-xs font-medium text-on-surface-variant">History</button>
+</div>
+<button class="p-1.5 hover:bg-surface-container-high rounded-md border border-outline-variant">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</div>
+<div class="p-lg">
+<table class="w-full">
+<thead>
+<tr class="text-left border-b border-outline-variant">
+<th class="pb-md font-meta text-meta text-on-surface-variant uppercase">Order ID</th>
+<th class="pb-md font-meta text-meta text-on-surface-variant uppercase">Client / Product</th>
+<th class="pb-md font-meta text-meta text-on-surface-variant uppercase">Amount</th>
+<th class="pb-md font-meta text-meta text-on-surface-variant uppercase">Status</th>
+<th class="pb-md font-meta text-meta text-on-surface-variant uppercase">Time</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/50">
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-md font-data-tabular">#M-8821</td>
+<td class="py-md">
+<div class="flex flex-col">
+<span class="font-body-sm font-semibold">Premium Coffee Grinder</span>
+<span class="text-[11px] text-on-surface-variant">Tech &amp; Home Ltd.</span>
+</div>
+</td>
+<td class="py-md font-data-tabular">$1,240.00</td>
+<td class="py-md">
+<span class="px-2 py-1 bg-emerald-100 text-emerald-800 text-[10px] font-bold rounded uppercase">Completed</span>
+</td>
+<td class="py-md text-on-surface-variant font-meta">02 mins ago</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-md font-data-tabular">#M-8820</td>
+<td class="py-md">
+<div class="flex flex-col">
+<span class="font-body-sm font-semibold">Ergonomic Office Chair</span>
+<span class="text-[11px] text-on-surface-variant">Design Studio X</span>
+</div>
+</td>
+<td class="py-md font-data-tabular">$450.00</td>
+<td class="py-md">
+<span class="px-2 py-1 bg-blue-100 text-blue-800 text-[10px] font-bold rounded uppercase">Processing</span>
+</td>
+<td class="py-md text-on-surface-variant font-meta">14 mins ago</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-md font-data-tabular">#M-8819</td>
+<td class="py-md">
+<div class="flex flex-col">
+<span class="font-body-sm font-semibold">Wireless Keyboard Pro</span>
+<span class="text-[11px] text-on-surface-variant">Sarah Jenkins</span>
+</div>
+</td>
+<td class="py-md font-data-tabular">$129.99</td>
+<td class="py-md">
+<span class="px-2 py-1 bg-emerald-100 text-emerald-800 text-[10px] font-bold rounded uppercase">Completed</span>
+</td>
+<td class="py-md text-on-surface-variant font-meta">28 mins ago</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-md font-data-tabular">#M-8818</td>
+<td class="py-md">
+<div class="flex flex-col">
+<span class="font-body-sm font-semibold">LED Smart Bulb Pack</span>
+<span class="text-[11px] text-on-surface-variant">Urban Outfitters</span>
+</div>
+</td>
+<td class="py-md font-data-tabular">$54.00</td>
+<td class="py-md">
+<span class="px-2 py-1 bg-emerald-100 text-emerald-800 text-[10px] font-bold rounded uppercase">Completed</span>
+</td>
+<td class="py-md text-on-surface-variant font-meta">42 mins ago</td>
+</tr>
+</tbody>
+</table>
+<div class="mt-lg pt-md border-t border-outline-variant text-center">
+<button class="font-meta text-primary hover:text-primary-container transition-colors">Load more transactions</button>
+</div>
+</div>
+</section>
+<!-- Stock Alerts (Right/Narrow Column) -->
+<section class="xl:col-span-4 space-y-md">
+<div class="bg-white rounded-xl border border-outline-variant overflow-hidden">
+<div class="p-lg border-b border-outline-variant flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-warning-accent">warning</span>
+<h2 class="font-section-header text-section-header">Stock Alerts</h2>
+</div>
+<span class="font-meta text-[10px] bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-bold">4 CRITICAL</span>
+</div>
+<div class="p-md space-y-md">
+<div class="flex items-center gap-md p-sm hover:bg-surface-container-low rounded-lg border border-transparent hover:border-outline-variant transition-all cursor-pointer">
+<img class="w-12 h-12 rounded object-cover border border-outline-variant" data-alt="A macro close-up of a high-end electronics product, professional product photography, bright studio lighting, neutral grey background, crisp details, emerald and white accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlDGPVNpTeQoxHOl2nODcDJqbY8lLziVep8N1inTN2NOVj9-VAXxsnKsGOzRpArclmWJ_lp2dDGIEezuF9OfYsfqtinbS2RjXzW5NwvPQUSciTzDRlK6yi5IfDDyVn9rfyULH661Rq0kjhoe-xTXodRn3jX5uq56V-uJALlp36gkSHF8zA7YqMnUYzVg_FrsswGmLfxJ7DSfSKYD91xBdhIaFAarCed9LaGS5TAD_qIwkx8GqsD7QT"/>
+<div class="flex-1 min-w-0">
+<h3 class="font-body-sm font-bold truncate">Wireless Earbuds V2</h3>
+<div class="flex items-center gap-xs mt-1">
+<span class="font-data-tabular text-xs text-on-surface-variant">Stock: 2 units left</span>
+<span class="w-1 h-1 bg-outline-variant rounded-full"></span>
+<span class="font-meta text-[10px] text-warning-accent font-bold uppercase">Restock now</span>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-surface-container-high text-primary">
+<span class="material-symbols-outlined text-[20px]">shopping_cart_checkout</span>
+</button>
+</div>
+<div class="flex items-center gap-md p-sm hover:bg-surface-container-low rounded-lg border border-transparent hover:border-outline-variant transition-all cursor-pointer">
+<img class="w-12 h-12 rounded object-cover border border-outline-variant" data-alt="Minimalist design furniture item, professional product shot, soft natural lighting, white aesthetic, high contrast details, cinematic studio photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDfrFbkmK4PJh_pc0XsixKOBTqpbDDLThBbO37DaksQhyvaEnZDtCDVdqcY2H3lVdqUuptVvQXcz5g6CeMN9fT1i_uTV7NQnhF_-TVtGf4pUK4VNlGwlU73uDlWyEImvFL4LTEHofyq8Ayj5AgbgPSNpFZ5_kK8_yOq8fBFmTPgcv4nhnZjZ9u0ELHqOXeDVmzb8g36-ldygNtENlIDiBncOf9-qEinOTJED-rZQ9_ja39ZqBCMvNV"/>
+<div class="flex-1 min-w-0">
+<h3 class="font-body-sm font-bold truncate">Bamboo Desk Lamp</h3>
+<div class="flex items-center gap-xs mt-1">
+<span class="font-data-tabular text-xs text-on-surface-variant">Stock: 5 units left</span>
+<span class="w-1 h-1 bg-outline-variant rounded-full"></span>
+<span class="font-meta text-[10px] text-warning-accent font-bold uppercase">Low Stock</span>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-surface-container-high text-primary">
+<span class="material-symbols-outlined text-[20px]">shopping_cart_checkout</span>
+</button>
+</div>
+<div class="flex items-center gap-md p-sm hover:bg-surface-container-low rounded-lg border border-transparent hover:border-outline-variant transition-all cursor-pointer opacity-80">
+<img class="w-12 h-12 rounded object-cover border border-outline-variant" data-alt="Premium kitchen appliance, stainless steel finish, sleek modern design, professional photography, high-key lighting, bright and clean corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtYfht0JUpfYb4khEyWfF-klQuL6u3ANpl02qI4ip9Wre2DQHYDvIbKOSj_HH4FtmzUfzc0qt-MKaWxOR9nsUrNYlGaZJOyNmsFnyMaH3SMhV_J6RcfgTZvjq6ZU_xfsB_OGv_s6R50rpbWv32Rou6Tg3TerTA7ar7Pje-TCl0VbN-Q3OIJWZeq9Ws-NpUYyHLj7iID488sLUFGlecgFCBQGiOgiwR8aAQgVwiiW1olCm_-cOV4PpM"/>
+<div class="flex-1 min-w-0">
+<h3 class="font-body-sm font-bold truncate">Professional Stand Mixer</h3>
+<div class="flex items-center gap-xs mt-1">
+<span class="font-data-tabular text-xs text-on-surface-variant">Stock: Out of Stock</span>
+<span class="w-1 h-1 bg-outline-variant rounded-full"></span>
+<span class="font-meta text-[10px] text-error font-bold uppercase">Critical</span>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-surface-container-high text-primary">
+<span class="material-symbols-outlined text-[20px]">refresh</span>
+</button>
+</div>
+</div>
+<div class="px-lg pb-lg">
+<button class="w-full py-2 bg-surface-container text-on-surface-variant font-meta text-meta font-bold rounded-lg hover:bg-surface-container-high transition-colors">
+                                Inventory Manager
+                            </button>
+</div>
+</div>
+<!-- AI Insights Mini-Widget -->
+<div class="bg-primary-container/10 p-lg rounded-xl border border-primary/20 relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 group-hover:scale-110 transition-transform duration-700"></div>
+<div class="relative z-10">
+<div class="flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<h3 class="font-section-header text-section-header text-on-primary-container">Merkat Insight</h3>
+</div>
+<p class="text-body-sm text-on-primary-container/80 mb-md leading-relaxed">
+                                High demand detected for <span class="font-bold text-primary">Home Office</span> category. Consider increasing stock for next week's promotion.
+                            </p>
+<button class="text-primary font-bold text-xs flex items-center gap-xs hover:gap-md transition-all">
+                                Apply Strategy <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+<!-- FAB for quick actions (Contextual to Dashboard) -->
+<button class="fixed bottom-lg right-lg w-14 h-14 bg-primary text-on-primary rounded-full shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-all z-50">
+<span class="material-symbols-outlined text-[28px]">add</span>
+</button>
+<script>
+        // Simple micro-interaction for the sidebar tabs
+        const navLinks = document.querySelectorAll('nav a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                navLinks.forEach(l => {
+                    l.classList.remove('bg-primary-container', 'text-on-primary-container', 'font-semibold');
+                    l.classList.add('text-on-surface-variant');
+                });
+                link.classList.add('bg-primary-container', 'text-on-primary-container', 'font-semibold');
+                link.classList.remove('text-on-surface-variant');
+            });
+        });
+
+        // Atmospheric micro-interaction for cards
+        const cards = document.querySelectorAll('.bg-white.rounded-xl');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.borderColor = '#10b981';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.borderColor = '#bbcabf';
+            });
+        });
+    </script>
+</body></html>

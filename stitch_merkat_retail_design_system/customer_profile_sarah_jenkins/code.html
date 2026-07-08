@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Customer Profile | Merkat Retail OS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Geist:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-container": "#10b981",
+                    "on-secondary-container": "#656467",
+                    "outline-variant": "#bbcabf",
+                    "on-secondary-fixed": "#1b1b1e",
+                    "on-secondary-fixed-variant": "#47464a",
+                    "tertiary-container": "#fc7c78",
+                    "on-primary-fixed-variant": "#005236",
+                    "on-tertiary-container": "#711419",
+                    "surface-bright": "#f4fbf4",
+                    "surface-tint": "#006c49",
+                    "secondary-fixed-dim": "#c8c5ca",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-high": "#e3eae3",
+                    "on-surface-variant": "#3c4a42",
+                    "tertiary-fixed-dim": "#ffb3af",
+                    "on-primary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "surface-container-highest": "#dde4dd",
+                    "on-tertiary-fixed-variant": "#842225",
+                    "background": "#f4fbf4",
+                    "surface-variant": "#dde4dd",
+                    "on-background": "#161d19",
+                    "error": "#ba1a1a",
+                    "on-primary-fixed": "#002113",
+                    "tertiary": "#a43a3a",
+                    "secondary-fixed": "#e4e1e6",
+                    "on-surface": "#161d19",
+                    "primary": "#006c49",
+                    "inverse-primary": "#4edea3",
+                    "primary-fixed": "#6ffbbe",
+                    "surface": "#f4fbf4",
+                    "surface-dim": "#d4dcd5",
+                    "secondary": "#5f5e61",
+                    "outline": "#6c7a71",
+                    "on-secondary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "secondary-container": "#e4e1e6",
+                    "tertiary-fixed": "#ffdad7",
+                    "surface-container-low": "#eef6ee",
+                    "on-primary-container": "#00422b",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container": "#e8f0e9",
+                    "inverse-surface": "#2b322d",
+                    "primary-fixed-dim": "#4edea3",
+                    "inverse-on-surface": "#ebf3eb",
+                    "on-tertiary-fixed": "#410005",
+                    "error-container": "#ffdad6"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xl": "32px",
+                    "md": "16px",
+                    "sm": "8px",
+                    "header_height": "64px",
+                    "sidebar_width": "260px",
+                    "xs": "4px",
+                    "lg": "24px",
+                    "container_gutter": "24px",
+                    "base": "4px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "section-header": ["Geist"],
+                    "page-title": ["Geist"],
+                    "meta": ["Inter"],
+                    "data-tabular": ["Geist"]
+            },
+            "fontSize": {
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "section-header": ["16px", {"lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "page-title": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "meta": ["12px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "data-tabular": ["14px", {"lineHeight": "20px", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { background-color: #FAFAFA; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .data-tabular { font-variant-numeric: tabular-nums; }
+        .glass-header { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-0 h-full w-[260px] border-r border-outline-variant bg-surface flex flex-col p-md gap-sm z-50">
+<div class="flex items-center gap-sm mb-lg px-xs">
+<div class="w-8 h-8 rounded bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container" style="font-variation-settings: 'FILL' 1;">storefront</span>
+</div>
+<div>
+<h1 class="font-page-title text-[18px] leading-none text-primary tracking-tight">Merkat</h1>
+<p class="text-[11px] text-on-surface-variant font-medium">Retail OS</p>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-xs">
+<a class="flex items-center gap-sm px-sm py-2 text-on-surface-variant hover:bg-surface-container-high transition-colors font-body-sm rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-sm px-sm py-2 text-on-surface-variant hover:bg-surface-container-high transition-colors font-body-sm rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+                Inventory
+            </a>
+<a class="flex items-center gap-sm px-sm py-2 text-on-surface-variant hover:bg-surface-container-high transition-colors font-body-sm rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+                Sales
+            </a>
+<a class="flex items-center gap-sm px-sm py-2 text-on-surface-variant hover:bg-surface-container-high transition-colors font-body-sm rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="local_shipping">local_shipping</span>
+                Logistics
+            </a>
+<!-- Active Tab: Customers -->
+<a class="flex items-center gap-sm px-sm py-2 bg-primary-container text-on-primary-container font-semibold rounded-lg font-body-sm" href="#">
+<span class="material-symbols-outlined" data-icon="groups" style="font-variation-settings: 'FILL' 1;">groups</span>
+                Customers
+            </a>
+<a class="flex items-center gap-sm px-sm py-2 text-on-surface-variant hover:bg-surface-container-high transition-colors font-body-sm rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+                Reports
+            </a>
+</nav>
+<button class="mt-lg w-full bg-primary text-on-primary py-2 px-md rounded-lg font-body-sm font-semibold flex items-center justify-center gap-xs">
+<span class="material-symbols-outlined text-[18px]">add</span>
+            New Transaction
+        </button>
+<div class="mt-auto flex flex-col gap-xs pt-md border-t border-outline-variant">
+<a class="flex items-center gap-sm px-sm py-2 text-on-surface-variant hover:bg-surface-container-high transition-colors font-body-sm rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+                Settings
+            </a>
+<a class="flex items-center gap-sm px-sm py-2 text-on-surface-variant hover:bg-surface-container-high transition-colors font-body-sm rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+                Support
+            </a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-[260px] min-h-screen">
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 right-0 h-header_height w-[calc(100%-260px)] bg-surface-container-lowest flex items-center justify-between px-lg z-40 border-b border-outline-variant">
+<div class="flex items-center flex-1 max-w-xl">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-container text-body-md pl-10 pr-4 py-2 rounded-full border-none focus:ring-2 focus:ring-primary" placeholder="Search orders, customers, or items..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="p-2 hover:bg-surface-container rounded-full transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="smart_toy">smart_toy</span>
+</button>
+<button class="p-2 hover:bg-surface-container rounded-full transition-colors text-on-surface-variant relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<div class="h-8 w-px bg-outline-variant mx-sm"></div>
+<button class="flex items-center gap-sm p-1 hover:bg-surface-container rounded-lg transition-colors">
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed font-bold text-xs">AD</div>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Page Canvas -->
+<div class="pt-[64px] p-lg space-y-lg">
+<!-- Customer Identity Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-md mb-xl">
+<div class="flex items-center gap-lg">
+<div class="w-20 h-20 rounded-2xl bg-surface-container-highest border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional, warm studio portrait of Sarah Jenkins, a professional woman in her late 30s. The photography style is modern and clean, with soft, natural lighting and a shallow depth of field. The background is a minimalist office setting with a neutral color palette of whites and soft greys, maintaining the Merkat Retail OS technical minimalist aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCg_G79R5KXyxakCezxWPRq55Tx83TUuwA1zPQPvbelhjO1KfScrkspFyDDP1XRKckCzYAub23i8hiSBo3BZiOFuzRiPvV4e3hUxDCAZOrGkGfAJoYpGGbOajwT16vQQMvxbmkzPXR2lyXGWAFnssPTSGlrQjjgRJ9S8Zo2t4PLoAnhVxdbPxNcQgrY3APvTB-dHwHsSsyPttI-sRqlYoqPVA2S0CeCXQtBGm8Hj0xnzfL3tbQgw2ke"/>
+</div>
+<div>
+<div class="flex items-center gap-sm mb-1">
+<h2 class="font-page-title text-on-surface">Sarah Jenkins</h2>
+<span class="bg-primary-container/10 text-primary px-3 py-0.5 rounded-full text-meta font-bold uppercase tracking-wider">Gold Member</span>
+</div>
+<div class="flex flex-wrap items-center gap-md text-on-surface-variant text-body-sm">
+<span class="flex items-center gap-xs"><span class="material-symbols-outlined text-[16px]">mail</span> sarah.j@outlook.com</span>
+<span class="flex items-center gap-xs"><span class="material-symbols-outlined text-[16px]">call</span> +1 (555) 012-3456</span>
+<span class="flex items-center gap-xs"><span class="material-symbols-outlined text-[16px]">location_on</span> San Francisco, CA</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-sm">
+<button class="px-md py-2 border border-outline text-on-surface font-body-sm font-semibold rounded-lg hover:bg-surface-container transition-colors">Edit Profile</button>
+<button class="px-md py-2 bg-primary text-on-primary font-body-sm font-semibold rounded-lg shadow-sm hover:brightness-110 transition-all">Send Email</button>
+</div>
+</div>
+<!-- KPI Cards Summary Row -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-lg">
+<div class="bg-white p-lg rounded-xl border border-outline-variant flex flex-col justify-between h-32">
+<span class="text-meta text-on-surface-variant uppercase font-bold tracking-wider">Lifetime Value</span>
+<div class="flex items-baseline gap-xs">
+<span class="font-page-title text-on-surface data-tabular">$4,250.00</span>
+<span class="text-primary text-meta flex items-center font-bold">↑ 12%</span>
+</div>
+</div>
+<div class="bg-white p-lg rounded-xl border border-outline-variant flex flex-col justify-between h-32">
+<span class="text-meta text-on-surface-variant uppercase font-bold tracking-wider">Total Orders</span>
+<span class="font-page-title text-on-surface data-tabular">24</span>
+</div>
+<div class="bg-white p-lg rounded-xl border border-outline-variant flex flex-col justify-between h-32">
+<span class="text-meta text-on-surface-variant uppercase font-bold tracking-wider">Avg. Order Value</span>
+<span class="font-page-title text-on-surface data-tabular">$177.08</span>
+</div>
+<div class="bg-white p-lg rounded-xl border border-outline-variant flex flex-col justify-between h-32">
+<span class="text-meta text-on-surface-variant uppercase font-bold tracking-wider">Last Order</span>
+<div class="space-y-1">
+<span class="font-page-title text-on-surface">2 days ago</span>
+<p class="text-meta text-on-surface-variant">Order #99210</p>
+</div>
+</div>
+</div>
+<!-- Two Column Main Area -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-lg items-start">
+<!-- Purchase History (Left Column) -->
+<div class="lg:col-span-8 bg-white rounded-xl border border-outline-variant overflow-hidden flex flex-col">
+<div class="px-lg py-md border-b border-outline-variant flex items-center justify-between">
+<h3 class="font-section-header text-on-surface">Purchase History</h3>
+<button class="text-primary font-body-sm font-semibold hover:underline">View All</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-surface-container-low text-meta uppercase tracking-wider text-on-surface-variant">
+<tr>
+<th class="px-lg py-3 font-bold">Order ID</th>
+<th class="px-lg py-3 font-bold">Date</th>
+<th class="px-lg py-3 font-bold">Items</th>
+<th class="px-lg py-3 font-bold text-right">Total</th>
+<th class="px-lg py-3 font-bold">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant font-body-sm">
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-lg py-4 font-semibold text-primary">#99210</td>
+<td class="px-lg py-4 text-on-surface-variant">Oct 24, 2023</td>
+<td class="px-lg py-4">Artisanal Coffee (x2), Ceramic Mug</td>
+<td class="px-lg py-4 text-right font-data-tabular">$142.50</td>
+<td class="px-lg py-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-primary-container/10 text-primary text-xs font-bold">Delivered</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-lg py-4 font-semibold text-primary">#98754</td>
+<td class="px-lg py-4 text-on-surface-variant">Oct 12, 2023</td>
+<td class="px-lg py-4">Velvet Sofa Throw</td>
+<td class="px-lg py-4 text-right font-data-tabular">$89.00</td>
+<td class="px-lg py-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-primary-container/10 text-primary text-xs font-bold">Delivered</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-lg py-4 font-semibold text-primary">#98120</td>
+<td class="px-lg py-4 text-on-surface-variant">Sep 28, 2023</td>
+<td class="px-lg py-4">Coffee Bean Grinder, Home Decor...</td>
+<td class="px-lg py-4 text-right font-data-tabular">$412.00</td>
+<td class="px-lg py-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-primary-container/10 text-primary text-xs font-bold">Delivered</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-lg py-4 font-semibold text-primary">#97982</td>
+<td class="px-lg py-4 text-on-surface-variant">Sep 15, 2023</td>
+<td class="px-lg py-4">Monthly Subscription - Coffee</td>
+<td class="px-lg py-4 text-right font-data-tabular">$35.00</td>
+<td class="px-lg py-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-primary-container/10 text-primary text-xs font-bold">Delivered</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Right Column (Narrower) -->
+<div class="lg:col-span-4 space-y-lg">
+<!-- Customer Details -->
+<div class="bg-white rounded-xl border border-outline-variant p-lg space-y-md">
+<h3 class="font-section-header text-on-surface pb-sm border-b border-outline-variant">Customer Details</h3>
+<div class="space-y-md">
+<div>
+<label class="text-meta text-on-surface-variant uppercase font-bold tracking-wider block mb-1">Email</label>
+<p class="text-body-md font-medium">sarah.j@outlook.com</p>
+</div>
+<div>
+<label class="text-meta text-on-surface-variant uppercase font-bold tracking-wider block mb-1">Phone Number</label>
+<p class="text-body-md font-medium">+1 (555) 012-3456</p>
+</div>
+<div>
+<label class="text-meta text-on-surface-variant uppercase font-bold tracking-wider block mb-1">Shipping Address</label>
+<p class="text-body-md font-medium leading-relaxed">482 Valencia St, Apt 4B<br/>San Francisco, CA 94103<br/>United States</p>
+</div>
+<div class="pt-sm">
+<label class="text-meta text-on-surface-variant uppercase font-bold tracking-wider block mb-1">Customer Since</label>
+<p class="text-body-md font-medium">March 14, 2021</p>
+</div>
+</div>
+</div>
+<!-- Preferences Section -->
+<div class="bg-white rounded-xl border border-outline-variant p-lg space-y-md">
+<div class="flex items-center justify-between border-b border-outline-variant pb-sm">
+<h3 class="font-section-header text-on-surface">Preferences</h3>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">tune</span>
+</div>
+<div class="space-y-md">
+<div>
+<label class="text-meta text-on-surface-variant uppercase font-bold tracking-wider block mb-2">Most Shopped Categories</label>
+<div class="flex flex-wrap gap-sm">
+<span class="px-3 py-1 bg-surface-container text-on-surface-variant text-body-sm font-semibold rounded-lg flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">coffee</span> Coffee
+                                    </span>
+<span class="px-3 py-1 bg-surface-container text-on-surface-variant text-body-sm font-semibold rounded-lg flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">home</span> Home Decor
+                                    </span>
+<span class="px-3 py-1 bg-surface-container text-on-surface-variant text-body-sm font-semibold rounded-lg flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">line_style</span> Kitchen
+                                    </span>
+</div>
+</div>
+<div>
+<label class="text-meta text-on-surface-variant uppercase font-bold tracking-wider block mb-2">Communication</label>
+<div class="space-y-2">
+<div class="flex items-center gap-sm">
+<div class="w-4 h-4 rounded-full bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[10px]" style="font-variation-settings: 'wght' 700;">check</span>
+</div>
+<span class="text-body-sm">Email Marketing Opt-in</span>
+</div>
+<div class="flex items-center gap-sm">
+<div class="w-4 h-4 rounded-full border border-outline-variant flex items-center justify-center"></div>
+<span class="text-body-sm text-on-surface-variant">SMS Notifications</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Internal Notes -->
+<div class="bg-surface-container-low rounded-xl border border-outline-variant p-lg">
+<div class="flex items-center gap-sm mb-2">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">sticky_note_2</span>
+<h3 class="font-meta uppercase font-bold tracking-wider text-on-surface-variant">Operator Notes</h3>
+</div>
+<p class="text-body-sm text-on-surface-variant leading-relaxed">Sarah prefers plastic-free packaging. Contact via email for high-value order confirmations.</p>
+<button class="mt-md text-primary font-body-sm font-semibold flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">add</span> Add Note
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+        // Micro-interactions
+        document.querySelectorAll('button, a').forEach(el => {
+            el.addEventListener('mousedown', () => {
+                el.style.transform = 'scale(0.98)';
+            });
+            el.addEventListener('mouseup', () => {
+                el.style.transform = 'scale(1)';
+            });
+            el.addEventListener('mouseleave', () => {
+                el.style.transform = 'scale(1)';
+            });
+        });
+
+        // Simple row highlight animation
+        const rows = document.querySelectorAll('tbody tr');
+        rows.forEach((row, index) => {
+            row.style.opacity = '0';
+            row.style.transform = 'translateY(10px)';
+            setTimeout(() => {
+                row.style.transition = 'all 0.4s ease';
+                row.style.opacity = '1';
+                row.style.transform = 'translateY(0)';
+            }, 100 * index);
+        });
+    </script>
+</body></html>

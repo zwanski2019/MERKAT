@@ -1,0 +1,9 @@
+{
+  "name": "MERKAT",
+  "short_name": "MERKAT",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAFAFA",
+  "theme_color": "#10B981",
+  "icons": []
+}

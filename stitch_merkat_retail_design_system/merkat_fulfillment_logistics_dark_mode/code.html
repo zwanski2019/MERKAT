@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Merkat OS | Fulfillment &amp; Logistics Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;900&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0b1326; }
+        ::-webkit-scrollbar-thumb { background: #3c4a42; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #4edea3; }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 16px;
+        }
+        .shimmer {
+            background: linear-gradient(90deg, transparent, rgba(78, 222, 163, 0.05), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 3s infinite linear;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary": "#4edea3",
+                      "secondary-container": "#3c4a5e",
+                      "on-error": "#690005",
+                      "on-primary-fixed-variant": "#005236",
+                      "inverse-primary": "#006c49",
+                      "secondary-fixed": "#d5e3fd",
+                      "outline": "#86948a",
+                      "surface-container": "#171f33",
+                      "on-secondary-fixed-variant": "#3a485c",
+                      "surface-bright": "#31394d",
+                      "on-secondary-container": "#abb9d2",
+                      "on-secondary": "#233144",
+                      "error": "#ffb4ab",
+                      "on-tertiary": "#2d3133",
+                      "surface-tint": "#4edea3",
+                      "on-surface": "#dae2fd",
+                      "surface-container-highest": "#2d3449",
+                      "on-primary": "#003824",
+                      "primary-fixed": "#6ffbbe",
+                      "tertiary-fixed": "#e0e3e5",
+                      "secondary": "#b9c7e0",
+                      "on-tertiary-container": "#36393b",
+                      "tertiary-container": "#a0a3a5",
+                      "primary-fixed-dim": "#4edea3",
+                      "on-secondary-fixed": "#0d1c2f",
+                      "on-primary-container": "#00422b",
+                      "on-primary-fixed": "#002113",
+                      "error-container": "#93000a",
+                      "background": "#0b1326",
+                      "surface-variant": "#2d3449",
+                      "surface": "#0b1326",
+                      "on-tertiary-fixed": "#191c1e",
+                      "surface-container-low": "#131b2e",
+                      "inverse-surface": "#dae2fd",
+                      "surface-container-high": "#222a3d",
+                      "on-surface-variant": "#bbcabf",
+                      "on-background": "#dae2fd",
+                      "outline-variant": "#3c4a42",
+                      "primary-container": "#10b981",
+                      "inverse-on-surface": "#283044",
+                      "tertiary": "#c4c7c9",
+                      "tertiary-fixed-dim": "#c4c7c9",
+                      "surface-dim": "#0b1326",
+                      "on-tertiary-fixed-variant": "#444749",
+                      "surface-container-lowest": "#060e20",
+                      "secondary-fixed-dim": "#b9c7e0"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "base": "4px",
+                      "xl": "32px",
+                      "margin-mobile": "16px",
+                      "margin-desktop": "32px",
+                      "md": "16px",
+                      "gutter": "16px",
+                      "xs": "4px",
+                      "lg": "24px",
+                      "sm": "8px"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Hanken Grotesk"],
+                      "label-sm": ["JetBrains Mono"],
+                      "display-lg": ["Hanken Grotesk"],
+                      "body-lg": ["Inter"],
+                      "label-md": ["JetBrains Mono"],
+                      "headline-md": ["Hanken Grotesk"],
+                      "body-md": ["Inter"]
+              },
+              "fontSize": {
+                      "label-sm": ["10px", {"lineHeight": "12px", "letterSpacing": "0.08em", "fontWeight": "500"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary selection:text-on-primary">
+<!-- SIDE NAVIGATION BAR (The Anchor) -->
+<aside class="h-screen w-64 fixed left-0 top-0 border-r border-outline-variant bg-surface-container-lowest flex flex-col py-lg z-50 overflow-hidden">
+<div class="px-md mb-xl">
+<h1 class="font-headline-md text-headline-md font-bold text-primary flex items-center gap-sm">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dataset</span>
+                Merkat OS
+            </h1>
+<p class="font-label-md text-label-md text-on-surface-variant opacity-70">Operator Console</p>
+</div>
+<nav class="flex-1 space-y-xs px-sm">
+<a class="flex items-center gap-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface px-md py-sm transition-all rounded-lg font-label-md" href="#">
+<span class="material-symbols-outlined">dashboard</span> Dashboard
+            </a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface px-md py-sm transition-all rounded-lg font-label-md" href="#">
+<span class="material-symbols-outlined">inventory_2</span> Inventory
+            </a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface px-md py-sm transition-all rounded-lg font-label-md" href="#">
+<span class="material-symbols-outlined">payments</span> Sales
+            </a>
+<a class="flex items-center gap-sm bg-secondary-container text-on-secondary-container rounded-lg px-md py-sm border-l-4 border-primary font-label-md" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">local_shipping</span> Logistics
+            </a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface px-md py-sm transition-all rounded-lg font-label-md" href="#">
+<span class="material-symbols-outlined">groups</span> Customers
+            </a>
+<a class="flex items-center gap-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface px-md py-sm transition-all rounded-lg font-label-md" href="#">
+<span class="material-symbols-outlined">analytics</span> Reports
+            </a>
+</nav>
+<div class="px-md mt-auto pt-lg border-t border-outline-variant/30">
+<button class="w-full flex items-center justify-center gap-sm bg-surface-variant text-primary py-sm rounded-lg hover:bg-surface-bright transition-all active:scale-95 font-label-md">
+<span class="material-symbols-outlined text-sm">sensors</span> System Status
+            </button>
+</div>
+</aside>
+<!-- TOP APP BAR -->
+<header class="fixed top-0 right-0 w-[calc(100%-16rem)] h-16 z-40 bg-surface-container flex justify-between items-center px-margin-desktop gap-lg border-b border-outline-variant">
+<div class="flex items-center flex-1 max-w-xl">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-on-surface-variant text-md">search</span>
+<input class="w-full bg-background border border-outline-variant rounded-full py-sm pl-xl pr-md text-body-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" placeholder="Search orders, tracking IDs, or shipments..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="bg-primary-container text-on-primary-container px-md py-xs rounded-lg font-label-md font-bold hover:opacity-90 active:opacity-80 transition-all flex items-center gap-xs">
+<span class="material-symbols-outlined text-md">bolt</span> Ask Merkat AI
+            </button>
+<div class="flex items-center gap-sm">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-bright transition-colors relative">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full border-2 border-surface-container"></span>
+</button>
+<div class="w-10 h-10 rounded-full border border-primary p-0.5">
+<img class="w-full h-full rounded-full object-cover" data-alt="A professional headshot of a logistics manager in their late 30s, wearing high-tech glasses, captured in a dimly lit control room environment with emerald green ambient lighting. The style is sharp, focused, and authoritative, matching an operator-grade dashboard aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxmhFLXdkbLaryuq0N41x4AD7ggzFTlhhZ_inb0aPyf-poGMEuXJPWgl_dMCHaPB6ghOPFr6NqI-44YMLnejOBW-fAowibhhodukRQUJYfgKHWqUZKkr1eMrt_p1RqjHWw4mnHCmCoownqfJ7iOwlc_pJUfZW4J2nivgLfmKQ2IC0jlqDxqT43k71L9zhxzOoUvD6GLJ7XZNNwXgg-fV4dgQ5CyPivOGex639IccBtjaZx16rwvhdG"/>
+</div>
+</div>
+</div>
+</header>
+<!-- MAIN CANVAS -->
+<main class="ml-64 mt-16 p-margin-desktop">
+<!-- Header Section -->
+<section class="mb-lg flex justify-between items-end">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Logistics Command</h2>
+<div class="flex items-center gap-md mt-xs">
+<div class="flex items-center gap-xs">
+<span class="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
+<span class="font-label-md text-on-surface-variant uppercase">Network Active</span>
+</div>
+<span class="text-outline">|</span>
+<span class="font-label-md text-on-surface-variant">UTC 14:32:05</span>
+</div>
+</div>
+<div class="flex gap-sm">
+<button class="px-md py-sm bg-surface-container-high border border-outline-variant text-on-surface font-label-md rounded-lg flex items-center gap-xs hover:bg-surface-bright transition-all">
+<span class="material-symbols-outlined text-md">filter_list</span> Filter View
+                </button>
+<button class="px-md py-sm bg-surface-container-high border border-outline-variant text-on-surface font-label-md rounded-lg flex items-center gap-xs hover:bg-surface-bright transition-all">
+<span class="material-symbols-outlined text-md">download</span> Export Report
+                </button>
+</div>
+</section>
+<!-- Bento Grid Layout -->
+<div class="bento-grid">
+<!-- Real-time Regional Map -->
+<div class="col-span-8 row-span-2 bg-surface-container-low border border-outline-variant rounded-xl p-md relative overflow-hidden h-[480px]">
+<div class="flex justify-between items-center mb-md relative z-10">
+<h3 class="font-label-md text-primary font-bold uppercase tracking-widest">Global Fulfillment Heatmap</h3>
+<div class="flex gap-xs">
+<span class="px-xs py-1 bg-background border border-outline-variant text-[10px] text-on-surface-variant rounded">NA</span>
+<span class="px-xs py-1 bg-background border border-outline-variant text-[10px] text-primary rounded">EU</span>
+<span class="px-xs py-1 bg-background border border-outline-variant text-[10px] text-on-surface-variant rounded">APAC</span>
+</div>
+</div>
+<!-- Map Placeholder with Animation -->
+<div class="absolute inset-0 bg-[#0b1326] flex items-center justify-center">
+
+<div class="relative w-full h-full flex items-center justify-center">
+<!-- Data Overlay simulation -->
+<div class="absolute top-1/4 left-1/3 group cursor-pointer">
+<div class="w-3 h-3 bg-primary rounded-full animate-ping absolute inset-0"></div>
+<div class="w-3 h-3 bg-primary rounded-full relative"></div>
+<div class="hidden group-hover:block absolute top-6 left-0 bg-surface-container-highest border border-primary p-xs rounded shadow-xl min-w-[120px] z-20">
+<p class="text-[10px] font-bold text-primary">LONDON HUB</p>
+<p class="text-[9px] text-on-surface">1,204 Units Outbound</p>
+</div>
+</div>
+<div class="absolute bottom-1/3 right-1/4 group cursor-pointer">
+<div class="w-3 h-3 bg-error rounded-full animate-ping absolute inset-0"></div>
+<div class="w-3 h-3 bg-error rounded-full relative"></div>
+<div class="hidden group-hover:block absolute top-6 left-0 bg-surface-container-highest border border-error p-xs rounded shadow-xl min-w-[120px] z-20">
+<p class="text-[10px] font-bold text-error">TOKYO HUB</p>
+<p class="text-[9px] text-on-surface">Congestion Level: 84%</p>
+</div>
+</div>
+<!-- Vector Map Styling Simulation -->
+<div class="w-full h-full opacity-20 pointer-events-none" data-alt="A high-tech digital vector world map displayed on a dark slate screen. The landmasses are rendered in a deep navy blue with sharp, bright emerald green outlines. Glowing data lines connect major shipping hubs, creating a complex web of logistics. The overall aesthetic is cinematic, operator-grade, and technical." data-location="Global" style="background-image: url('https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg')"></div>
+</div>
+</div>
+<div class="absolute bottom-md right-md bg-surface-container/80 backdrop-blur-md p-md border border-outline-variant rounded-lg max-w-[200px]">
+<p class="font-label-sm text-on-surface-variant mb-xs">Active Shipments</p>
+<p class="font-headline-md text-on-surface font-black">24,801</p>
+<div class="mt-xs h-1 w-full bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[72%]"></div>
+</div>
+</div>
+</div>
+<!-- Carrier Performance Metrics -->
+<div class="col-span-4 bg-surface-container-low border border-outline-variant rounded-xl p-md">
+<div class="flex items-center justify-between mb-lg">
+<h3 class="font-label-md text-primary font-bold uppercase tracking-widest">Carrier Performance</h3>
+<span class="material-symbols-outlined text-on-surface-variant">more_vert</span>
+</div>
+<div class="space-y-md">
+<!-- Carrier 1 -->
+<div class="group">
+<div class="flex justify-between items-end mb-xs">
+<div class="flex items-center gap-xs">
+<span class="font-label-md font-bold text-on-surface">DHL Global</span>
+<span class="font-label-sm text-primary">98.2%</span>
+</div>
+<span class="font-label-sm text-on-surface-variant">Avg. 1.2d</span>
+</div>
+<div class="h-2 w-full bg-surface-container-highest border border-outline-variant rounded-sm">
+<div class="h-full bg-primary w-[98%] transition-all group-hover:brightness-125"></div>
+</div>
+</div>
+<!-- Carrier 2 -->
+<div class="group">
+<div class="flex justify-between items-end mb-xs">
+<div class="flex items-center gap-xs">
+<span class="font-label-md font-bold text-on-surface">FedEx Express</span>
+<span class="font-label-sm text-primary">94.5%</span>
+</div>
+<span class="font-label-sm text-on-surface-variant">Avg. 1.8d</span>
+</div>
+<div class="h-2 w-full bg-surface-container-highest border border-outline-variant rounded-sm">
+<div class="h-full bg-primary w-[94.5%] opacity-80 group-hover:opacity-100"></div>
+</div>
+</div>
+<!-- Carrier 3 -->
+<div class="group">
+<div class="flex justify-between items-end mb-xs">
+<div class="flex items-center gap-xs">
+<span class="font-label-md font-bold text-on-surface">UPS Air</span>
+<span class="font-label-sm text-error">81.2%</span>
+</div>
+<span class="font-label-sm text-on-surface-variant">Avg. 2.4d</span>
+</div>
+<div class="h-2 w-full bg-surface-container-highest border border-outline-variant rounded-sm">
+<div class="h-full bg-error w-[81.2%]"></div>
+</div>
+</div>
+</div>
+<div class="mt-xl p-md bg-background border border-outline-variant rounded-lg border-l-4 border-l-primary">
+<p class="font-label-sm text-primary mb-xs">AI Recommendation</p>
+<p class="text-body-md text-on-surface leading-tight italic">"Route all high-priority EU shipments through DHL to avoid current UPS labor delays at Frankfurt."</p>
+</div>
+</div>
+<!-- Fulfillment Stats Cards -->
+<div class="col-span-4 bg-surface-container-low border border-outline-variant rounded-xl p-md flex flex-col justify-between">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">package_2</span>
+</div>
+<div>
+<p class="font-label-sm text-on-surface-variant">Queue Depth</p>
+<p class="font-headline-md font-black text-on-surface">8,421</p>
+</div>
+</div>
+<div class="mt-md flex items-center gap-xs text-primary font-label-md">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<span>+12.4% vs last hour</span>
+</div>
+</div>
+<!-- Main Fulfillment Queue Table -->
+<div class="col-span-12 bg-surface-container-low border border-outline-variant rounded-xl overflow-hidden mt-md">
+<div class="p-md border-b border-outline-variant flex justify-between items-center">
+<div class="flex items-center gap-md">
+<h3 class="font-label-md text-primary font-bold uppercase tracking-widest">Active Fulfillment Queue</h3>
+<div class="flex gap-xs">
+<button class="px-sm py-1 bg-surface-container-highest border border-primary text-primary font-label-sm rounded">Pending</button>
+<button class="px-sm py-1 bg-surface-container-highest border border-outline-variant text-on-surface-variant font-label-sm rounded hover:border-primary transition-colors">In-Transit</button>
+<button class="px-sm py-1 bg-surface-container-highest border border-outline-variant text-on-surface-variant font-label-sm rounded hover:border-primary transition-colors">Delivered</button>
+</div>
+</div>
+<div class="flex items-center gap-xs text-on-surface-variant font-label-sm">
+<span class="material-symbols-outlined text-sm">sync</span>
+                        Auto-refreshing
+                    </div>
+</div>
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-high/50 text-on-surface-variant font-label-md border-b border-outline-variant">
+<tr>
+<th class="px-md py-sm font-medium">Order ID</th>
+<th class="px-md py-sm font-medium">Destination</th>
+<th class="px-md py-sm font-medium">Carrier</th>
+<th class="px-md py-sm font-medium">Priority</th>
+<th class="px-md py-sm font-medium">SLA Countdown</th>
+<th class="px-md py-sm font-medium">Status</th>
+<th class="px-md py-sm font-medium text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/30">
+<tr class="hover:bg-surface-bright transition-colors group">
+<td class="px-md py-md font-label-md text-on-surface">#ORD-9921</td>
+<td class="px-md py-md">
+<div class="flex flex-col">
+<span class="text-body-md font-bold text-on-surface">Berlin, DE</span>
+<span class="text-label-sm text-on-surface-variant">Retail Store #04</span>
+</div>
+</td>
+<td class="px-md py-md">
+<div class="flex items-center gap-xs">
+<span class="w-6 h-4 bg-primary/20 rounded flex items-center justify-center text-[10px] text-primary font-bold">DHL</span>
+<span class="text-body-md text-on-surface-variant">Express</span>
+</div>
+</td>
+<td class="px-md py-md">
+<span class="bg-error/10 text-error px-sm py-0.5 rounded font-label-sm border border-error/30 uppercase">Urgent</span>
+</td>
+<td class="px-md py-md">
+<div class="flex flex-col">
+<span class="font-label-md text-on-surface">02h 14m</span>
+<div class="w-16 h-1 bg-surface-variant rounded-full mt-1">
+<div class="h-full bg-error w-[80%]"></div>
+</div>
+</div>
+</td>
+<td class="px-md py-md">
+<div class="flex items-center gap-xs">
+<span class="w-2 h-2 bg-primary rounded-full"></span>
+<span class="text-body-md text-on-surface">Picking</span>
+</div>
+</td>
+<td class="px-md py-md text-right">
+<button class="text-primary hover:bg-primary/10 p-1 rounded transition-colors"><span class="material-symbols-outlined">visibility</span></button>
+<button class="text-on-surface-variant hover:text-on-surface p-1 rounded transition-colors ml-xs"><span class="material-symbols-outlined">more_horiz</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-bright transition-colors group">
+<td class="px-md py-md font-label-md text-on-surface">#ORD-9925</td>
+<td class="px-md py-md">
+<div class="flex flex-col">
+<span class="text-body-md font-bold text-on-surface">New York, US</span>
+<span class="text-label-sm text-on-surface-variant">Direct Customer</span>
+</div>
+</td>
+<td class="px-md py-md">
+<div class="flex items-center gap-xs">
+<span class="w-6 h-4 bg-secondary/20 rounded flex items-center justify-center text-[10px] text-on-surface-variant font-bold">FED</span>
+<span class="text-body-md text-on-surface-variant">Standard</span>
+</div>
+</td>
+<td class="px-md py-md">
+<span class="bg-surface-variant text-on-surface-variant px-sm py-0.5 rounded font-label-sm border border-outline-variant uppercase">Normal</span>
+</td>
+<td class="px-md py-md">
+<div class="flex flex-col">
+<span class="font-label-md text-on-surface">18h 45m</span>
+<div class="w-16 h-1 bg-surface-variant rounded-full mt-1">
+<div class="h-full bg-primary w-[30%]"></div>
+</div>
+</div>
+</td>
+<td class="px-md py-md">
+<div class="flex items-center gap-xs">
+<span class="w-2 h-2 bg-secondary rounded-full"></span>
+<span class="text-body-md text-on-surface">Verified</span>
+</div>
+</td>
+<td class="px-md py-md text-right">
+<button class="text-primary hover:bg-primary/10 p-1 rounded transition-colors"><span class="material-symbols-outlined">visibility</span></button>
+<button class="text-on-surface-variant hover:text-on-surface p-1 rounded transition-colors ml-xs"><span class="material-symbols-outlined">more_horiz</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-bright transition-colors group">
+<td class="px-md py-md font-label-md text-on-surface">#ORD-9932</td>
+<td class="px-md py-md">
+<div class="flex flex-col">
+<span class="text-body-md font-bold text-on-surface">Singapore, SG</span>
+<span class="text-label-sm text-on-surface-variant">Hub Transfer</span>
+</div>
+</td>
+<td class="px-md py-md">
+<div class="flex items-center gap-xs">
+<span class="w-6 h-4 bg-primary/20 rounded flex items-center justify-center text-[10px] text-primary font-bold">DHL</span>
+<span class="text-body-md text-on-surface-variant">Express</span>
+</div>
+</td>
+<td class="px-md py-md">
+<span class="bg-primary/10 text-primary px-sm py-0.5 rounded font-label-sm border border-primary/30 uppercase">High</span>
+</td>
+<td class="px-md py-md">
+<div class="flex flex-col">
+<span class="font-label-md text-on-surface">06h 12m</span>
+<div class="w-16 h-1 bg-surface-variant rounded-full mt-1">
+<div class="h-full bg-primary w-[65%]"></div>
+</div>
+</div>
+</td>
+<td class="px-md py-md">
+<div class="flex items-center gap-xs">
+<span class="w-2 h-2 bg-primary rounded-full"></span>
+<span class="text-body-md text-on-surface">Packing</span>
+</div>
+</td>
+<td class="px-md py-md text-right">
+<button class="text-primary hover:bg-primary/10 p-1 rounded transition-colors"><span class="material-symbols-outlined">visibility</span></button>
+<button class="text-on-surface-variant hover:text-on-surface p-1 rounded transition-colors ml-xs"><span class="material-symbols-outlined">more_horiz</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="p-md border-t border-outline-variant bg-surface-container-low flex justify-between items-center font-label-sm text-on-surface-variant">
+<span>Showing 3 of 8,421 active orders</span>
+<div class="flex items-center gap-xs">
+<button class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-bright"><span class="material-symbols-outlined text-sm">chevron_left</span></button>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-primary bg-primary/10 text-primary">1</button>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-bright">2</button>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-bright">3</button>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-outline-variant hover:bg-surface-bright"><span class="material-symbols-outlined text-sm">chevron_right</span></button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Contextual FAB (Only for specific screens) -->
+<button class="fixed bottom-xl right-xl w-14 h-14 bg-primary text-on-primary rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-50 group">
+<span class="material-symbols-outlined text-3xl">add</span>
+<span class="absolute right-16 bg-surface-container-highest text-on-surface px-md py-sm rounded-lg text-body-md font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity border border-outline-variant shadow-xl">New Shipment</span>
+</button>
+<script>
+        // Micro-interactions for the operator console
+        document.addEventListener('DOMContentLoaded', () => {
+            const tableRows = document.querySelectorAll('tbody tr');
+            tableRows.forEach(row => {
+                row.addEventListener('mouseenter', () => {
+                    // Subtle hover effect logic if needed
+                });
+            });
+
+            // Simulate live data updates
+            setInterval(() => {
+                const clockElement = document.querySelector('span:contains("UTC")');
+                if (clockElement) {
+                    const now = new Date();
+                    clockElement.textContent = `UTC ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
+                }
+            }, 1000);
+        });
+
+        // Helper for selector
+        if (!Element.prototype.matches) {
+            Element.prototype.matches = Element.prototype.msMatchesSelector || 
+                                        Element.prototype.webkitMatchesSelector;
+        }
+
+        if (!Element.prototype.closest) {
+            Element.prototype.closest = function(s) {
+                var el = this;
+                do {
+                    if (el.matches(s)) return el;
+                    el = el.parentElement || el.parentNode;
+                } while (el !== null && el.nodeType === 1);
+                return null;
+            };
+        }
+    </script>
+</body></html>

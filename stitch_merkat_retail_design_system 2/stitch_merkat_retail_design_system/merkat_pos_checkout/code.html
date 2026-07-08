@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Merkat OS - POS Checkout</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Geist:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary": "#5f5e61",
+                    "on-surface-variant": "#3c4a42",
+                    "surface-container-high": "#e3eae3",
+                    "secondary-container": "#e4e1e6",
+                    "surface-container-low": "#eef6ee",
+                    "secondary-fixed": "#e4e1e6",
+                    "surface-container-highest": "#dde4dd",
+                    "secondary-fixed-dim": "#c8c5ca",
+                    "primary": "#006c49",
+                    "on-secondary-fixed": "#1b1b1e",
+                    "on-error-container": "#93000a",
+                    "error": "#ba1a1a",
+                    "on-tertiary-container": "#711419",
+                    "on-surface": "#161d19",
+                    "primary-fixed": "#6ffbbe",
+                    "surface-dim": "#d4dcd5",
+                    "on-secondary-container": "#656467",
+                    "primary-container": "#10b981",
+                    "background": "#f4fbf4",
+                    "tertiary-fixed": "#ffdad7",
+                    "tertiary-container": "#fc7c78",
+                    "on-background": "#161d19",
+                    "on-primary-fixed-variant": "#005236",
+                    "surface-container": "#e8f0e9",
+                    "surface": "#f4fbf4",
+                    "outline": "#6c7a71",
+                    "on-tertiary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "tertiary-fixed-dim": "#ffb3af",
+                    "inverse-on-surface": "#ebf3eb",
+                    "outline-variant": "#bbcabf",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-bright": "#f4fbf4",
+                    "on-error": "#ffffff",
+                    "on-tertiary-fixed": "#410005",
+                    "surface-tint": "#006c49",
+                    "inverse-primary": "#4edea3",
+                    "on-secondary-fixed-variant": "#47464a",
+                    "primary-fixed-dim": "#4edea3",
+                    "on-primary-fixed": "#002113",
+                    "on-primary-container": "#00422b",
+                    "inverse-surface": "#2b322d",
+                    "tertiary": "#a43a3a",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#842225",
+                    "error-container": "#ffdad6",
+                    "surface-variant": "#dde4dd"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "sidebar_width": "260px",
+                    "xl": "32px",
+                    "header_height": "64px",
+                    "sm": "8px",
+                    "lg": "24px",
+                    "container_gutter": "24px",
+                    "md": "16px",
+                    "base": "4px",
+                    "xs": "4px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "data-tabular": ["Geist"],
+                    "body-sm": ["Inter"],
+                    "meta": ["Inter"],
+                    "section-header": ["Geist"],
+                    "page-title": ["Geist"]
+            },
+            "fontSize": {
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "data-tabular": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                    "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "meta": ["12px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "section-header": ["16px", {"lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "page-title": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #f4fbf4; /* Matches theme background */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #bbcabf;
+            border-radius: 10px;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .pos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 16px;
+        }
+    </style>
+</head>
+<body class="h-screen overflow-hidden text-on-surface font-body-md">
+<!-- Sidebar (Shared Component Anchor) -->
+<aside class="fixed left-0 top-0 h-full w-[260px] bg-surface border-r border-outline-variant flex flex-col p-md gap-sm z-40">
+<div class="mb-lg">
+<h1 class="font-page-title text-page-title text-primary tracking-tight">Merkat</h1>
+<p class="text-on-surface-variant text-body-sm opacity-70">Retail OS</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-md px-md py-sm bg-primary-container text-on-primary-container font-semibold rounded-lg transition-all duration-200" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-body-sm text-body-sm">Sales</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-sm text-body-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-body-sm text-body-sm">Inventory</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">local_shipping</span>
+<span class="font-body-sm text-body-sm">Logistics</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-body-sm text-body-sm">Customers</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-body-sm text-body-sm">Reports</span>
+</a>
+</nav>
+<div class="mt-auto pt-md border-t border-outline-variant space-y-1">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-sm text-body-sm">Settings</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-body-sm text-body-sm">Support</span>
+</a>
+</div>
+</aside>
+<!-- Top AppBar (Shared Component Anchor) -->
+<header class="fixed top-0 right-0 h-header_height w-[calc(100%-260px)] bg-surface-container-lowest border-b border-outline-variant flex items-center justify-between px-lg z-50">
+<div class="flex items-center gap-lg flex-1">
+<div class="relative w-full max-w-xl">
+<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-on-surface-variant opacity-60">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-lg pl-xl pr-md py-sm focus:ring-2 focus:ring-primary text-body-md" placeholder="Search products or scan barcode..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="p-base hover:bg-surface-container rounded-full transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">smart_toy</span>
+</button>
+<button class="p-base hover:bg-surface-container rounded-full transition-colors relative">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<div class="flex items-center gap-sm ml-md bg-surface-container px-sm py-xs rounded-full">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">account_circle</span>
+<span class="font-meta text-meta uppercase">Admin</span>
+</div>
+</div>
+</header>
+<!-- Main POS Interface -->
+<main class="ml-[260px] pt-header_height h-screen flex overflow-hidden">
+<!-- Left 2/3: Product Selection -->
+<section class="w-2/3 flex flex-col border-r border-outline-variant bg-background">
+<!-- Category Tabs -->
+<div class="p-lg bg-surface border-b border-outline-variant">
+<div class="flex items-center gap-sm overflow-x-auto no-scrollbar pb-xs">
+<button class="px-lg py-sm bg-primary text-on-primary rounded-full font-section-header text-section-header whitespace-nowrap">All Items</button>
+<button class="px-lg py-sm bg-surface-container hover:bg-surface-container-high rounded-full font-section-header text-section-header whitespace-nowrap transition-colors">Cosmetics</button>
+<button class="px-lg py-sm bg-surface-container hover:bg-surface-container-high rounded-full font-section-header text-section-header whitespace-nowrap transition-colors">Skincare</button>
+<button class="px-lg py-sm bg-surface-container hover:bg-surface-container-high rounded-full font-section-header text-section-header whitespace-nowrap transition-colors">Accessories</button>
+<button class="px-lg py-sm bg-surface-container hover:bg-surface-container-high rounded-full font-section-header text-section-header whitespace-nowrap transition-colors">Wellness</button>
+<button class="px-lg py-sm bg-surface-container hover:bg-surface-container-high rounded-full font-section-header text-section-header whitespace-nowrap transition-colors">Gifts</button>
+</div>
+</div>
+<!-- Product Grid -->
+<div class="flex-1 overflow-y-auto p-lg custom-scrollbar">
+<div class="pos-grid">
+<!-- Product Item 1 -->
+<div class="group bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden hover:border-primary transition-all cursor-pointer flex flex-col active:scale-95 duration-75">
+<div class="h-40 bg-surface-container-low relative">
+<img class="w-full h-full object-cover" data-alt="A high-end glass serum bottle with minimalist white branding and an emerald green dropper cap. The lighting is soft and professional, emphasizing the smooth textures and high-quality materials of the cosmetic packaging against a clean, neutral studio background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-OoC0a-a6QA59oS2P7S1X3j79WkHeA4BY4nrdiUJvZoI-URhZ5vAGwJo6rcJdVRc3Jy8Ih9MFWqKASSskP5tJR49FsS0T5sbj8-4Miww0gesyXgAYdHCJjOfxZkHxlgJpGcxc7GIKiBFCLKicpqiyaq8dqk5jDhGWlXT4uKYbv6HsKWiwkQ5_iW4K6-hThN5cvPQBEVQkaGmd4Xch8pKuAZm98loLYmJqu-rQpZOS6cN8quEGLcrF"/>
+<div class="absolute top-sm right-sm bg-primary/10 px-xs py-1 rounded-full">
+<span class="text-primary font-meta text-[10px] uppercase font-bold">In Stock</span>
+</div>
+</div>
+<div class="p-md flex-1 flex flex-col justify-between">
+<h3 class="font-section-header text-section-header text-on-surface line-clamp-2">Revitalizing Seaweed Serum</h3>
+<div class="mt-sm flex justify-between items-end">
+<p class="font-data-tabular text-data-tabular text-primary">$45.00</p>
+<span class="material-symbols-outlined text-primary-container group-hover:text-primary transition-colors">add_circle</span>
+</div>
+</div>
+</div>
+<!-- Product Item 2 -->
+<div class="group bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden hover:border-primary transition-all cursor-pointer flex flex-col active:scale-95 duration-75">
+<div class="h-40 bg-surface-container-low relative">
+<img class="w-full h-full object-cover" data-alt="An elegant gold-tone necklace with a single minimalist pearl pendant. The product is photographed with sharp focus and warm, luxurious lighting that highlights the metallic sheen and the soft luster of the pearl, suggesting a premium jewelry retail item." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_LGzVgK__A1Ezo4A0AQCBoje_R40-GCyqCNJGgd_HPgHpVKTFtaVrBiLG4GT2reny_TXNuEieqfRhJnDKVCk9V__2n3UcLUHOK4L9i9yQo4dPWdkpiBPBpfJXRGtNoCzyXyH-hcdHhWgAPrnEZ7c63dccWBN3NYRLzKFUeu_ts4PlcUbJltfnmvp0pj0n9EYW5g3ZsglUJfZEg350znHHfHd--V1sZMTNJtJOkEbuFO1-pQt-rJtd"/>
+</div>
+<div class="p-md flex-1 flex flex-col justify-between">
+<h3 class="font-section-header text-section-header text-on-surface line-clamp-2">Lustrous Pearl Choker</h3>
+<div class="mt-sm flex justify-between items-end">
+<p class="font-data-tabular text-data-tabular text-primary">$120.00</p>
+<span class="material-symbols-outlined text-primary-container group-hover:text-primary transition-colors">add_circle</span>
+</div>
+</div>
+</div>
+<!-- Product Item 3 -->
+<div class="group bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden hover:border-primary transition-all cursor-pointer flex flex-col active:scale-95 duration-75">
+<div class="h-40 bg-surface-container-low relative">
+<img class="w-full h-full object-cover" data-alt="A textured ceramic bowl filled with organic face clay mask. The image has a calm, spa-like aesthetic with natural sunlight creating gentle shadows. The color palette is earthy and serene, dominated by soft greens and neutral beiges." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrg7wPbrVXikYmYsBZrqGExzULFFh0AYDTpjpLr7_0SSq25v6LSUaGURe2xIl4LFW4DS8GFAQnQus_geg_RENAzprPGEIUDo4F02_f8t5riuhxWBe9jT61wQuMt3gdpfbo0BJ6TL-qhwwZ8FEXn-DOCq0lqFTbrUq0qgwN4eNZlL5zIXkBgzb6FP9021ilvYiTUiMjeFsAqIMp0YkSQiNo4McejAvoXAp8wlI9jSLeFGVFeThEGYOn"/>
+</div>
+<div class="p-md flex-1 flex flex-col justify-between">
+<h3 class="font-section-header text-section-header text-on-surface line-clamp-2">Dead Sea Mud Mask</h3>
+<div class="mt-sm flex justify-between items-end">
+<p class="font-data-tabular text-data-tabular text-primary">$28.50</p>
+<span class="material-symbols-outlined text-primary-container group-hover:text-primary transition-colors">add_circle</span>
+</div>
+</div>
+</div>
+<!-- Product Item 4 -->
+<div class="group bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden hover:border-primary transition-all cursor-pointer flex flex-col active:scale-95 duration-75">
+<div class="h-40 bg-surface-container-low relative">
+<img class="w-full h-full object-cover" data-alt="A professional set of various-sized makeup brushes with sleek black handles and soft, two-tone synthetic bristles. Arranged neatly in a fan-like pattern on a white reflective surface, the lighting is clinical and bright, showcasing the precision and utility of the tools." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBoQS3Q9hPE1NqX4p1OM1EJ636Q9RAPNeIOwxgSTHJtiRTb6lXfdeiKUeWxz078R5YLkQf9hMDYQF2HySbsvZYhAOsgdSNbKU2a3OX7zhiehrVz5BFGjb_Z-ogJ21tshl8_YGNhcw04Ymtb4_9KOp91rG8TanyRoPXUAuNE9hHDfVcm7grMl-WB5y9Kf9_S_mk0wMFQGD8-03no76Trvf6-d4S1XccdC_VbQehD78cyNNVNQeT39Qw9"/>
+</div>
+<div class="p-md flex-1 flex flex-col justify-between">
+<h3 class="font-section-header text-section-header text-on-surface line-clamp-2">Pro Artist Brush Set</h3>
+<div class="mt-sm flex justify-between items-end">
+<p class="font-data-tabular text-data-tabular text-primary">$89.00</p>
+<span class="material-symbols-outlined text-primary-container group-hover:text-primary transition-colors">add_circle</span>
+</div>
+</div>
+</div>
+<!-- Product Item 5 -->
+<div class="group bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden hover:border-primary transition-all cursor-pointer flex flex-col active:scale-95 duration-75">
+<div class="h-40 bg-surface-container-low relative">
+<img class="w-full h-full object-cover" data-alt="A sleek black matte cosmetic compact opened to reveal a vibrant red powder blush. The surface of the powder shows a subtle silk-like texture. Photographed from a top-down perspective on a minimalist gray background, conveying modern technical precision." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVE5B6skW7MTKUnMqq4AkePxTQRz3cOz_emOy579tnR71hVVvxIq6rzaHZLinBkUFigoWoIJQ6G2MiWKxMzjMAYjGwMnOFbOsznab5gvVOHBXHwwAJoNU62dd6ZJ99yufyVXyg1_DA0rI6ks-xFog2_sIfGkO5JSdgf_xVjIe1BGtIiQgi4tL-G7Q70Kx7CDMgdG9dXK0BLcqz_Q-a8-S_7nZck0tqCNYkqXs9_SYAiEndRDkW_J_2"/>
+</div>
+<div class="p-md flex-1 flex flex-col justify-between">
+<h3 class="font-section-header text-section-header text-on-surface line-clamp-2">Velvet Matte Blush</h3>
+<div class="mt-sm flex justify-between items-end">
+<p class="font-data-tabular text-data-tabular text-primary">$32.00</p>
+<span class="material-symbols-outlined text-primary-container group-hover:text-primary transition-colors">add_circle</span>
+</div>
+</div>
+</div>
+<!-- Product Item 6 -->
+<div class="group bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden hover:border-primary transition-all cursor-pointer flex flex-col active:scale-95 duration-75">
+<div class="h-40 bg-surface-container-low relative">
+<img class="w-full h-full object-cover" data-alt="A minimalist white tube of moisturizing cream with clean black typography. The tube is placed elegantly on a block of transparent ice, signifying its refreshing and cooling properties. The lighting is cold and crisp, highlighting the clean purity of the product." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpOd5e8v9bYsFrFfq_jAsK6EXHZF3dDTDMHztGXrLvE0KzmFOkh1oyRK4EStcg7l3z02D7GQ3VEmD3dtEeFGaLRWWGAfScIrV2wTlMclfbpDqDsfVRZNa3rLgYIs6dsYQw7dUBICzk7zr7KJZA7zxYL31FjdbgXJ7S6w9fYhUsOPqobQwSU6JSavw1QrQo8dMVnceka46UTgNENaamUMNLoUyjF2XflKXplADRxary87tP3BY71lQs"/>
+</div>
+<div class="p-md flex-1 flex flex-col justify-between">
+<h3 class="font-section-header text-section-header text-on-surface line-clamp-2">Ultra-Hydrating Arctic Balm</h3>
+<div class="mt-sm flex justify-between items-end">
+<p class="font-data-tabular text-data-tabular text-primary">$18.99</p>
+<span class="material-symbols-outlined text-primary-container group-hover:text-primary transition-colors">add_circle</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Corner Status Indicator -->
+<div class="p-md flex justify-start">
+<div class="flex items-center gap-xs px-sm py-1 bg-surface-container-high rounded text-on-surface-variant/70">
+<span class="material-symbols-outlined text-[14px]">cloud_sync</span>
+<span class="font-meta text-meta uppercase tracking-wider">Offline — will sync</span>
+</div>
+</div>
+</section>
+<!-- Right 1/3: Live Cart -->
+<section class="w-1/3 flex flex-col bg-surface-container-lowest">
+<!-- Customer Selector -->
+<div class="p-lg border-b border-outline-variant">
+<div class="flex items-center justify-between mb-sm">
+<span class="font-meta text-meta uppercase text-on-surface-variant">Active Customer</span>
+<button class="text-primary font-meta text-meta hover:underline">+ New Profile</button>
+</div>
+<div class="flex items-center gap-md bg-background border border-outline-variant p-md rounded-lg">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container font-bold">JD</div>
+<div class="flex-1">
+<p class="font-section-header text-section-header text-on-surface">Julianne Davenport</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant opacity-70">Tier: Platinum • 2,400 Points</p>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-error transition-colors">close</button>
+</div>
+</div>
+<!-- Cart Line Items -->
+<div class="flex-1 overflow-y-auto px-lg py-md custom-scrollbar space-y-md">
+<!-- Line Item 1 -->
+<div class="flex items-center gap-md py-sm">
+<div class="w-16 h-16 bg-surface-container-low rounded-lg flex-shrink-0 overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="Close up of a luxury glass serum bottle." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyniCPuTIKXRO2HNfLObfGfGLGijaI_2bZg6tm8HnkJQZMMPlT0kbvaTuRpswmY0lS2ItpD8xuDObPp36dB082d2gE7HfMoLcBAq4i2-Jx7mS1RGufhLRhl9c7JYRI2oggp5cFQAg1-uydvFuaP5B8W4jRM9I0Pk69ThNEcSBgVqxe_TmKTOjEAL6KHkt5ar7WuKJa-NsUMOImTHzbj21r-j6WAZ4wwTGJnW0ASUtVLNbQoKcQijTT"/>
+</div>
+<div class="flex-1">
+<h4 class="font-body-md text-on-surface font-semibold">Revitalizing Seaweed Serum</h4>
+<p class="font-data-tabular text-data-tabular text-primary">$45.00</p>
+</div>
+<div class="flex items-center gap-xs bg-surface-container p-1 rounded-lg">
+<button class="w-8 h-8 flex items-center justify-center hover:bg-surface-container-highest rounded transition-colors">-</button>
+<span class="w-6 text-center font-data-tabular text-data-tabular">1</span>
+<button class="w-8 h-8 flex items-center justify-center hover:bg-surface-container-highest rounded transition-colors">+</button>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-error">delete</button>
+</div>
+<!-- Line Item 2 -->
+<div class="flex items-center gap-md py-sm">
+<div class="w-16 h-16 bg-surface-container-low rounded-lg flex-shrink-0 overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="Minimalist cosmetic compact." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpfUeFY8Z3qi51B_D2DsnH7Q5D3QiQJ_K4TCEDGXePGXERHIitoEB-iAsFBDMtplZw07uiGmICRCqew4WgZYgTW9aD54_7Lpz2QPzWlytt2fBkGhBAHA29wSmliFM1m89Zez2FzFwFDijpxwbk5wnTwWwc7af1-vPjfRZgmK32enD8_oH1tHeRoPrXQXqWNocmTYM3V2mVhpFv2XXGo8ztwsafaiMpyKWlLKc5KpsgZeZlqJbChgya"/>
+</div>
+<div class="flex-1">
+<h4 class="font-body-md text-on-surface font-semibold">Velvet Matte Blush</h4>
+<p class="font-data-tabular text-data-tabular text-primary">$32.00</p>
+</div>
+<div class="flex items-center gap-xs bg-surface-container p-1 rounded-lg">
+<button class="w-8 h-8 flex items-center justify-center hover:bg-surface-container-highest rounded transition-colors">-</button>
+<span class="w-6 text-center font-data-tabular text-data-tabular">2</span>
+<button class="w-8 h-8 flex items-center justify-center hover:bg-surface-container-highest rounded transition-colors">+</button>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-error">delete</button>
+</div>
+<!-- Empty state visual helper -->
+<div class="h-1 bg-surface-container rounded-full opacity-30"></div>
+</div>
+<!-- Summary Block -->
+<div class="p-lg bg-surface border-t border-outline-variant">
+<div class="space-y-sm mb-lg">
+<div class="flex justify-between items-center text-on-surface-variant">
+<span class="font-body-md">Subtotal</span>
+<span class="font-data-tabular text-data-tabular">$109.00</span>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant">
+<span class="font-body-md">Tax (8.5%)</span>
+<span class="font-data-tabular text-data-tabular">$9.27</span>
+</div>
+<div class="flex justify-between items-center pt-md border-t border-outline-variant/30">
+<span class="font-page-title text-on-surface">Total</span>
+<span class="font-page-title text-page-title text-primary font-bold font-data-tabular tracking-tight">$118.27</span>
+</div>
+</div>
+<!-- Quick Payment Methods -->
+<div class="grid grid-cols-3 gap-sm mb-md">
+<button class="flex flex-col items-center justify-center py-md border border-outline-variant rounded-xl hover:bg-surface-container transition-colors group">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary mb-1">payments</span>
+<span class="font-meta text-meta uppercase">Cash</span>
+</button>
+<button class="flex flex-col items-center justify-center py-md border-2 border-primary rounded-xl bg-primary/5 group">
+<span class="material-symbols-outlined text-primary mb-1">credit_card</span>
+<span class="font-meta text-meta uppercase text-primary">Card</span>
+</button>
+<button class="flex flex-col items-center justify-center py-md border border-outline-variant rounded-xl hover:bg-surface-container transition-colors group">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary mb-1">cell_tower</span>
+<span class="font-meta text-meta uppercase">Mobile</span>
+</button>
+</div>
+<!-- Primary Action -->
+<button class="w-full py-lg bg-primary text-on-primary rounded-xl font-page-title text-page-title shadow-lg hover:shadow-xl active:scale-[0.98] transition-all flex items-center justify-center gap-md">
+                    Charge $118.27
+                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">arrow_forward</span>
+</button>
+</div>
+</section>
+</main>
+<!-- Floating Action Button (Optional Contextual Trigger) -->
+<div class="fixed bottom-lg right-1/3 mr-lg z-50">
+<button class="w-14 h-14 bg-primary text-on-primary rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform active:scale-95">
+<span class="material-symbols-outlined">barcode_scanner</span>
+</button>
+</div>
+<script>
+        // Simple Interaction: Mock Adding to cart
+        document.querySelectorAll('.pos-grid > div').forEach(item => {
+            item.addEventListener('click', function() {
+                const title = this.querySelector('h3').innerText;
+                console.log('Adding to cart:', title);
+                // In a real app, this would update the cart state.
+                // For this UI demo, we maintain the visual layout.
+            });
+        });
+
+        // Quick Search Focus
+        window.addEventListener('keydown', (e) => {
+            if (e.key === '/' || (e.ctrlKey && e.key === 'k')) {
+                e.preventDefault();
+                document.querySelector('input').focus();
+            }
+        });
+    </script>
+</body></html>

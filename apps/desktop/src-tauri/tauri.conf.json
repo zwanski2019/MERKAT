@@ -1,0 +1,31 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "MERKAT",
+  "version": "0.0.0",
+  "identifier": "com.merkat.pos",
+  "build": {
+    "frontendDist": "../../web/dist",
+    "devUrl": "http://localhost:5173",
+    "beforeDevCommand": "pnpm --filter @merkat/web dev",
+    "beforeBuildCommand": "pnpm --filter @merkat/web build"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "MERKAT",
+        "width": 1280,
+        "height": 800,
+        "minWidth": 1024,
+        "minHeight": 640
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": ["icons/icon.png"]
+  }
+}

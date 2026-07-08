@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Team Management | Merkat Retail OS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Geist:wght@400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-bright": "#f4fbf4",
+                    "surface-container": "#e8f0e9",
+                    "on-secondary-fixed-variant": "#47464a",
+                    "outline": "#6c7a71",
+                    "on-secondary-container": "#656467",
+                    "secondary-container": "#e4e1e6",
+                    "primary": "#006c49",
+                    "secondary-fixed": "#e4e1e6",
+                    "inverse-primary": "#4edea3",
+                    "on-primary-fixed-variant": "#005236",
+                    "on-error": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "tertiary-container": "#fc7c78",
+                    "on-tertiary-container": "#711419",
+                    "tertiary-fixed": "#ffdad7",
+                    "secondary": "#5f5e61",
+                    "primary-fixed": "#6ffbbe",
+                    "error": "#ba1a1a",
+                    "on-secondary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "surface-container-highest": "#dde4dd",
+                    "on-surface": "#161d19",
+                    "surface-tint": "#006c49",
+                    "on-tertiary": "#ffffff",
+                    "on-tertiary-fixed": "#410005",
+                    "surface": "#f4fbf4",
+                    "surface-container-high": "#e3eae3",
+                    "surface-container-low": "#eef6ee",
+                    "inverse-surface": "#2b322d",
+                    "surface-variant": "#dde4dd",
+                    "error-container": "#ffdad6",
+                    "background": "#f4fbf4",
+                    "on-primary-fixed": "#002113",
+                    "on-primary-container": "#00422b",
+                    "primary-fixed-dim": "#4edea3",
+                    "on-secondary-fixed": "#1b1b1e",
+                    "surface-dim": "#d4dcd5",
+                    "tertiary-fixed-dim": "#ffb3af",
+                    "tertiary": "#a43a3a",
+                    "primary-container": "#10b981",
+                    "inverse-on-surface": "#ebf3eb",
+                    "secondary-fixed-dim": "#c8c5ca",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-fixed-variant": "#842225",
+                    "on-surface-variant": "#3c4a42",
+                    "outline-variant": "#bbcabf",
+                    "on-background": "#161d19"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xl": "32px",
+                    "base": "4px",
+                    "md": "16px",
+                    "xs": "4px",
+                    "header_height": "64px",
+                    "sidebar_width": "260px",
+                    "container_gutter": "24px",
+                    "sm": "8px",
+                    "lg": "24px"
+            },
+            "fontFamily": {
+                    "data-tabular": ["Geist"],
+                    "body-sm": ["Inter"],
+                    "meta": ["Inter"],
+                    "section-header": ["Geist"],
+                    "body-md": ["Inter"],
+                    "page-title": ["Geist"]
+            },
+            "fontSize": {
+                    "data-tabular": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                    "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "meta": ["12px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "section-header": ["16px", {"lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "page-title": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { background-color: #f4fbf4; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .drawer-mask {
+            background-color: rgba(22, 29, 25, 0.4);
+            backdrop-filter: blur(2px);
+            transition: opacity 0.3s ease;
+        }
+        .drawer-content {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .tabular-lining {
+            font-variant-numeric: tabular-nums;
+        }
+        /* Custom scrollbar for technical minimalist look */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #bbcabf; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #6c7a71; }
+    </style>
+</head>
+<body class="font-body-md text-on-surface overflow-hidden">
+<!-- Sidebar Navigation (JSON Anchor: SideNavBar) -->
+<aside class="fixed left-0 top-0 h-screen w-sidebar_width bg-surface-container-low border-r border-outline-variant flex flex-col py-lg px-md z-30">
+<div class="mb-xl px-sm">
+<h1 class="font-page-title text-page-title text-primary font-bold">Merkat</h1>
+<p class="text-on-surface-variant font-body-sm text-xs opacity-70">Retail OS</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined">point_of_sale</span>
+<span class="font-body-sm">POS</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-body-sm">Products</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="font-body-sm">Orders</span>
+</a>
+<!-- Active Tab: Customers/Staff -->
+<a class="flex items-center gap-md px-md py-sm bg-primary-container text-on-primary-container font-bold rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">group</span>
+<span class="font-body-sm">Customers</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-body-sm">Reports</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="font-body-sm">AI Assistant</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-sm">Settings</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-outline-variant pt-md px-sm flex items-center gap-md">
+<img class="w-8 h-8 rounded-full bg-surface-variant object-cover" data-alt="A close-up portrait of a store manager in a clean minimalist uniform, soft studio lighting, focused expression, modern retail professional aesthetic with emerald green brand colors in the background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBA5oC6XM37Ameua3E2QuRq30qDBAslRQj9tziTHWTuzWV09MT7fGtRbN8TdIyyvD9C0t18-AlhC8Co3BEJdlsNGG6lPNbpu_LWMU2-LDdA_lqr9S1RPPu_J40Vu2glhGj7Ef-pr4Oakx_tHwwfA61m1YLhUhGft3bd0U3CAE-M68A6K_w-8UescqQqFgTPv7DTOdDfLpBMZi5qjqDAZ4jJ9AQMd5YzF468c402Pi1IsoNxC4htNUHR"/>
+<div class="flex flex-col">
+<span class="font-body-sm font-bold text-on-surface">Alex Rivera</span>
+<span class="text-[10px] text-on-surface-variant uppercase tracking-wider">Administrator</span>
+</div>
+</div>
+</aside>
+<!-- Top Utility Bar (JSON Anchor: TopNavBar) -->
+<header class="fixed top-0 right-0 h-header_height w-[calc(100%-260px)] bg-surface border-b border-outline-variant flex items-center justify-between px-lg z-20">
+<div class="flex items-center flex-1 max-w-xl">
+<div class="relative w-full group">
+<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-lg pl-xl pr-md py-xs text-body-md focus:ring-1 focus:ring-primary placeholder:text-outline" placeholder="Search team or roles..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-lg">
+<div class="flex items-center gap-md text-on-surface-variant">
+<button class="p-xs hover:text-primary transition-colors"><span class="material-symbols-outlined">notifications</span></button>
+<button class="p-xs hover:text-primary transition-colors"><span class="material-symbols-outlined">help_outline</span></button>
+</div>
+<div class="h-8 w-[1px] bg-outline-variant"></div>
+<div class="flex items-center gap-md">
+<div class="text-right hidden sm:block">
+<p class="font-body-sm font-bold text-on-surface">Central Market</p>
+<p class="text-[10px] text-primary uppercase font-bold tabular-lining">Store #082</p>
+</div>
+<img class="w-8 h-8 object-contain" data-alt="A minimalist vector logo of a meerkat, geometric style, emerald green primary color, white background, clean lines representing professional retail intelligence." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDMXJ1pzWs-r_0pgPwcCgfeBK1II5FxQ1TS78IuDvjpm3WK7WnCZdYXWnKoLPax435yNT5zPfuDIAJYkTFU-13esBQxarDqWagOtHhIDZnOV7ET81zBx-Y3DXjR_EaPhrf_Ny44EWGW4OyZ8YcYFA6mBZqw34NXMIvBw753X8In9sC53T5Kku6fbcTxHnCbr6XfLxPSIwUFveCyAPIDmgIPbQJkELrQgYVOmabIyVtCVX3dgv4O5Xz"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-sidebar_width mt-header_height p-lg h-[calc(100vh-64px)] overflow-y-auto">
+<!-- Page Header Area -->
+<div class="flex items-center justify-between mb-xl">
+<div>
+<h2 class="font-page-title text-page-title text-on-surface">Team Management</h2>
+<p class="text-on-surface-variant font-body-sm mt-1">Configure staff roles, permissions, and security protocols.</p>
+</div>
+<button class="bg-primary text-on-primary px-lg py-sm rounded-lg font-bold flex items-center gap-sm hover:bg-on-primary-fixed-variant transition-all active:scale-95 shadow-sm">
+<span class="material-symbols-outlined">person_add</span>
+                Invite Staff
+            </button>
+</div>
+<!-- High-Density Staff Table -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container text-on-surface-variant font-meta uppercase text-[12px] tracking-wider">
+<tr>
+<th class="px-lg py-md border-b border-outline-variant">Staff Member</th>
+<th class="px-lg py-md border-b border-outline-variant">Role</th>
+<th class="px-lg py-md border-b border-outline-variant">PIN Status</th>
+<th class="px-lg py-md border-b border-outline-variant">Last Active</th>
+<th class="px-lg py-md border-b border-outline-variant text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="text-on-surface font-body-md divide-y divide-outline-variant">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low cursor-pointer transition-colors" onclick="toggleDrawer('Sarah Chen')">
+<td class="px-lg py-md">
+<div class="flex items-center gap-md">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="Close-up headshot of Sarah, a retail professional with a calm and confident expression, high-end commercial photography, soft neutral background, wearing a professional uniform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLaiw370v4d89vCu5S_NCYV0ipPFaHvbgQX_0TpJaf6meGT8uu-wr1KzsO1xocA9kxPry4O-HCC5MT2FFePPdPgkYMa0Xk-Ugkh-zl2GiQgKi_JJjZJyDS5c8O_Y87wAFvEv2dmaC_uTzHTytJTKBJKLvfQMoSL4wjq9_iVq_MFFcJs9T03i9CqSCAPLOawXomO85Y6EmH8jnhXqPR0W2kSDMOSd0xcZHkTnjuRYSbrxcD_qkxZHN_"/>
+<div>
+<p class="font-bold">Sarah Chen</p>
+<p class="text-xs text-on-surface-variant">sarah.c@merkat.retail</p>
+</div>
+</div>
+</td>
+<td class="px-lg py-md">
+<span class="inline-flex items-center px-sm py-[2px] rounded-full bg-primary-container/20 text-primary font-bold text-[11px] uppercase tracking-wide border border-primary/20">Owner</span>
+</td>
+<td class="px-lg py-md">
+<div class="flex items-center gap-sm text-primary">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+<span class="font-medium">Set</span>
+</div>
+</td>
+<td class="px-lg py-md font-data-tabular text-on-surface-variant tabular-lining">
+                            Today, 09:42 AM
+                        </td>
+<td class="px-lg py-md text-right">
+<button class="p-xs hover:bg-surface-container-high rounded transition-colors text-outline"><span class="material-symbols-outlined">more_vert</span></button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low cursor-pointer transition-colors" onclick="toggleDrawer('Marcus Thorne')">
+<td class="px-lg py-md">
+<div class="flex items-center gap-md">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="Studio portrait of Marcus, a friendly store manager, clean-cut, looking into camera, professional retail lighting, emerald green accent colors in soft focus background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJByzj-7ng8JwaKIEqPRE-PKdGZOzW7N5s6LTGXCYg2i9KrsQ-xSSVoNr0hA-PzEZe0T_bIrQBIBi6au0qxAEnOA306gC2_4S0DaFK6c5BwrlhcGCzpN1XKsjS9TJzdNXMlX-RCw9ltwbAlRqJ6U-UzOMg5e1spqwMS44iVxE3FAijhgUtcG8QOXjS9iVmpmQIgAYgYe4jf4X8OBxZvcZ1PwVtGB6vj0mRwpQvOYFT9N_d0pGdtCDk"/>
+<div>
+<p class="font-bold">Marcus Thorne</p>
+<p class="text-xs text-on-surface-variant">m.thorne@merkat.retail</p>
+</div>
+</div>
+</td>
+<td class="px-lg py-md">
+<span class="inline-flex items-center px-sm py-[2px] rounded-full bg-secondary-container text-on-secondary-container font-bold text-[11px] uppercase tracking-wide">Manager</span>
+</td>
+<td class="px-lg py-md">
+<div class="flex items-center gap-sm text-primary">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+<span class="font-medium">Set</span>
+</div>
+</td>
+<td class="px-lg py-md font-data-tabular text-on-surface-variant tabular-lining">
+                            Yesterday, 06:15 PM
+                        </td>
+<td class="px-lg py-md text-right">
+<button class="p-xs hover:bg-surface-container-high rounded transition-colors text-outline"><span class="material-symbols-outlined">more_vert</span></button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low cursor-pointer transition-colors" onclick="toggleDrawer('Elena Rodriguez')">
+<td class="px-lg py-md">
+<div class="flex items-center gap-md">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="Close-up of Elena, a young cashier, energetic and focused, bright commercial studio lighting, modern minimalist retail environment, high clarity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD768EZRGTYnMsDAHiJwOjks-U4mGWepcqhaM_S1Y-nkp-E2LPqRdGac18qxDD8IlK7M5kilsIUs5mOttzpEzX2Mxee-24CBbI8s_xPIwMmua2qJ2bA_jW7xSHTKmzecQkVoMX63k5uR2FXbZdTjk9eKwxTfwv6lfEWad4SxkAQ0b8cedenO5Go2RaHuAXJaNEKa1Vsu8ew1RGXh00BWMMd8gjKxrPjK4kiGeRW_lnVfU4MlVH3F67i"/>
+<div>
+<p class="font-bold">Elena Rodriguez</p>
+<p class="text-xs text-on-surface-variant">elena.r@merkat.retail</p>
+</div>
+</div>
+</td>
+<td class="px-lg py-md">
+<span class="inline-flex items-center px-sm py-[2px] rounded-full bg-surface-container-highest text-on-surface-variant font-bold text-[11px] uppercase tracking-wide">Cashier</span>
+</td>
+<td class="px-lg py-md">
+<div class="flex items-center gap-sm text-tertiary">
+<span class="material-symbols-outlined text-[18px]">warning</span>
+<span class="font-medium">Not Set</span>
+</div>
+</td>
+<td class="px-lg py-md font-data-tabular text-on-surface-variant tabular-lining">
+                            Oct 24, 02:30 PM
+                        </td>
+<td class="px-lg py-md text-right">
+<button class="p-xs hover:bg-surface-container-high rounded transition-colors text-outline"><span class="material-symbols-outlined">more_vert</span></button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-low cursor-pointer transition-colors" onclick="toggleDrawer('David Park')">
+<td class="px-lg py-md">
+<div class="flex items-center gap-md">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="Portrait of David, a kitchen staff member wearing a clean chef apron, soft natural light from a window, technical minimalist aesthetic, blurred kitchen background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGwQUWriAqgXexM6NdjozHDu8l98mKaDGneQAq_6brRl1XYQpv6ImEcqETep3MFNlmfRzVQXntzizwwQqi-2uiA8_HDmZs5u3hM3YZyuxuv-VHiTlXY8kJ6aOPRRduCboKftcWk3UBUyc8m5PDt8M-1cRtEdNNVTNCNjBMDKDAnrVbnbmqdDmgS-iWxD-RrFvFQHkouAmRLofRFlVpOWg78I52GK5t5Y96_1iyIoZGapE8O2XkV8EH"/>
+<div>
+<p class="font-bold">David Park</p>
+<p class="text-xs text-on-surface-variant">d.park@merkat.retail</p>
+</div>
+</div>
+</td>
+<td class="px-lg py-md">
+<span class="inline-flex items-center px-sm py-[2px] rounded-full bg-surface-container-highest text-on-surface-variant font-bold text-[11px] uppercase tracking-wide">Kitchen</span>
+</td>
+<td class="px-lg py-md">
+<div class="flex items-center gap-sm text-primary">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+<span class="font-medium">Set</span>
+</div>
+</td>
+<td class="px-lg py-md font-data-tabular text-on-surface-variant tabular-lining">
+                            Oct 22, 11:10 AM
+                        </td>
+<td class="px-lg py-md text-right">
+<button class="p-xs hover:bg-surface-container-high rounded transition-colors text-outline"><span class="material-symbols-outlined">more_vert</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="px-lg py-md bg-surface-container-low flex items-center justify-between text-on-surface-variant font-body-sm">
+<span>Showing 4 of 12 staff members</span>
+<div class="flex gap-sm">
+<button class="px-md py-xs border border-outline-variant rounded hover:bg-surface transition-colors disabled:opacity-50" disabled="">Previous</button>
+<button class="px-md py-xs border border-outline-variant rounded hover:bg-surface transition-colors">Next</button>
+</div>
+</div>
+</div>
+<!-- System Guard Info Card -->
+<div class="mt-lg p-lg bg-surface-container-high rounded-xl border border-outline-variant flex items-start gap-lg">
+<div class="p-md bg-primary-container/20 rounded-lg">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">security</span>
+</div>
+<div>
+<h4 class="font-section-header text-on-surface mb-xs">Security Protocol Active</h4>
+<p class="text-on-surface-variant font-body-sm max-w-2xl">
+                    Merkat Security Engine is monitoring all POS transactions. Manager PIN overrides are currently required for all refunds and inventory voids exceeding $25.00. 
+                    <a class="text-primary font-bold hover:underline" href="#">Review Audit Log</a>
+</p>
+</div>
+</div>
+</main>
+<!-- Side Drawer / Permissions Matrix (Hidden by default) -->
+<div class="fixed inset-0 z-40 drawer-mask opacity-0 pointer-events-none" id="drawerOverlay" onclick="toggleDrawer()"></div>
+<div class="fixed right-0 top-0 h-screen w-[480px] bg-surface-container-lowest z-50 shadow-2xl drawer-content translate-x-full border-l border-outline-variant flex flex-col" id="drawer">
+<!-- Drawer Header -->
+<div class="p-lg border-b border-outline-variant flex items-center justify-between bg-surface">
+<div class="flex items-center gap-lg">
+<img class="w-16 h-16 rounded-xl object-cover border-2 border-primary-container" data-alt="Close-up headshot of a retail staff member, clear focus, professional lighting, consistent with the store's visual identity." id="drawerAvatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBepB7BFDv_A9ym40SGJR7FmpOCaTlk8WKbhvGFcV59ri6S71lvyXWl4UKkIA1P2h-D9HsFZizmdOGISsBzw9tR1k2HSAH1_Lt9QqKQvNF-gsvngXUuGVsT9X4HDp97ZHI3thH_4OdEkMW8JF6hfNqO_tt4_eIM6VXtpVmsaCDhK4HWAoAxsIf0xj9YzGh6jprA-SRLIChddOsxipbcRFOJ7fFg1ylithVdiq_rR-mChkzJ3crkiDi9"/>
+<div>
+<h3 class="font-page-title text-xl text-on-surface" id="drawerName">Staff Details</h3>
+<p class="text-on-surface-variant font-body-sm">Manage individual access and roles</p>
+</div>
+</div>
+<button class="p-sm hover:bg-surface-variant rounded-full transition-colors text-outline" onclick="toggleDrawer()">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<!-- Drawer Body (Scrollable) -->
+<div class="flex-1 overflow-y-auto p-lg space-y-xl">
+<!-- Role Selector -->
+<section>
+<label class="font-meta uppercase text-[12px] text-outline block mb-md">System Role</label>
+<div class="relative">
+<select class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-md py-sm appearance-none focus:ring-1 focus:ring-primary focus:border-primary text-on-surface font-body-md">
+<option>Owner</option>
+<option selected="">Manager</option>
+<option>Cashier</option>
+<option>Kitchen Staff</option>
+<option>Back Office</option>
+</select>
+<span class="material-symbols-outlined absolute right-md top-1/2 -translate-y-1/2 pointer-events-none text-outline">expand_more</span>
+</div>
+<p class="text-[11px] text-on-surface-variant mt-2 px-1">Managers have full access to POS and operational reports but cannot manage billing or store settings.</p>
+</section>
+<!-- Permissions Matrix -->
+<section class="space-y-lg">
+<div class="flex items-center justify-between">
+<h4 class="font-section-header text-on-surface">Permissions Matrix</h4>
+<button class="text-primary font-bold text-xs hover:underline">Reset to Default</button>
+</div>
+<!-- Group: POS -->
+<div class="border border-outline-variant rounded-lg bg-surface-container-low p-md">
+<div class="flex items-center gap-sm mb-md text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">shopping_cart</span>
+<span class="font-meta uppercase text-[11px] tracking-wider">POS & Checkout</span>
+</div>
+<div class="grid grid-cols-2 gap-md">
+<label class="flex items-center gap-md group cursor-pointer">
+<input checked="" class="rounded border-outline-variant text-primary focus:ring-primary h-4 w-4" type="checkbox"/>
+<span class="font-body-sm group-hover:text-on-surface transition-colors">View Sales Screen</span>
+</label>
+<label class="flex items-center gap-md group cursor-pointer">
+<input checked="" class="rounded border-outline-variant text-primary focus:ring-primary h-4 w-4" type="checkbox"/>
+<span class="font-body-sm group-hover:text-on-surface transition-colors">Process Checkout</span>
+</label>
+</div>
+</div>
+<!-- Group: Refunds -->
+<div class="border border-outline-variant rounded-lg bg-surface-container-low p-md">
+<div class="flex items-center gap-sm mb-md text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">assignment_return</span>
+<span class="font-meta uppercase text-[11px] tracking-wider">Returns & Voids</span>
+</div>
+<div class="grid grid-cols-2 gap-md">
+<label class="flex items-center gap-md group cursor-pointer">
+<input checked="" class="rounded border-outline-variant text-primary focus:ring-primary h-4 w-4" type="checkbox"/>
+<span class="font-body-sm group-hover:text-on-surface transition-colors">Process Refund</span>
+</label>
+<label class="flex items-center gap-md group cursor-pointer">
+<input checked="" class="rounded border-outline-variant text-primary focus:ring-primary h-4 w-4" type="checkbox"/>
+<span class="font-body-sm group-hover:text-on-surface transition-colors">Void Item</span>
+</label>
+</div>
+</div>
+<!-- Group: Products -->
+<div class="border border-outline-variant rounded-lg bg-surface-container-low p-md">
+<div class="flex items-center gap-sm mb-md text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">inventory_2</span>
+<span class="font-meta uppercase text-[11px] tracking-wider">Products & Inventory</span>
+</div>
+<div class="grid grid-cols-2 gap-md">
+<label class="flex items-center gap-md group cursor-pointer">
+<input checked="" class="rounded border-outline-variant text-primary focus:ring-primary h-4 w-4" type="checkbox"/>
+<span class="font-body-sm group-hover:text-on-surface transition-colors">View Inventory</span>
+</label>
+<label class="flex items-center gap-md group cursor-pointer">
+<input checked="" class="rounded border-outline-variant text-primary focus:ring-primary h-4 w-4" type="checkbox"/>
+<span class="font-body-sm group-hover:text-on-surface transition-colors">Edit Prices</span>
+</label>
+<label class="flex items-center gap-md group cursor-pointer">
+<input class="rounded border-outline-variant text-primary focus:ring-primary h-4 w-4" type="checkbox"/>
+<span class="font-body-sm group-hover:text-on-surface transition-colors">Add New Products</span>
+</label>
+</div>
+</div>
+<!-- Group: Reports -->
+<div class="border border-outline-variant rounded-lg bg-surface-container-low p-md">
+<div class="flex items-center gap-sm mb-md text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">analytics</span>
+<span class="font-meta uppercase text-[11px] tracking-wider">Reports & Data</span>
+</div>
+<div class="grid grid-cols-2 gap-md">
+<label class="flex items-center gap-md group cursor-pointer">
+<input checked="" class="rounded border-outline-variant text-primary focus:ring-primary h-4 w-4" type="checkbox"/>
+<span class="font-body-sm group-hover:text-on-surface transition-colors">View Daily Sales</span>
+</label>
+<label class="flex items-center gap-md group cursor-pointer">
+<input class="rounded border-outline-variant text-primary focus:ring-primary h-4 w-4" type="checkbox"/>
+<span class="font-body-sm group-hover:text-on-surface transition-colors">Export Analytics</span>
+</label>
+</div>
+</div>
+<!-- Security Toggle -->
+<div class="pt-md border-t border-outline-variant">
+<div class="flex items-center justify-between p-md bg-tertiary-fixed/30 rounded-lg border border-tertiary-fixed">
+<div class="flex gap-md items-center">
+<span class="material-symbols-outlined text-tertiary">key</span>
+<div>
+<p class="font-body-sm font-bold text-on-tertiary-fixed">PIN Protection</p>
+<p class="text-xs text-on-tertiary-fixed-variant">Requires manager PIN for voids</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</section>
+</div>
+<!-- Drawer Footer -->
+<div class="p-lg border-t border-outline-variant bg-surface-container-low flex gap-md">
+<button class="flex-1 bg-primary text-on-primary font-bold py-sm rounded-lg hover:bg-on-primary-fixed-variant transition-colors">Save Permissions</button>
+<button class="px-lg py-sm border border-outline-variant text-on-surface-variant font-bold rounded-lg hover:bg-surface-container-highest transition-colors">Archive</button>
+</div>
+</div>
+<script>
+        function toggleDrawer(name = "Staff Member") {
+            const drawer = document.getElementById('drawer');
+            const overlay = document.getElementById('drawerOverlay');
+            const drawerName = document.getElementById('drawerName');
+            
+            const isOpen = !drawer.classList.contains('translate-x-full');
+            
+            if (isOpen) {
+                drawer.classList.add('translate-x-full');
+                overlay.classList.add('opacity-0', 'pointer-events-none');
+                overlay.classList.remove('opacity-100', 'pointer-events-auto');
+                document.body.classList.remove('overflow-hidden');
+            } else {
+                drawerName.innerText = name;
+                drawer.classList.remove('translate-x-full');
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+                overlay.classList.add('opacity-100', 'pointer-events-auto');
+                document.body.classList.add('overflow-hidden');
+            }
+        }
+    </script>
+</body></html>

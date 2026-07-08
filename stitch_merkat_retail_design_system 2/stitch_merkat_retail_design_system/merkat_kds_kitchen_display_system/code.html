@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MERKAT KDS Kitchen OS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Geist:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        @keyframes pulse-subtle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.85; }
+        }
+        .timer-warning { animation: pulse-subtle 2s ease-in-out infinite; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #bbcabf; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #6c7a71; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#e3eae3",
+                        "tertiary-fixed-dim": "#ffb3af",
+                        "surface-container": "#e8f0e9",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed": "#ffdad7",
+                        "surface-tint": "#006c49",
+                        "on-secondary-container": "#656467",
+                        "secondary-fixed-dim": "#c8c5ca",
+                        "surface": "#f4fbf4",
+                        "inverse-primary": "#4edea3",
+                        "surface-variant": "#dde4dd",
+                        "surface-dim": "#d4dcd5",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-container": "#711419",
+                        "primary": "#006c49",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-bright": "#f4fbf4",
+                        "outline-variant": "#bbcabf",
+                        "tertiary-container": "#fc7c78",
+                        "primary-fixed": "#6ffbbe",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed-variant": "#47464a",
+                        "on-primary-fixed": "#002113",
+                        "on-primary": "#ffffff",
+                        "secondary-container": "#e4e1e6",
+                        "outline": "#6c7a71",
+                        "on-primary-container": "#00422b",
+                        "on-background": "#161d19",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#ebf3eb",
+                        "error-container": "#ffdad6",
+                        "surface-container-highest": "#dde4dd",
+                        "on-tertiary": "#ffffff",
+                        "inverse-surface": "#2b322d",
+                        "on-tertiary-fixed": "#410005",
+                        "on-primary-fixed-variant": "#005236",
+                        "background": "#f4fbf4",
+                        "primary-container": "#10b981",
+                        "on-tertiary-fixed-variant": "#842225",
+                        "primary-fixed-dim": "#4edea3",
+                        "tertiary": "#a43a3a",
+                        "secondary-fixed": "#e4e1e6",
+                        "on-surface": "#161d19",
+                        "surface-container-low": "#eef6ee",
+                        "secondary": "#5f5e61",
+                        "on-surface-variant": "#3c4a42",
+                        "on-secondary-fixed": "#1b1b1e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "header_height": "64px",
+                        "sidebar_width": "260px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "base": "4px",
+                        "container_gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "data-tabular": ["Geist"],
+                        "section-header": ["Geist"],
+                        "body-md": ["Inter"],
+                        "meta": ["Inter"],
+                        "page-title": ["Geist"],
+                        "body-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "data-tabular": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                        "section-header": ["16px", {"lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "meta": ["12px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "page-title": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-hidden h-screen flex flex-col">
+<!-- TopNavBar - Predictive Component Implementation -->
+<header class="flex justify-between items-center h-header_height px-lg w-full bg-surface border-b border-outline-variant z-50">
+<div class="flex items-center gap-xl">
+<span class="font-page-title text-page-title font-bold text-primary">KDS Kitchen OS</span>
+<nav class="flex items-center gap-lg">
+<button class="font-body-md text-body-md text-primary border-b-2 border-primary pb-1 transition-colors hover:bg-surface-container">All</button>
+<button class="font-body-md text-body-md text-on-surface-variant transition-colors hover:bg-surface-container-highest px-2 py-1 rounded">Grill</button>
+<button class="font-body-md text-body-md text-on-surface-variant transition-colors hover:bg-surface-container-highest px-2 py-1 rounded">Cold</button>
+<button class="font-body-md text-body-md text-on-surface-variant transition-colors hover:bg-surface-container-highest px-2 py-1 rounded">Bar</button>
+</nav>
+</div>
+<div class="flex items-center gap-xl">
+<div class="flex gap-lg border-x border-outline-variant px-lg">
+<div class="flex flex-col items-center">
+<span class="font-meta text-meta text-on-surface-variant">Avg Time</span>
+<span class="font-page-title text-page-title text-on-surface font-bold">14m</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="font-meta text-meta text-on-surface-variant">Open</span>
+<span class="font-page-title text-page-title text-on-surface font-bold">12</span>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors"><span class="material-symbols-outlined">timer</span></button>
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors"><span class="material-symbols-outlined">notifications</span></button>
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors"><span class="material-symbols-outlined">settings</span></button>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar - Predictive Component Implementation -->
+<aside class="flex flex-col py-md px-sm gap-md fixed left-0 h-full w-sidebar_width bg-surface-container border-r border-outline-variant hidden md:flex">
+<div class="flex items-center gap-sm px-sm mb-md">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined">person</span>
+</div>
+<div class="flex flex-col">
+<span class="font-section-header text-section-header text-primary">Station 01</span>
+<span class="font-meta text-meta text-on-surface-variant">Main Line</span>
+</div>
+</div>
+<nav class="flex flex-col gap-xs">
+<button class="flex items-center gap-md p-md bg-primary-container text-on-primary-container font-bold rounded-lg transition-all active:scale-95">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="font-section-header text-section-header">Live Orders</span>
+</button>
+<button class="flex items-center gap-md p-md text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all active:scale-95">
+<span class="material-symbols-outlined">history</span>
+<span class="font-section-header text-section-header">History</span>
+</button>
+<button class="flex items-center gap-md p-md text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all active:scale-95">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-section-header text-section-header">Inventory</span>
+</button>
+<button class="flex items-center gap-md p-md text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all active:scale-95">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-section-header text-section-header">Reports</span>
+</button>
+</nav>
+<div class="mt-auto px-sm">
+<button class="w-full bg-error text-on-error py-md rounded-lg font-bold hover:opacity-90 active:scale-95 transition-all">
+                    BUMP ALL
+                </button>
+</div>
+</aside>
+<!-- Main Content Area: Order Grid -->
+<main class="ml-0 md:ml-sidebar_width flex-1 overflow-x-auto p-lg bg-surface-dim">
+<div class="flex gap-lg h-full">
+<!-- Column 1 -->
+<div class="flex flex-col gap-lg w-80 shrink-0">
+<!-- Warning Ticket -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl flex flex-col overflow-hidden shadow-sm">
+<div class="bg-surface-variant p-md flex justify-between items-start">
+<div class="flex flex-col">
+<span class="font-page-title text-[28px] font-extrabold leading-none">Table 14</span>
+<span class="font-meta text-meta text-on-surface-variant mt-1">Order: 12:45</span>
+</div>
+<span class="bg-surface-container px-2 py-1 rounded text-primary font-bold">#201</span>
+</div>
+<div class="p-md flex flex-col flex-1 gap-md">
+<div class="text-tertiary-container font-page-title text-[40px] font-black timer-warning leading-none py-2 text-center border-y border-outline-variant">
+                                08:22
+                            </div>
+<ul class="flex flex-col gap-sm">
+<li class="flex flex-col border-b border-surface-variant pb-sm">
+<div class="flex justify-between">
+<span class="font-section-header text-lg">1x Classic Burger</span>
+<span class="material-symbols-outlined text-primary">check_circle</span>
+</div>
+<span class="text-error font-extrabold text-sm ml-4">NO ONIONS</span>
+</li>
+<li class="flex flex-col">
+<div class="flex justify-between">
+<span class="font-section-header text-lg">1x Artisan Espresso</span>
+</div>
+<span class="text-primary font-extrabold text-sm ml-4">EXTRA HOT</span>
+</li>
+</ul>
+</div>
+<button class="w-full bg-primary-container text-on-primary-container font-bold py-md hover:bg-primary transition-colors">BUMP ITEM</button>
+</div>
+<!-- Small Ticket -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl flex flex-col overflow-hidden shadow-sm">
+<div class="bg-surface-variant p-md flex justify-between">
+<span class="font-section-header text-xl font-bold">Table 02</span>
+<span class="font-meta text-meta">12:55</span>
+</div>
+<div class="p-md text-center">
+<div class="text-primary font-page-title text-[32px] font-bold">04:12</div>
+</div>
+<div class="p-md border-t border-surface-variant">
+<span class="font-section-header">2x Draft Beer</span>
+</div>
+</div>
+</div>
+<!-- Column 2 -->
+<div class="flex flex-col gap-lg w-80 shrink-0">
+<!-- READY TICKET (Emerald) -->
+<div class="bg-primary-container text-on-primary-container border-2 border-primary rounded-xl flex flex-col overflow-hidden shadow-lg h-fit scale-[1.02]">
+<div class="p-md flex justify-between items-start border-b border-on-primary-container/20">
+<div class="flex flex-col">
+<span class="font-page-title text-[28px] font-extrabold leading-none">Table 04</span>
+<span class="font-meta text-meta text-on-primary-container/80 mt-1">Order: 12:40</span>
+</div>
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="p-lg flex flex-col items-center gap-lg">
+<span class="font-page-title text-[48px] font-black tracking-tight">READY</span>
+<button class="w-full bg-on-primary-container text-surface py-6 rounded-lg font-black text-2xl tracking-widest hover:scale-[1.05] transition-transform active:scale-95 shadow-xl">
+                                BUMP
+                            </button>
+</div>
+</div>
+<!-- Standard Ticket -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl flex flex-col overflow-hidden shadow-sm">
+<div class="bg-surface-variant p-md flex justify-between">
+<span class="font-section-header text-xl font-bold">Table 19</span>
+<span class="font-meta text-meta">12:50</span>
+</div>
+<div class="p-md">
+<div class="text-on-surface font-page-title text-[32px] font-bold text-center">02:45</div>
+<ul class="mt-md flex flex-col gap-sm">
+<li class="line-through opacity-40 font-section-header text-lg">1x Margherita Pizza</li>
+<li class="font-section-header text-lg">2x Coke Zero</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Column 3 -->
+<div class="flex flex-col gap-lg w-80 shrink-0">
+<!-- Late Ticket (Red Warning) -->
+<div class="bg-surface-container-lowest border-2 border-error rounded-xl flex flex-col overflow-hidden shadow-sm">
+<div class="bg-error text-on-error p-md flex justify-between">
+<span class="font-page-title text-xl font-extrabold">Table 07</span>
+<span class="font-meta text-meta">12:30</span>
+</div>
+<div class="p-md">
+<div class="text-error font-page-title text-[40px] font-black text-center mb-md">18:44</div>
+<ul class="flex flex-col gap-sm">
+<li class="font-section-header text-lg flex flex-col">
+<span>2x Ribeye Steak</span>
+<span class="text-error font-black text-sm ml-4">MEDIUM RARE</span>
+</li>
+<li class="font-section-header text-lg">1x Caesar Salad</li>
+</ul>
+</div>
+<button class="m-md py-3 bg-error/10 text-error font-bold border border-error rounded hover:bg-error hover:text-on-error transition-colors">CALL MOD</button>
+</div>
+</div>
+<!-- Column 4 (Fillers for Layout) -->
+<div class="flex flex-col gap-lg w-80 shrink-0">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl flex flex-col overflow-hidden shadow-sm opacity-60">
+<div class="bg-surface-variant p-md">
+<span class="font-section-header text-xl font-bold">Table 11</span>
+</div>
+<div class="p-md text-center">
+<span class="text-on-surface-variant font-page-title text-[32px] font-bold">01:12</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl flex flex-col overflow-hidden shadow-sm opacity-60">
+<div class="bg-surface-variant p-md">
+<span class="font-section-header text-xl font-bold">Table 22</span>
+</div>
+<div class="p-md text-center">
+<span class="text-on-surface-variant font-page-title text-[32px] font-bold">00:55</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Notification Overlay (Microinteraction) -->
+<div class="fixed bottom-lg right-lg bg-inverse-surface text-inverse-on-surface px-lg py-md rounded-lg shadow-2xl flex items-center gap-md translate-y-24 transition-transform duration-300" id="toast">
+<span class="material-symbols-outlined text-primary-fixed">check_circle</span>
+<span class="font-bold">Table 04 Bumped Successfully</span>
+</div>
+<script>
+        // Simple Interaction logic
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if(this.innerText === 'BUMP' || this.innerText === 'BUMP ITEM') {
+                    const toast = document.getElementById('toast');
+                    toast.classList.remove('translate-y-24');
+                    setTimeout(() => {
+                        toast.classList.add('translate-y-24');
+                    }, 3000);
+                    
+                    // Visual feedback for bumping
+                    const card = this.closest('.bg-surface-container-lowest') || this.closest('.bg-primary-container');
+                    card.style.opacity = '0.3';
+                    card.style.transform = 'scale(0.95)';
+                    card.style.transition = 'all 0.4s ease';
+                }
+            });
+        });
+
+        // Dynamic clock for realism
+        function updateClocks() {
+            // In a real app, we would decrement the timers here
+        }
+        setInterval(updateClocks, 1000);
+    </script>
+</body></html>

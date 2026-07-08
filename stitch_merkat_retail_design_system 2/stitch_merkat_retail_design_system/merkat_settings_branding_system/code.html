@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Merkat OS - Settings</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Geist:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#e8f0e9",
+                        "secondary": "#5f5e61",
+                        "inverse-primary": "#4edea3",
+                        "inverse-on-surface": "#ebf3eb",
+                        "background": "#f4fbf4",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed": "#1b1b1e",
+                        "inverse-surface": "#2b322d",
+                        "on-tertiary-fixed": "#410005",
+                        "on-secondary": "#ffffff",
+                        "surface-tint": "#006c49",
+                        "primary-fixed": "#6ffbbe",
+                        "on-primary-fixed-variant": "#005236",
+                        "error": "#ba1a1a",
+                        "primary": "#006c49",
+                        "error-container": "#ffdad6",
+                        "tertiary-container": "#fc7c78",
+                        "on-primary-fixed": "#002113",
+                        "tertiary-fixed-dim": "#ffb3af",
+                        "on-secondary-fixed-variant": "#47464a",
+                        "tertiary-fixed": "#ffdad7",
+                        "surface-container-high": "#e3eae3",
+                        "surface-bright": "#f4fbf4",
+                        "secondary-fixed-dim": "#c8c5ca",
+                        "tertiary": "#a43a3a",
+                        "outline": "#6c7a71",
+                        "on-background": "#161d19",
+                        "secondary-fixed": "#e4e1e6",
+                        "on-tertiary-fixed-variant": "#842225",
+                        "surface-container-lowest": "#ffffff",
+                        "surface": "#f4fbf4",
+                        "outline-variant": "#bbcabf",
+                        "on-tertiary-container": "#711419",
+                        "surface-variant": "#dde4dd",
+                        "surface-container-highest": "#dde4dd",
+                        "on-surface-variant": "#3c4a42",
+                        "on-primary-container": "#00422b",
+                        "secondary-container": "#e4e1e6",
+                        "primary-fixed-dim": "#4edea3",
+                        "surface-container-low": "#eef6ee",
+                        "primary-container": "#10b981",
+                        "on-surface": "#161d19",
+                        "on-secondary-container": "#656467",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#d4dcd5",
+                        "on-tertiary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "header_height": "64px",
+                        "base": "4px",
+                        "xs": "4px",
+                        "md": "16px",
+                        "sm": "8px",
+                        "sidebar_width": "260px",
+                        "lg": "24px",
+                        "xl": "32px",
+                        "container_gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "meta": ["Inter"],
+                        "data-tabular": ["Geist"],
+                        "section-header": ["Geist"],
+                        "body-md": ["Inter"],
+                        "page-title": ["Geist"],
+                        "body-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "meta": ["12px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "data-tabular": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                        "section-header": ["16px", {"lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "page-title": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        body {
+            background-color: #f4fbf4; /* background color from config */
+            -webkit-font-smoothing: antialiased;
+        }
+        .data-tabular-nums {
+            font-variant-numeric: tabular-nums;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface h-screen overflow-hidden flex">
+<!-- SideNavBar Anchor -->
+<nav class="w-sidebar_width h-screen fixed left-0 top-0 bg-surface-container-low dark:bg-inverse-surface border-r border-outline-variant dark:border-outline flex flex-col py-md px-sm z-50">
+<div class="px-md mb-xl">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 bg-primary rounded flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">storefront</span>
+</div>
+<div>
+<h1 class="font-section-header text-section-header font-bold text-on-surface">Main Branch</h1>
+<p class="text-[11px] uppercase tracking-wider text-on-surface-variant font-bold">Active Session</p>
+</div>
+</div>
+</div>
+<div class="flex-1 space-y-base overflow-y-auto scrollbar-hide">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all scale-95 active:scale-90 font-body-sm" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all scale-95 active:scale-90 font-body-sm" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span>Inventory</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all scale-95 active:scale-90 font-body-sm" href="#">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span>Orders</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all scale-95 active:scale-90 font-body-sm" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span>Analytics</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm bg-primary-container text-on-primary-container font-semibold rounded-lg transition-all scale-95 active:scale-90 font-body-sm" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all scale-95 active:scale-90 font-body-sm" href="#">
+<span class="material-symbols-outlined">help</span>
+<span>Support</span>
+</a>
+</div>
+<div class="mt-auto border-t border-outline-variant pt-md px-sm">
+<button class="w-full flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all scale-95 active:scale-90 font-body-sm">
+<span class="material-symbols-outlined">logout</span>
+<span>Log Out</span>
+</button>
+</div>
+</nav>
+<!-- Content Canvas -->
+<main class="ml-[260px] flex-1 flex flex-col h-full overflow-hidden">
+<!-- TopNavBar Anchor -->
+<header class="h-header_height w-full sticky top-0 z-40 bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline flex items-center justify-between px-lg">
+<div class="flex items-center gap-xl flex-1">
+<span class="font-page-title text-page-title text-primary dark:text-inverse-primary">Merkat OS</span>
+<div class="max-w-md w-full relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+<input class="w-full bg-surface-container-lowest border-outline-variant focus:ring-1 focus:ring-primary rounded-lg pl-10 py-2 text-body-sm" placeholder="Search operations, hardware, or help..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-colors cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined">assistant</span>
+</button>
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-colors cursor-pointer active:opacity-80 relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<div class="h-8 w-px bg-outline-variant mx-sm"></div>
+<div class="flex items-center gap-sm">
+<img class="w-8 h-8 rounded-full border border-outline-variant object-cover" data-alt="Professional headshot of a female technology administrator in a bright, modern corporate environment. The background is softly blurred with emerald and white office elements. High-end editorial lighting, 8k resolution, clean minimal aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYXagma2RmIENR8dfEzHGtHbSyfNaOfoT-QLNjuhNPSarC4Ya_KpQ3GwUhAE4fIf2o4KjEa0dOxRkFk7CxnazW1pJXCXh5Bgfg7NnWD3EmFsoi-9uaKjpN0LGq9syiYyR1w1z2ttWRLu2Tg0dQoC4SPk5NHNw8LByxtLjlOuuUYHdCbPJP8lkYUuGW_5E1ewFArGv22ammsq35qJOxZpxJimmFq5uqUlt0GnsigOgjkzfq-o-sLNFc"/>
+<span class="font-body-sm font-semibold">Admin</span>
+</div>
+</div>
+</header>
+<!-- Setting Panel Canvas -->
+<div class="flex-1 flex overflow-hidden">
+<!-- Sub-Navigation Column -->
+<aside class="w-64 bg-surface-container-low border-r border-outline-variant py-lg flex flex-col gap-xs px-md">
+<h2 class="font-meta text-meta text-secondary px-sm mb-sm uppercase tracking-widest">Configuration</h2>
+<nav class="space-y-1">
+<a class="flex items-center justify-between px-sm py-2 text-on-surface-variant hover:bg-surface-container-high rounded transition-colors group" href="#">
+<span class="font-body-sm">Business Profile</span>
+<span class="material-symbols-outlined text-[16px] opacity-0 group-hover:opacity-100">chevron_right</span>
+</a>
+<a class="flex items-center justify-between px-sm py-2 bg-primary/10 text-primary font-bold rounded transition-colors group" href="#">
+<span class="font-body-sm">Branding</span>
+<div class="w-1 h-4 bg-primary rounded-full"></div>
+</a>
+<a class="flex items-center justify-between px-sm py-2 text-on-surface-variant hover:bg-surface-container-high rounded transition-colors group" href="#">
+<span class="font-body-sm">Tax &amp; Currency</span>
+<span class="material-symbols-outlined text-[16px] opacity-0 group-hover:opacity-100">chevron_right</span>
+</a>
+<a class="flex items-center justify-between px-sm py-2 text-on-surface-variant hover:bg-surface-container-high rounded transition-colors group" href="#">
+<span class="font-body-sm">Receipt</span>
+<span class="material-symbols-outlined text-[16px] opacity-0 group-hover:opacity-100">chevron_right</span>
+</a>
+<a class="flex items-center justify-between px-sm py-2 text-on-surface-variant hover:bg-surface-container-high rounded transition-colors group" href="#">
+<span class="font-body-sm">Hardware</span>
+<span class="material-symbols-outlined text-[16px] opacity-0 group-hover:opacity-100">chevron_right</span>
+</a>
+<a class="flex items-center justify-between px-sm py-2 text-on-surface-variant hover:bg-surface-container-high rounded transition-colors group" href="#">
+<span class="font-body-sm">Payments</span>
+<span class="material-symbols-outlined text-[16px] opacity-0 group-hover:opacity-100">chevron_right</span>
+</a>
+<a class="flex items-center justify-between px-sm py-2 text-on-surface-variant hover:bg-surface-container-high rounded transition-colors group" href="#">
+<span class="font-body-sm">Sync</span>
+<span class="material-symbols-outlined text-[16px] opacity-0 group-hover:opacity-100">chevron_right</span>
+</a>
+<a class="flex items-center justify-between px-sm py-2 text-on-surface-variant hover:bg-surface-container-high rounded transition-colors group" href="#">
+<span class="font-body-sm">Team</span>
+<span class="material-symbols-outlined text-[16px] opacity-0 group-hover:opacity-100">chevron_right</span>
+</a>
+</nav>
+</aside>
+<!-- Main Content Area Scrollable -->
+<div class="flex-1 overflow-y-auto p-lg scrollbar-hide">
+<div class="max-w-6xl mx-auto bento-grid">
+<!-- Left Column: Branding Content -->
+<div class="col-span-12 lg:col-span-8 space-y-lg">
+<div class="flex items-center justify-between mb-md">
+<div>
+<h1 class="font-page-title text-page-title">Branding Settings</h1>
+<p class="text-on-surface-variant font-body-sm">Configure your storefront identity and visual presence.</p>
+</div>
+<button class="bg-primary text-on-primary px-lg py-2 rounded-lg font-body-sm font-semibold hover:opacity-90 active:scale-95 transition-all">Save Changes</button>
+</div>
+<!-- Panel: Identity -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl p-xl shadow-sm">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-xl">
+<div class="space-y-md">
+<div>
+<label class="block font-meta text-meta text-secondary mb-xs uppercase">Business Name</label>
+<input class="w-full bg-surface-container-low border-outline-variant focus:border-primary focus:ring-0 rounded-lg p-3 text-body-md" type="text" value="Merkat Green Emporium"/>
+</div>
+<div>
+<label class="block font-meta text-meta text-secondary mb-xs uppercase">Business Type</label>
+<select class="w-full bg-surface-container-low border-outline-variant focus:border-primary focus:ring-0 rounded-lg p-3 text-body-md appearance-none">
+<option>Retail</option>
+<option>Restaurant</option>
+<option>General</option>
+</select>
+<p class="mt-2 text-on-surface-variant text-[12px] italic">Changing this adjusts available feature sets.</p>
+</div>
+</div>
+<div>
+<label class="block font-meta text-meta text-secondary mb-xs uppercase">Store Logo</label>
+<div class="border-2 border-dashed border-outline-variant rounded-xl h-40 flex flex-col items-center justify-center bg-surface-container hover:bg-surface-container-high transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-outline group-hover:scale-110 transition-transform mb-sm">cloud_upload</span>
+<p class="font-body-sm text-on-surface-variant">Drag &amp; drop your logo here</p>
+<p class="text-[11px] text-secondary">SVG, PNG, or JPG (max. 2MB)</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Panel: Tenant Accent -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl p-xl shadow-sm">
+<h3 class="font-section-header text-section-header mb-md">Accent Color</h3>
+<div class="flex flex-wrap gap-md">
+<div class="relative group cursor-pointer">
+<div class="w-12 h-12 rounded-full bg-primary border-4 border-surface shadow-md ring-2 ring-primary"></div>
+<p class="absolute top-14 left-1/2 -translate-x-1/2 font-meta text-[10px] text-primary font-bold">Emerald</p>
+</div>
+<div class="w-12 h-12 rounded-full bg-blue-600 border-2 border-surface cursor-pointer hover:scale-105 transition-transform"></div>
+<div class="w-12 h-12 rounded-full bg-indigo-600 border-2 border-surface cursor-pointer hover:scale-105 transition-transform"></div>
+<div class="w-12 h-12 rounded-full bg-purple-600 border-2 border-surface cursor-pointer hover:scale-105 transition-transform"></div>
+<div class="w-12 h-12 rounded-full bg-rose-600 border-2 border-surface cursor-pointer hover:scale-105 transition-transform"></div>
+<div class="w-12 h-12 rounded-full bg-orange-600 border-2 border-surface cursor-pointer hover:scale-105 transition-transform"></div>
+<div class="w-12 h-12 rounded-full bg-slate-800 border-2 border-surface cursor-pointer hover:scale-105 transition-transform"></div>
+</div>
+</section>
+</div>
+<!-- Right Column: Contextual Side Info -->
+<div class="col-span-12 lg:col-span-4 space-y-lg">
+<!-- Panel: Hardware -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm">
+<div class="flex items-center justify-between mb-md">
+<h3 class="font-section-header text-section-header">Detected Devices</h3>
+<button class="text-primary font-meta text-meta hover:underline">Scan</button>
+</div>
+<div class="space-y-sm">
+<div class="flex items-center justify-between p-sm border border-outline-variant rounded-lg">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary text-lg">print</span>
+<span class="font-body-sm">Receipt Printer</span>
+</div>
+<div class="flex items-center gap-xs">
+<div class="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+<span class="font-meta text-[11px] text-primary">Connected</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-sm border border-outline-variant rounded-lg">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary text-lg">barcode_scanner</span>
+<span class="font-body-sm">Barcode Scanner</span>
+</div>
+<div class="flex items-center gap-xs">
+<div class="w-2 h-2 bg-primary rounded-full"></div>
+<span class="font-meta text-[11px] text-primary">Connected</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-sm border border-outline-variant rounded-lg bg-tertiary/5">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-tertiary text-lg">door_sliding</span>
+<span class="font-body-sm">Cash Drawer</span>
+</div>
+<div class="flex items-center gap-xs">
+<div class="w-2 h-2 bg-orange-400 rounded-full"></div>
+<span class="font-meta text-[11px] text-orange-600">Check Connection</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Panel: Sync Status -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+<div class="p-lg bg-primary-container/10">
+<div class="flex items-center gap-sm mb-sm">
+<span class="material-symbols-outlined text-primary">sync</span>
+<h3 class="font-section-header text-section-header">System Sync</h3>
+</div>
+<div class="space-y-sm">
+<div class="flex justify-between items-baseline">
+<span class="font-body-sm">Architecture</span>
+<span class="font-data-tabular text-data-tabular px-2 py-0.5 bg-primary text-on-primary rounded-full text-[10px]">LOCAL-FIRST</span>
+</div>
+<div class="flex justify-between items-baseline border-b border-outline-variant/30 pb-sm">
+<span class="font-body-sm">Status</span>
+<span class="font-data-tabular text-data-tabular text-secondary data-tabular-nums">Last synced 2 min ago</span>
+</div>
+</div>
+</div>
+<div class="p-lg">
+<p class="font-meta text-meta text-secondary uppercase mb-xs">Offline Mode</p>
+<p class="text-[12px] leading-relaxed text-on-surface-variant">
+                                    Merkat OS is designed to work without an internet connection. Transactions are stored securely on this device and automatically synchronized to the cloud once a connection is re-established.
+                                </p>
+</div>
+</section>
+<!-- Panel: Visual Asset -->
+<div class="relative h-48 rounded-xl overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A macro photograph of high-end, brushed metal hardware components for a retail point of sale system. The lighting is soft and clinical, reflecting a tech-minimalist aesthetic. Emerald-colored status LED light strips reflect softly on the metallic surfaces. The atmosphere is professional, reliable, and high-performance." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAt5oDmo5NJT5kklnCHgRuhMYaj3UIRrAYSnSU09ctmVHGCmxwNwit26cekMba6Fbg4ciMj6WlGlBR9TAgJPC8WNHRIX0TqCmeNtYkXch32u-LYWH-2eqtvCHDbpalAvWp8ZH5TojyZDYCQQWAbiSQKOaJbweFnn23RXR3sAo7JaA-QqT45_UtDLIs-h5bQ260SAqYwDcSc2F53mnvA05Gc63k_KcwP9y2ls78bnmuwKgMsVXV_f28_"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-md">
+<p class="text-white text-[12px] font-medium">Configure Hardware Ecosystem →</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+        // Simple micro-interaction for color picker
+        document.querySelectorAll('.rounded-full[class*="bg-"]').forEach(picker => {
+            picker.addEventListener('click', function() {
+                // Remove existing rings
+                document.querySelectorAll('.rounded-full[class*="bg-"]').forEach(p => {
+                    p.classList.remove('ring-2', 'ring-primary', 'border-4', 'shadow-md');
+                    p.classList.add('border-2');
+                });
+                // Add ring to selected
+                this.classList.remove('border-2');
+                this.classList.add('ring-2', 'ring-primary', 'border-4', 'shadow-md');
+            });
+        });
+
+        // Toggle sub-nav active state
+        const navLinks = document.querySelectorAll('aside nav a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                navLinks.forEach(l => {
+                    l.classList.remove('bg-primary/10', 'text-primary', 'font-bold');
+                    l.classList.add('text-on-surface-variant');
+                    const indicator = l.querySelector('.w-1');
+                    if(indicator) indicator.classList.add('hidden');
+                });
+                link.classList.add('bg-primary/10', 'text-primary', 'font-bold');
+                link.classList.remove('text-on-surface-variant');
+                const indicator = link.querySelector('.w-1');
+                if(indicator) indicator.classList.remove('hidden');
+            });
+        });
+    </script>
+</body></html>

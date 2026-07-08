@@ -1,0 +1,46 @@
+/* Design tokens — locked wireframe (CLAUDE.md §11).
+   --accent is overwritten at runtime from tenant.accent_hex; nothing else is
+   colored per-tenant. */
+:root {
+  --canvas: #fafafa;
+  --surface: #ffffff;
+  --text: #18181b;
+  --text-muted: #71717a;
+  --border: #e4e4e7;
+  --accent: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --radius-card: 12px;
+  --radius-control: 8px;
+}
+
+:root[data-theme="dark"] {
+  --canvas: #0b0d0f;
+  --surface: #16181d;
+  --text: #fafafa;
+  --text-muted: #a1a1aa;
+  --border: #26272b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--canvas);
+  color: var(--text);
+  font-family:
+    Inter, Geist, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-feature-settings: "tnum" 1, "lnum" 1; /* tabular/lining numerals (§11) */
+}
+
+.merkat-num {
+  font-variant-numeric: tabular-nums lining-nums;
+}
