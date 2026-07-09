@@ -1,5 +1,42 @@
 # Build notes
 
+## Phase 4 — POS + hardware (complete)
+
+Gate (`CLAUDE.md §12`, **release-blocker e2e §13**): a full sale completes with
+the network unplugged and a receipt prints (or previews). Verified:
+
+- **Offline cash sale, end to end.** A component test drives the real POS
+  screen: browse → add to cart → Charge → tender → Complete sale → receipt.
+  Nothing touches the network (in-memory store + WebHardware no-op). `buildSale`
+  (`@merkat/core`) mints an immutable order + payment + one signed `sale`
+  movement per line (§1.3, §1.4); inventory decrements through the ledger (serum
+  40 → 39 in the test). Totals/tax/change are pure and unit-tested.
+- **Receipt + drawer via HardwareBridge (§7).** Charge calls
+  `hardware.openDrawer()` then `hardware.printReceipt(...)`. On web those are
+  `WebHardware` no-ops (the test log shows them firing) and the UI shows a
+  **receipt preview** (the §7 print fallback) rendered from the same text the
+  ESC/POS printer would emit.
+- **Cart (Zustand, §2)** merges repeat adds, steps quantity, variant picker for
+  variant products.
+- **Barcode scan (§7):** the search/scan field takes Enter-terminated scans
+  (HID scanners type into the focused field); a `useBarcodeScanner` hook also
+  catches rapid keystroke bursts when no field is focused.
+
+The UI talks only to `HardwareBridge` (WebHardware today; `setHardware` injects
+the platform bridge). POS route wired; "Works offline" affordance on the screen.
+
+### Deferred from Phase 4 (intentional)
+
+- **`TauriHardware` (real ESC/POS printer, cash-drawer kick, serial scanner)** —
+  Rust-side, can't compile on this box (same constraint as the deferred desktop
+  build, Phase 9). The web preview path satisfies the gate; the bridge contract
+  is in place so the desktop impl drops in with no UI change.
+- **Card/mobile payments** — `PaymentProvider`/Stripe Terminal is Phase 6 (§10);
+  Phase 4 ships cash (always offline-capable).
+- **Order persistence / history / reprint** — the sale is built and applied to
+  the ledger; durable orders + the Orders screen are Phase 6. (Sales currently
+  reset with the in-memory store on reload, like Phase 3 inventory.)
+
 ## Phase 3 — Products + inventory (complete)
 
 Gate (`CLAUDE.md §12`): adding stock writes movements; levels update; low-stock

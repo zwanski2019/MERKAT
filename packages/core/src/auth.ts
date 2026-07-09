@@ -16,6 +16,12 @@ export const loginRequestSchema = z.object({
 });
 export type LoginRequest = z.infer<typeof loginRequestSchema>;
 
+/** Tenant tax setup (CLAUDE.md §4 `tax_config`). Full editing is Phase 6. */
+export interface TaxConfig {
+  readonly rate: number; // e.g. 0.08
+  readonly inclusive: boolean; // prices already include tax?
+}
+
 /** Public-safe branding a terminal needs to render before/without a session. */
 export interface TenantBranding {
   readonly id: string;
@@ -25,6 +31,7 @@ export interface TenantBranding {
   readonly logoUrl: string | null;
   readonly currency: string;
   readonly locale: string;
+  readonly taxConfig?: TaxConfig;
 }
 
 /** A staff member as shown on the PIN-unlock avatar picker (no hash exposed). */

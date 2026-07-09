@@ -9,6 +9,7 @@ import type {
   AddStockInput,
   ProductInput,
   ProductListItem,
+  StockMovement,
 } from "@merkat/core";
 import { SeedInventoryStore, type InventoryStore } from "../inventory/store.js";
 
@@ -18,6 +19,8 @@ export interface InventoryState {
   items: ProductListItem[];
   createProduct(input: ProductInput): void;
   addStock(input: AddStockInput, staffId?: string | null): void;
+  /** Apply sale (or other) movements and refresh derived levels. */
+  applyMovements(movements: readonly StockMovement[]): void;
   refresh(): void;
 }
 
@@ -34,6 +37,10 @@ export function createInventoryStore(
     },
     addStock(input, staffId) {
       get().store.addStock(input, staffId ?? null);
+      set({ items: get().store.listProducts() });
+    },
+    applyMovements(movements) {
+      get().store.applyMovements(movements);
       set({ items: get().store.listProducts() });
     },
     refresh() {

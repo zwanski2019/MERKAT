@@ -22,6 +22,7 @@
   "dependencies": {
     "@merkat/core": "workspace:*",
     "@merkat/db": "workspace:*",
+    "@merkat/hardware": "workspace:*",
     "react-router-dom": "^7.18.1",
     "zustand": "^5.0.14"
   },

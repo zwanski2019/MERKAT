@@ -26,6 +26,8 @@ export interface InventoryStore {
   createProduct(input: ProductInput): Product;
   /** Append a signed stock movement (never mutates a stored quantity). */
   addStock(input: AddStockInput, staffId?: string | null): StockMovement;
+  /** Append pre-built movements, e.g. the `sale` movements from a POS charge. */
+  applyMovements(movements: readonly StockMovement[]): void;
   listMovements(productId?: string): StockMovement[];
 }
 
@@ -100,6 +102,10 @@ export class SeedInventoryStore implements InventoryStore {
     };
     this.movements = [...this.movements, movement];
     return movement;
+  }
+
+  applyMovements(movements: readonly StockMovement[]): void {
+    this.movements = [...this.movements, ...movements];
   }
 
   listMovements(productId?: string): StockMovement[] {

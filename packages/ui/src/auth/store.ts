@@ -48,6 +48,7 @@ const DEMO_BRANDING: TenantBranding = {
   logoUrl: null,
   currency: "USD",
   locale: "en-US",
+  taxConfig: { rate: 0.08, inclusive: false },
 };
 
 const DEMO_STAFF: SeedStaff[] = [
