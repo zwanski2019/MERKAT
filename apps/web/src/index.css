@@ -27,3 +27,18 @@ body {
     "tnum" 1,
     "lnum" 1;
 }
+
+/* Shared form-control style used across screens (tokens, §11). */
+.input {
+  width: 100%;
+  border-radius: var(--radius-control);
+  border: 1px solid var(--border);
+  background: var(--canvas);
+  padding: 0.5rem 0.75rem;
+  color: var(--text);
+  font: inherit;
+}
+.input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+}

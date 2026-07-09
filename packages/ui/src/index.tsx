@@ -3,5 +3,11 @@ export { AppShell } from "./AppShell.js";
 export { useSession, createSessionStore } from "./state/session.js";
 export type { SessionState } from "./state/session.js";
 export { SeedAuthStore, type AuthStore } from "./auth/store.js";
+export {
+  useInventory,
+  createInventoryStore,
+  type InventoryState,
+} from "./state/inventory.js";
+export { SeedInventoryStore, type InventoryStore } from "./inventory/store.js";
 export { applyAccent, applyBranding } from "./theme/accent.js";
 export { NAV, type NavItem } from "./nav.js";

@@ -11,6 +11,7 @@ import { NAV } from "./nav.js";
 import { Login } from "./screens/Auth/Login.js";
 import { PinUnlock } from "./screens/Auth/PinUnlock.js";
 import { Placeholder } from "./screens/Placeholder.js";
+import { Products } from "./screens/Products/Products.js";
 import { Settings } from "./screens/Settings/Settings.js";
 import { useSession } from "./state/session.js";
 import { applyBranding } from "./theme/accent.js";
@@ -56,7 +57,10 @@ export function App(): JSX.Element {
           }
         >
           <Route path="/settings" element={<Settings />} />
-          {NAV.filter((item) => item.path !== "/settings").map((item) => (
+          <Route path="/products" element={<Products />} />
+          {NAV.filter(
+            (item) => item.path !== "/settings" && item.path !== "/products",
+          ).map((item) => (
             <Route
               key={item.path}
               path={item.path}

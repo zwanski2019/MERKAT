@@ -1,5 +1,38 @@
 # Build notes
 
+## Phase 3 — Products + inventory (complete)
+
+Gate (`CLAUDE.md §12`): adding stock writes movements; levels update; low-stock
+triggers. Verified:
+
+- **Stock is a ledger (§1.3).** `addStock` only ever appends a signed
+  `stock_movement`; on-hand is always derived (`deriveStockLevels` /
+  `productOnHand` in `@merkat/core`, pure and mirroring the Phase 1 SQL path).
+  Restock/count/adjustment are positive, waste negative. Tested: level updates
+  as movements land, and a `waste` movement drops it back down.
+- **Low-stock triggers (§4).** `isLowStock(onHand, threshold)` fires at/below
+  the threshold; the Products table shows a warning pill. A component test adds
+  stock to the seeded low product (6 → 26) and the pill clears.
+- **Products screen + add-product slide-over (§5).** Table with derived on-hand,
+  search, low-stock pills; slide-over creates products with a **variant
+  repeater** (shade/size), gated by `featuresFor(businessType).variants`. AI
+  description is a disabled Phase 8 affordance (§9). Zod validates every form.
+- **Add-stock dialog** targets the product or a specific variant.
+
+Same iface+mock pattern as auth: the UI talks only to an `InventoryStore`
+(`SeedInventoryStore`, in-memory demo catalogue). Phase 5 swaps in the
+synced-SQLite-backed store with no UI change. Inventory UI state is Zustand
+(`useInventory`); TanStack Query arrives with real data endpoints (Phase 5/6).
+
+### Deferred from Phase 3 (intentional)
+
+- **Persistence** — `SeedInventoryStore` is in-memory (resets on reload); the
+  real ledger persists via the synced local SQLite in Phase 5. The Node SQLite
+  ledger already exists (Phase 1); the browser-backed store is Phase 5.
+- **Categories, product images, edit/archive, batch/expiry entry UI** — schema
+  supports them (§4); the management UI is incremental after v1 core flows.
+- **AI product description / receipt OCR stock-in** — Phase 8 (§9).
+
 ## Phase 2 — Shell + auth (complete)
 
 Gate (`CLAUDE.md §12`): PIN unlock works offline; accent recolors the app.
