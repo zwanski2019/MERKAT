@@ -12,5 +12,6 @@ export { SeedInventoryStore, type InventoryStore } from "./inventory/store.js";
 export { usePos, type PosState, type CartAddition } from "./state/pos.js";
 export { getHardware, setHardware } from "./hardware/bridge.js";
 export { useBarcodeScanner } from "./hardware/useBarcodeScanner.js";
+export { getSyncEngine, setSyncEngine, useSyncStatus } from "./state/sync.js";
 export { applyAccent, applyBranding } from "./theme/accent.js";
 export { NAV, type NavItem } from "./nav.js";

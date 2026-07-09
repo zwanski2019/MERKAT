@@ -1,5 +1,49 @@
 # Build notes
 
+## Phase 5 — Sync (complete)
+
+Gate (`CLAUDE.md §12`, **release-blocker e2e §13**): two offline terminals each
+sell the last unit and reconcile to correct net stock; no data loss. Verified:
+
+- **Two-terminal reconcile.** `sync.test.ts` runs two local SQLite stores + a
+  `SyncServer`, seeds a shared 1-unit baseline, each terminal sells offline
+  (local net 0), then they sync. Both converge to net **−1** (oversold but
+  correctly recorded), **both** sale movements land on **both** terminals, and
+  the outbox drains — no lost update. The server projection agrees.
+- **`mutate()` (§6, §13):** writes the entity row **and** the outbox op in one
+  SQLite transaction — a terminal can't record a change without queuing it.
+- **Conflict policy (§6):** append-only entities (movements/orders/lines/
+  payments) are idempotent inserts by id — all land, derived `stock_levels`
+  recomputes to the correct net (why stock never conflicts). Mutable config is
+  last-writer-wins by `updated_at`; the losing version is written to
+  `audit_log`. Both are unit-tested; push is idempotent by op id.
+- **`HttpOplogEngine` (the documented DIY-oplog engine, §6)** behind the
+  `SyncEngine` interface: push (drain outbox) then pull (apply server op stream,
+  advance cursor). `PowerSyncEngine` slots in behind the same interface later.
+- **Real HTTP transport:** `POST /sync/push` + `GET /sync/pull?cursor=` (NestJS,
+  Zod-validated) backed by a `SyncServer`; smoke-tested over HTTP (push →
+  idempotent re-push → pull stream → cursor up-to-date → 400 on bad payload).
+- **Sync indicator (§6 UI contract):** the POS/topbar pill and a new
+  Settings→Sync panel read a shared `SyncEngine` (swap via `setSyncEngine`);
+  offline is styled calm, shows last-synced + pending.
+
+`@merkat/db/node` gains a `node.{js,d.ts}` resolution shim so the CommonJS API
+(classic module resolution) can import the node entry; the browser bundle stays
+free of the node sync code (better-sqlite3), verified.
+
+### Deferred from Phase 5 (intentional)
+
+- **PowerSync engine + a real Postgres server.** The engine is the documented
+  `HttpOplogEngine` fallback against a SQLite server projection (Postgres is the
+  §4 source of record in production). PowerSync needs cloud credentials not
+  available here; it goes behind the same `SyncEngine`/transport interface.
+- **Browser-backed synced store.** The reconcile runs at the terminal (Node/
+  desktop SQLite — the primary target, §2). The web PWA needs a wasm SQLite
+  (wa-sqlite / PowerSync web) to run the real engine in-browser; until then the
+  web app keeps the in-memory Phase 2–4 stores and a `NoopSyncEngine` indicator.
+- **`table.status` sticky-occupied LWW (§6)** lands with the restaurant floor
+  plan (Phase 7).
+
 ## Phase 4 — POS + hardware (complete)
 
 Gate (`CLAUDE.md §12`, **release-blocker e2e §13**): a full sale completes with

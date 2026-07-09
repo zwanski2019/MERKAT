@@ -44,25 +44,41 @@ function encode(type: LogicalType, value: unknown): Encoded {
 
 export type Row = Record<string, unknown>;
 
+/** Conflict mode for a row write: plain insert, idempotent, or LWW replace. */
+export type WriteMode = "insert" | "ignore" | "replace";
+
+const VERB: Record<WriteMode, string> = {
+  insert: "INSERT",
+  ignore: "INSERT OR IGNORE",
+  replace: "INSERT OR REPLACE",
+};
+
+/** Encode a row's values by their model column types. */
+export function encodeRow(tableName: string, row: Row): Encoded[] {
+  const types = COLUMN_TYPES.get(tableName);
+  if (!types) throw new Error(`Unknown table: ${tableName}`);
+  return Object.keys(row).map((n) => {
+    const type = types.get(n);
+    if (!type) throw new Error(`Unknown column: ${tableName}.${n}`);
+    return encode(type, row[n]);
+  });
+}
+
 /** Insert one row into `tableName`, encoding values by their model type. */
 export function insertRow(
   handle: LocalHandle,
   tableName: string,
   row: Row,
+  mode: WriteMode = "insert",
 ): void {
-  const types = COLUMN_TYPES.get(tableName);
-  if (!types) throw new Error(`Unknown table: ${tableName}`);
-
   const names = Object.keys(row);
   const columns = names.map((n) => `"${n}"`).join(", ");
   const placeholders = names.map(() => "?").join(", ");
-  const values = names.map((n) => {
-    const type = types.get(n);
-    if (!type) throw new Error(`Unknown column: ${tableName}.${n}`);
-    return encode(type, row[n]);
-  });
+  const values = encodeRow(tableName, row);
 
   handle.sqlite
-    .prepare(`INSERT INTO "${tableName}" (${columns}) VALUES (${placeholders})`)
+    .prepare(
+      `${VERB[mode]} INTO "${tableName}" (${columns}) VALUES (${placeholders})`,
+    )
     .run(...values);
 }

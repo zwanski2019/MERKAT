@@ -6,18 +6,15 @@
 import { useEffect, useRef, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { can } from "@merkat/core";
-import { NoopSyncEngine, type SyncEngine, type SyncStatus } from "@merkat/db";
+import type { SyncStatus } from "@merkat/db";
 import { NAV } from "./nav.js";
 import { useSession } from "./state/session.js";
-
-const engine: SyncEngine = new NoopSyncEngine();
+import { useSyncStatus } from "./state/sync.js";
 
 export function AppShell(): JSX.Element {
   const branding = useSession((s) => s.branding);
   const session = useSession((s) => s.session);
-  const [sync, setSync] = useState<SyncStatus>(engine.status());
-
-  useEffect(() => engine.onStatusChange(setSync), []);
+  const sync = useSyncStatus();
 
   const role = session?.staff.role ?? "cashier";
   const items = NAV.filter((item) => !item.action || can(role, item.action));

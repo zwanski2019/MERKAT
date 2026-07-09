@@ -6,6 +6,7 @@
 import { useState } from "react";
 import { BrandingSettings } from "./BrandingSettings.js";
 import { PermissionMatrix } from "./PermissionMatrix.js";
+import { SyncSettings } from "./SyncSettings.js";
 
 type Tab =
   "Branding" | "Team" | "Tax" | "Receipt" | "Hardware" | "Payments" | "Sync";
@@ -25,7 +26,6 @@ const PHASE: Partial<Record<Tab, string>> = {
   Receipt: "Phase 4",
   Hardware: "Phase 4",
   Payments: "Phase 6",
-  Sync: "Phase 5",
 };
 
 export function Settings(): JSX.Element {
@@ -53,6 +53,7 @@ export function Settings(): JSX.Element {
 
       {tab === "Branding" ? <BrandingSettings /> : null}
       {tab === "Team" ? <PermissionMatrix /> : null}
+      {tab === "Sync" ? <SyncSettings /> : null}
       {PHASE[tab] ? (
         <p className="text-sm text-muted">
           {tab} settings land in {PHASE[tab]}.

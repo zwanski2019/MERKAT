@@ -1,6 +1,7 @@
 // Browser-safe surface only. The node-only local SQLite store (better-sqlite3)
 // is isolated behind `@merkat/db/node` so it never enters the web bundle (§3).
 export * from "./sync/engine.js";
+export * from "./sync/oplog.js";
 
 // Schema — one canonical model, two dialects (CLAUDE.md §1.7). Pure JS.
 export * from "./schema/model.js";

@@ -38,6 +38,9 @@ importers:
       '@merkat/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@merkat/db':
+        specifier: workspace:*
+        version: link:../../packages/db
       '@nestjs/common':
         specifier: ^10.4.15
         version: 10.4.22(reflect-metadata@0.2.2)(rxjs@7.8.2)

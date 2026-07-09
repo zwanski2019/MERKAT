@@ -9,3 +9,9 @@ export * from "./local.js";
 export * from "./stock.js";
 export * from "./write.js";
 export * from "./seed.js";
+
+// Sync (CLAUDE.md §6): transactional mutate + outbox, terminal engine, server.
+export * from "./sync/mutate.js";
+export * from "./sync/apply.js";
+export * from "./sync/server.js";
+export * from "./sync/engine-http.js";

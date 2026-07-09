@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@merkat/core": "workspace:*",
+    "@merkat/db": "workspace:*",
     "@nestjs/common": "^10.4.15",
     "@nestjs/core": "^10.4.15",
     "@nestjs/platform-express": "^10.4.15",
