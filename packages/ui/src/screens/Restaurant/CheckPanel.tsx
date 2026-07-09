@@ -34,6 +34,7 @@ export function CheckPanel({
   onClose: () => void;
 }): JSX.Element {
   const menuItems = useRestaurant((s) => s.menuItems);
+  const combos = useRestaurant((s) => s.combos);
   const modifierGroups = useRestaurant((s) => s.modifierGroups);
   const checks = useRestaurant((s) => s.checks);
   const tables = useRestaurant((s) => s.tables);
@@ -71,6 +72,21 @@ export function CheckPanel({
       unitPriceMinor: item.priceMinor,
       qty: 1,
       modifiers: [],
+      station: item.station,
+    });
+  }
+
+  function pickCombo(comboId: string): void {
+    const combo = combos.find((c) => c.id === comboId);
+    if (!combo) return;
+    addToCheck(tableId, {
+      key: newId(),
+      itemId: combo.id,
+      name: combo.name,
+      unitPriceMinor: combo.priceMinor,
+      qty: 1,
+      modifiers: [],
+      station: "all",
     });
   }
 
@@ -141,10 +157,24 @@ export function CheckPanel({
                 <span className="text-fg">{item.name}</span>
                 <span className="merkat-num text-xs text-muted">
                   {fmt(item.priceMinor)}
+                  {item.station ? ` · ${item.station}` : ""}
                 </span>
               </button>
             ))}
           </div>
+          {combos.length > 0 ? (
+            <div className="mt-2 flex flex-wrap gap-2">
+              {combos.map((combo) => (
+                <button
+                  key={combo.id}
+                  onClick={() => pickCombo(combo.id)}
+                  className="rounded-full border border-accent px-3 py-1 text-xs text-accent hover:bg-canvas"
+                >
+                  {combo.name} · {fmt(combo.priceMinor)}
+                </button>
+              ))}
+            </div>
+          ) : null}
         </div>
 
         {/* current check */}
@@ -228,6 +258,7 @@ export function CheckPanel({
               unitPriceMinor: picking.priceMinor,
               qty: 1,
               modifiers,
+              station: picking.station,
             });
             setPicking(null);
           }}

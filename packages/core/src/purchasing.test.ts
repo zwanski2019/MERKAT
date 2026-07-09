@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  outstandingQty,
   poTotalMinor,
   purchaseOrderInputSchema,
   supplierInputSchema,
@@ -14,6 +15,12 @@ const lines: PurchaseOrderLine[] = [
 describe("purchasing (§14)", () => {
   it("totals a purchase order", () => {
     expect(poTotalMinor(lines)).toBe(24 * 1200 + 12 * 700);
+  });
+
+  it("tracks outstanding quantity for partial receiving", () => {
+    expect(outstandingQty(lines)).toBe(36);
+    const partial = lines.map((l) => ({ ...l, receivedQty: l.qty - 2 }));
+    expect(outstandingQty(partial)).toBe(4); // 2 remaining per line
   });
 
   it("validates supplier + PO input", () => {

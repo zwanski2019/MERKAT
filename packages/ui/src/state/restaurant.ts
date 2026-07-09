@@ -6,8 +6,10 @@
  */
 import { create } from "zustand";
 import {
+  groupByStation,
   newId,
   type CheckLine,
+  type Combo,
   type FloorZone,
   type KitchenTicket,
   type MenuCategory,
@@ -22,6 +24,7 @@ export interface RestaurantState {
   readonly categories: MenuCategory[];
   menuItems: MenuItem[];
   modifierGroups: ModifierGroup[];
+  combos: Combo[];
   checks: Record<string, CheckLine[]>;
   tickets: KitchenTicket[];
 
@@ -35,11 +38,12 @@ export interface RestaurantState {
   closeCheck(tableId: string): CheckLine[];
   addModifierGroup(group: ModifierGroup): void;
   addMenuItem(item: MenuItem): void;
+  addCombo(combo: Omit<Combo, "id">): void;
 }
 
 function seed(): Pick<
   RestaurantState,
-  "zones" | "tables" | "categories" | "menuItems" | "modifierGroups"
+  "zones" | "tables" | "categories" | "menuItems" | "modifierGroups" | "combos"
 > {
   const main = "0191a000-0000-7000-8000-0000000000z1";
   const terrace = "0191a000-0000-7000-8000-0000000000z2";
@@ -165,6 +169,7 @@ function seed(): Pick<
       name: "Classic Burger",
       priceMinor: 1450,
       modifierGroupIds: [sizeGroup, addonGroup],
+      station: "grill",
     },
     {
       id: "item-salad",
@@ -172,6 +177,7 @@ function seed(): Pick<
       name: "Garden Salad",
       priceMinor: 900,
       modifierGroupIds: [],
+      station: "cold",
     },
     {
       id: "item-fries",
@@ -179,6 +185,7 @@ function seed(): Pick<
       name: "Fries",
       priceMinor: 500,
       modifierGroupIds: [],
+      station: "grill",
     },
     {
       id: "item-cola",
@@ -186,6 +193,16 @@ function seed(): Pick<
       name: "Cola",
       priceMinor: 300,
       modifierGroupIds: [],
+      station: "bar",
+    },
+  ];
+
+  const combos: Combo[] = [
+    {
+      id: "combo-meal",
+      name: "Burger Meal",
+      priceMinor: 1900,
+      itemIds: [burger, "item-fries", "item-cola"],
     },
   ];
 
@@ -202,6 +219,7 @@ function seed(): Pick<
     ],
     menuItems,
     modifierGroups,
+    combos,
   };
 }
 
@@ -249,23 +267,28 @@ export function createRestaurantStore() {
       const lines = state.checks[tableId] ?? [];
       if (lines.length === 0) return;
       const table = state.tables.find((t) => t.id === tableId);
-      const ticket: KitchenTicket = {
-        id: newId(),
-        orderId: null,
-        tableLabel: table?.label ?? tableId,
-        station: "all",
-        status: "new",
-        sentAt: Date.now(),
-        bumpedAt: null,
-        items: lines.map((l) => ({
-          name: l.name,
-          qty: l.qty,
-          modifiers: l.modifiers.map((m) => m.name),
-          note: l.note ?? null,
-        })),
-      };
+      const now = Date.now();
+      // One ticket per kitchen station (KDS routing, §5).
+      const tickets: KitchenTicket[] = [];
+      for (const [station, group] of groupByStation(lines)) {
+        tickets.push({
+          id: newId(),
+          orderId: null,
+          tableLabel: table?.label ?? tableId,
+          station,
+          status: "new",
+          sentAt: now,
+          bumpedAt: null,
+          items: group.map((l) => ({
+            name: l.name,
+            qty: l.qty,
+            modifiers: l.modifiers.map((m) => m.name),
+            note: l.note ?? null,
+          })),
+        });
+      }
       set((s) => ({
-        tickets: [ticket, ...s.tickets],
+        tickets: [...tickets, ...s.tickets],
         tables: setStatus(s.tables, tableId, "occupied"),
       }));
     },
@@ -299,6 +322,10 @@ export function createRestaurantStore() {
 
     addMenuItem(item) {
       set((s) => ({ menuItems: [...s.menuItems, item] }));
+    },
+
+    addCombo(combo) {
+      set((s) => ({ combos: [...s.combos, { id: newId(), ...combo }] }));
     },
   }));
 }

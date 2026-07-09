@@ -5,12 +5,16 @@
  */
 import { useEffect, useState } from "react";
 import {
+  KITCHEN_STATIONS,
   ticketAgeSeconds,
   ticketUrgency,
+  type KitchenStation,
   type KitchenTicket,
   type TicketUrgency,
 } from "@merkat/core";
 import { useRestaurant } from "../../state/restaurant.js";
+
+type StationFilter = KitchenStation | "any";
 
 const URGENCY_CLASS: Record<TicketUrgency, string> = {
   fresh: "border-border",
@@ -37,13 +41,34 @@ export function KDS(): JSX.Element {
   const tickets = useRestaurant((s) => s.tickets);
   const bump = useRestaurant((s) => s.bumpTicket);
   const now = useNow();
+  const [station, setStation] = useState<StationFilter>("any");
 
-  const active = tickets.filter((t) => t.status !== "bumped");
-  const done = tickets.filter((t) => t.status === "bumped");
+  const shown =
+    station === "any" ? tickets : tickets.filter((t) => t.station === station);
+  const active = shown.filter((t) => t.status !== "bumped");
+  const done = shown.filter((t) => t.status === "bumped");
 
   return (
     <div>
-      <h1 className="mb-4 text-xl font-semibold text-fg">Kitchen</h1>
+      <div className="mb-4 flex items-center justify-between">
+        <h1 className="text-xl font-semibold text-fg">Kitchen</h1>
+        <div className="flex flex-wrap gap-1">
+          {(["any", ...KITCHEN_STATIONS] as StationFilter[]).map((s) => (
+            <button
+              key={s}
+              onClick={() => setStation(s)}
+              className={[
+                "rounded-full border px-3 py-1 text-xs capitalize",
+                station === s
+                  ? "border-accent text-accent"
+                  : "border-border text-muted hover:text-fg",
+              ].join(" ")}
+            >
+              {s}
+            </button>
+          ))}
+        </div>
+      </div>
 
       {active.length === 0 ? (
         <p className="text-sm text-muted">No open tickets.</p>
@@ -99,7 +124,12 @@ function TicketCard({
       ].join(" ")}
     >
       <div className="mb-2 flex items-center justify-between">
-        <span className="font-semibold text-fg">{ticket.tableLabel}</span>
+        <span className="font-semibold text-fg">
+          {ticket.tableLabel}
+          <span className="ml-2 rounded-full border border-border px-2 py-0.5 text-xs font-normal capitalize text-muted">
+            {ticket.station}
+          </span>
+        </span>
         <span
           className={[
             "merkat-num text-sm",

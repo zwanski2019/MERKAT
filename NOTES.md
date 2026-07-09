@@ -4,7 +4,11 @@
 
 Extending the POS toward a fuller retail-ops suite. Each follows the same
 pattern (core domain + Zod schemas + iface/mock store + Zustand + screen +
-tests + nav/route):
+tests + nav/route). Full set now: Purchasing (+ partial receiving + supplier
+bills), Cash/Z-report, Stock transfers (multi-location), Tax rules, Promotions,
+Loyalty + gift cards, Expenses + P&L, Employees + time clock, POS discounts, and
+restaurant combos + per-station KDS routing. App routing is a path→screen
+registry so a module is a one-line add. Highlights:
 
 - **Purchasing (§14, brought into scope).** Suppliers + purchase orders;
   receiving a PO writes `restock` movements through the inventory ledger (§1.3)

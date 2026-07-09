@@ -12,6 +12,7 @@ export function MenuBuilder(): JSX.Element {
   const categories = useRestaurant((s) => s.categories);
   const menuItems = useRestaurant((s) => s.menuItems);
   const modifierGroups = useRestaurant((s) => s.modifierGroups);
+  const combos = useRestaurant((s) => s.combos);
   const addMenuItem = useRestaurant((s) => s.addMenuItem);
   const branding = useSession((s) => s.branding);
   const fmt = (m: number): string =>
@@ -88,7 +89,14 @@ export function MenuBuilder(): JSX.Element {
             <div className="divide-y divide-border rounded-[--radius-card] border border-border">
               {items.map((item) => (
                 <div key={item.id} className="flex justify-between p-3 text-sm">
-                  <span className="text-fg">{item.name}</span>
+                  <span className="text-fg">
+                    {item.name}
+                    {item.station ? (
+                      <span className="ml-2 rounded-full border border-border px-2 py-0.5 text-xs capitalize text-muted">
+                        {item.station}
+                      </span>
+                    ) : null}
+                  </span>
                   <span className="merkat-num text-fg">
                     {fmt(item.priceMinor)}
                   </span>
@@ -123,7 +131,20 @@ export function MenuBuilder(): JSX.Element {
           </div>
         ))}
       </div>
-      <p className="mt-4 text-xs text-muted">Combos arrive in a later pass.</p>
+      <h2 className="mb-2 mt-6 font-medium text-fg">Combos</h2>
+      <div className="divide-y divide-border rounded-[--radius-card] border border-border">
+        {combos.map((combo) => (
+          <div key={combo.id} className="flex justify-between p-3 text-sm">
+            <span className="text-fg">
+              {combo.name}
+              <span className="ml-2 text-xs text-muted">
+                {combo.itemIds.length} items
+              </span>
+            </span>
+            <span className="merkat-num text-fg">{fmt(combo.priceMinor)}</span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

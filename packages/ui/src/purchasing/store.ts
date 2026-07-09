@@ -6,20 +6,34 @@
  */
 import {
   newId,
+  outstandingQty,
   type PurchaseOrder,
   type PurchaseOrderInput,
   type PurchaseOrderLine,
   type Supplier,
+  type SupplierBill,
   type SupplierInput,
 } from "@merkat/core";
+
+/** A received line: how much of each product actually arrived. */
+export interface ReceivedLine {
+  readonly productId: string;
+  readonly qty: number;
+}
 
 export interface PurchasingStore {
   listSuppliers(): Supplier[];
   createSupplier(input: SupplierInput): Supplier;
   listOrders(): PurchaseOrder[];
   createOrder(input: PurchaseOrderInput): PurchaseOrder;
-  /** Mark a PO received; returns its lines for the caller to add to stock. */
-  receiveOrder(id: string): readonly PurchaseOrderLine[];
+  /**
+   * Receive a PO — fully, or `received` quantities for partial receiving.
+   * Returns the lines actually received (for the caller to add to stock) and
+   * generates a supplier bill for the received value.
+   */
+  receiveOrder(id: string, received?: readonly ReceivedLine[]): ReceivedLine[];
+  listBills(): SupplierBill[];
+  markBillPaid(id: string): void;
 }
 
 export class SeedPurchasingStore implements PurchasingStore {
@@ -40,6 +54,7 @@ export class SeedPurchasingStore implements PurchasingStore {
     },
   ];
   private orders: PurchaseOrder[] = [];
+  private bills: SupplierBill[] = [];
 
   listSuppliers(): Supplier[] {
     return [...this.suppliers];
@@ -76,12 +91,70 @@ export class SeedPurchasingStore implements PurchasingStore {
     return order;
   }
 
-  receiveOrder(id: string): readonly PurchaseOrderLine[] {
+  receiveOrder(id: string, received?: readonly ReceivedLine[]): ReceivedLine[] {
     const order = this.orders.find((o) => o.id === id);
     if (!order || order.status === "received") return [];
+
+    // Received quantities: the caller's amounts, or the full outstanding.
+    const receivedFor = (line: PurchaseOrderLine): number => {
+      const outstanding = line.qty - (line.receivedQty ?? 0);
+      if (!received) return outstanding;
+      const r = received.find((x) => x.productId === line.productId);
+      return Math.max(0, Math.min(outstanding, r?.qty ?? 0));
+    };
+
+    const appliedLines: PurchaseOrderLine[] = order.lines.map((line) => ({
+      ...line,
+      receivedQty: (line.receivedQty ?? 0) + receivedFor(line),
+    }));
+    const now = Date.now();
+    const fullyReceived = outstandingQty(appliedLines) === 0;
+
+    const appliedThisTime: ReceivedLine[] = order.lines
+      .map((line) => ({ productId: line.productId, qty: receivedFor(line) }))
+      .filter((r) => r.qty > 0);
+
+    // Bill the value received in this pass.
+    const billedMinor = appliedThisTime.reduce((sum, r) => {
+      const line = order.lines.find((l) => l.productId === r.productId);
+      return sum + (line ? line.unitCostMinor * r.qty : 0);
+    }, 0);
+
     this.orders = this.orders.map((o) =>
-      o.id === id ? { ...o, status: "received", receivedAt: Date.now() } : o,
+      o.id === id
+        ? {
+            ...o,
+            lines: appliedLines,
+            status: fullyReceived ? "received" : "partial",
+            receivedAt: fullyReceived ? now : o.receivedAt,
+          }
+        : o,
     );
-    return order.lines;
+
+    if (billedMinor > 0) {
+      this.bills = [
+        {
+          id: newId(),
+          purchaseOrderId: id,
+          supplierName: order.supplierName,
+          amountMinor: billedMinor,
+          paid: false,
+          createdAt: now,
+        },
+        ...this.bills,
+      ];
+    }
+
+    return appliedThisTime;
+  }
+
+  listBills(): SupplierBill[] {
+    return [...this.bills];
+  }
+
+  markBillPaid(id: string): void {
+    this.bills = this.bills.map((b) =>
+      b.id === id ? { ...b, paid: true } : b,
+    );
   }
 }

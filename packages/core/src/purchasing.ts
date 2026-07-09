@@ -6,7 +6,7 @@
  */
 import { z } from "zod";
 
-export type PurchaseOrderStatus = "draft" | "ordered" | "received";
+export type PurchaseOrderStatus = "draft" | "ordered" | "partial" | "received";
 
 export interface Supplier {
   readonly id: string;
@@ -21,6 +21,22 @@ export interface PurchaseOrderLine {
   readonly name: string;
   readonly qty: number;
   readonly unitCostMinor: number;
+  /** Quantity received so far (partial receiving). */
+  readonly receivedQty?: number;
+}
+
+export interface SupplierBill {
+  readonly id: string;
+  readonly purchaseOrderId: string;
+  readonly supplierName: string;
+  readonly amountMinor: number;
+  readonly paid: boolean;
+  readonly createdAt: number;
+}
+
+/** Remaining quantity to receive across a PO's lines. */
+export function outstandingQty(lines: readonly PurchaseOrderLine[]): number {
+  return lines.reduce((n, l) => n + (l.qty - (l.receivedQty ?? 0)), 0);
 }
 
 export interface PurchaseOrder {

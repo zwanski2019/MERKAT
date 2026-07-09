@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   checkLineTotalMinor,
   checkToCartLines,
+  groupByStation,
   ticketAgeSeconds,
   ticketUrgency,
   type CheckLine,
@@ -27,6 +28,15 @@ describe("check line pricing with modifiers", () => {
     expect(line!.unitPriceMinor).toBe(1750);
     expect(line!.name).toContain("Double");
     expect(line!.qty).toBe(2);
+  });
+
+  it("groups lines by kitchen station for KDS routing", () => {
+    const grill: CheckLine = { ...burger, key: "g", station: "grill" };
+    const bar: CheckLine = { ...burger, key: "b", station: "bar" };
+    const groups = groupByStation([grill, bar, { ...burger, key: "n" }]);
+    expect(groups.get("grill")).toHaveLength(1);
+    expect(groups.get("bar")).toHaveLength(1);
+    expect(groups.get("all")).toHaveLength(1); // no station → "all"
   });
 });
 

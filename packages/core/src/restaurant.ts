@@ -60,11 +60,20 @@ export interface MenuItem {
   readonly priceMinor: number;
   /** Modifier groups offered when this item is ordered. */
   readonly modifierGroupIds: readonly string[];
+  /** Kitchen station this item is prepared at (KDS routing). */
+  readonly station?: KitchenStation;
 }
 
 export interface MenuCategory {
   readonly id: string;
   readonly name: string;
+}
+
+export interface Combo {
+  readonly id: string;
+  readonly name: string;
+  readonly priceMinor: number;
+  readonly itemIds: readonly string[];
 }
 
 export interface CheckLineModifier {
@@ -81,6 +90,22 @@ export interface CheckLine {
   readonly qty: number;
   readonly modifiers: readonly CheckLineModifier[];
   readonly note?: string | null;
+  /** Station the line is routed to on send-to-kitchen (KDS). */
+  readonly station?: KitchenStation;
+}
+
+/** Group check lines by kitchen station for per-station ticket routing (§5). */
+export function groupByStation(
+  lines: readonly CheckLine[],
+): Map<KitchenStation, CheckLine[]> {
+  const groups = new Map<KitchenStation, CheckLine[]>();
+  for (const line of lines) {
+    const station = line.station ?? "all";
+    const group = groups.get(station) ?? [];
+    group.push(line);
+    groups.set(station, group);
+  }
+  return groups;
 }
 
 export interface KitchenTicketItem {

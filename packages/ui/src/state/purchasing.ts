@@ -6,22 +6,25 @@ import { create } from "zustand";
 import type {
   PurchaseOrder,
   PurchaseOrderInput,
-  PurchaseOrderLine,
   Supplier,
+  SupplierBill,
   SupplierInput,
 } from "@merkat/core";
 import {
   SeedPurchasingStore,
   type PurchasingStore,
+  type ReceivedLine,
 } from "../purchasing/store.js";
 
 export interface PurchasingState {
   readonly store: PurchasingStore;
   suppliers: Supplier[];
   orders: PurchaseOrder[];
+  bills: SupplierBill[];
   createSupplier(input: SupplierInput): void;
   createOrder(input: PurchaseOrderInput): void;
-  receiveOrder(id: string): readonly PurchaseOrderLine[];
+  receiveOrder(id: string, received?: readonly ReceivedLine[]): ReceivedLine[];
+  markBillPaid(id: string): void;
 }
 
 export function createPurchasingStore(
@@ -31,6 +34,7 @@ export function createPurchasingStore(
     store,
     suppliers: store.listSuppliers(),
     orders: store.listOrders(),
+    bills: store.listBills(),
     createSupplier(input) {
       get().store.createSupplier(input);
       set({ suppliers: get().store.listSuppliers() });
@@ -39,10 +43,14 @@ export function createPurchasingStore(
       get().store.createOrder(input);
       set({ orders: get().store.listOrders() });
     },
-    receiveOrder(id) {
-      const lines = get().store.receiveOrder(id);
-      set({ orders: get().store.listOrders() });
-      return lines;
+    receiveOrder(id, received) {
+      const applied = get().store.receiveOrder(id, received);
+      set({ orders: get().store.listOrders(), bills: get().store.listBills() });
+      return applied;
+    },
+    markBillPaid(id) {
+      get().store.markBillPaid(id);
+      set({ bills: get().store.listBills() });
     },
   }));
 }

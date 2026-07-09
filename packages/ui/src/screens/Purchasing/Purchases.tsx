@@ -18,6 +18,8 @@ import { useSession } from "../../state/session.js";
 export function Purchases(): JSX.Element {
   const orders = usePurchasing((s) => s.orders);
   const suppliers = usePurchasing((s) => s.suppliers);
+  const bills = usePurchasing((s) => s.bills);
+  const markBillPaid = usePurchasing((s) => s.markBillPaid);
   const receiveOrder = usePurchasing((s) => s.receiveOrder);
   const addStock = useInventory((s) => s.addStock);
   const locationId = useInventory((s) => s.locationId);
@@ -117,6 +119,44 @@ export function Purchases(): JSX.Element {
           </table>
         </div>
       )}
+
+      {bills.length > 0 ? (
+        <div className="mt-8">
+          <h2 className="mb-2 font-medium text-fg">Supplier bills</h2>
+          <div className="divide-y divide-border rounded-[--radius-card] border border-border">
+            {bills.map((bill) => (
+              <div
+                key={bill.id}
+                className="flex items-center justify-between p-3 text-sm"
+              >
+                <span className="text-fg">
+                  {bill.supplierName}
+                  <span className="merkat-num ml-2 text-muted">
+                    #{bill.purchaseOrderId.slice(0, 8)}
+                  </span>
+                </span>
+                <div className="flex items-center gap-3">
+                  <span className="merkat-num text-fg">
+                    {fmt(bill.amountMinor)}
+                  </span>
+                  {bill.paid ? (
+                    <span className="rounded-full border border-accent px-2.5 py-0.5 text-xs text-accent">
+                      Paid
+                    </span>
+                  ) : (
+                    <button
+                      onClick={() => markBillPaid(bill.id)}
+                      className="rounded-[--radius-control] border border-border px-3 py-1 text-xs text-fg hover:border-accent"
+                    >
+                      Mark paid
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : null}
 
       {creating ? (
         <NewPurchaseOrder onClose={() => setCreating(false)} />
