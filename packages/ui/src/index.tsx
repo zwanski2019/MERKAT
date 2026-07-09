@@ -32,6 +32,8 @@ export {
   createRestaurantStore,
   type RestaurantState,
 } from "./state/restaurant.js";
+export { askAssistant, readReceiptDraft } from "./ai/assistant.js";
+export { UiAiDataSource } from "./ai/datasource.js";
 export { getHardware, setHardware } from "./hardware/bridge.js";
 export { useBarcodeScanner } from "./hardware/useBarcodeScanner.js";
 export { getSyncEngine, setSyncEngine, useSyncStatus } from "./state/sync.js";

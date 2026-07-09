@@ -9,12 +9,14 @@ import { useInventory } from "../../state/inventory.js";
 import { useSession } from "../../state/session.js";
 import { AddProductSlideOver } from "./AddProductSlideOver.js";
 import { AddStockDialog } from "./AddStockDialog.js";
+import { ReceiptStockIn } from "./ReceiptStockIn.js";
 
 export function Products(): JSX.Element {
   const items = useInventory((s) => s.items);
   const branding = useSession((s) => s.branding);
   const [query, setQuery] = useState("");
   const [adding, setAdding] = useState(false);
+  const [scanning, setScanning] = useState(false);
   const [stockFor, setStockFor] = useState<ProductListItem | null>(null);
 
   const filtered = useMemo(() => {
@@ -39,12 +41,20 @@ export function Products(): JSX.Element {
             {lowCount > 0 ? ` · ${lowCount} low on stock` : ""}
           </p>
         </div>
-        <button
-          onClick={() => setAdding(true)}
-          className="rounded-[--radius-control] bg-accent px-4 py-2 font-medium text-white"
-        >
-          Add product
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={() => setScanning(true)}
+            className="rounded-[--radius-control] border border-border px-4 py-2 font-medium text-fg hover:border-accent"
+          >
+            ✦ Scan receipt
+          </button>
+          <button
+            onClick={() => setAdding(true)}
+            className="rounded-[--radius-control] bg-accent px-4 py-2 font-medium text-white"
+          >
+            Add product
+          </button>
+        </div>
       </div>
 
       <input
@@ -88,6 +98,7 @@ export function Products(): JSX.Element {
       </div>
 
       {adding ? <AddProductSlideOver onClose={() => setAdding(false)} /> : null}
+      {scanning ? <ReceiptStockIn onClose={() => setScanning(false)} /> : null}
       {stockFor ? (
         <AddStockDialog item={stockFor} onClose={() => setStockFor(null)} />
       ) : null}

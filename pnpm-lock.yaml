@@ -175,6 +175,9 @@ importers:
 
   packages/ui:
     dependencies:
+      '@merkat/ai':
+        specifier: workspace:*
+        version: link:../ai
       '@merkat/core':
         specifier: workspace:*
         version: link:../core
