@@ -1,5 +1,6 @@
 export * from "./auth.js";
 export * from "./brand.js";
+export * from "./cash.js";
 export * from "./customer.js";
 export * from "./features.js";
 export * from "./id.js";
@@ -8,6 +9,7 @@ export * from "./money.js";
 export * from "./payment.js";
 export * from "./permissions.js";
 export * from "./pin.js";
+export * from "./purchasing.js";
 export * from "./refund.js";
 export * from "./restaurant.js";
 export * from "./sale.js";

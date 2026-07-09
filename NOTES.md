@@ -1,5 +1,26 @@
 # Build notes
 
+## Additional modules (beyond the 9 phases)
+
+Extending the POS toward a fuller retail-ops suite. Each follows the same
+pattern (core domain + Zod schemas + iface/mock store + Zustand + screen +
+tests + nav/route):
+
+- **Purchasing (§14, brought into scope).** Suppliers + purchase orders;
+  receiving a PO writes `restock` movements through the inventory ledger (§1.3)
+  — never an edited quantity. A component test creates a PO and receives it →
+  the product restocks. Screens under `/purchasing`.
+- **Cash management / shift Z-report.** Open a shift with a float, record cash
+  in/out, POS cash sales feed the shift, and close with a counted amount → the
+  Z-report shows expected vs counted (variance, colored by short/over). Core
+  `expectedCashMinor`/`varianceMinor`/`summarizeShift` are unit-tested. `/cash`.
+- **POS order discount.** An order-level discount flows through the existing
+  `computeTotals`/`buildSale` (`discountMinor`) into the total and the receipt.
+
+Bug fixed: a transient unbalanced JSX in `Reports.tsx` (the Recharts edit) — the
+committed file parses cleanly with both esbuild and the dev-server's Babel; the
+error some saw was a stale HMR overlay from the mid-edit save.
+
 ## Follow-ups — closing spec gaps that were doable here
 
 After Phases 0–9, these previously-deferred items that need **no external

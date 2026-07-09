@@ -47,6 +47,13 @@ export const NAV: readonly NavItem[] = [
     action: "products.manage",
     phase: "Phase 3",
   },
+  {
+    label: "Purchasing",
+    path: "/purchasing",
+    action: "products.manage",
+    phase: "Extra",
+  },
+  { label: "Cash", path: "/cash", action: "pos.sell", phase: "Extra" },
   { label: "Orders", path: "/orders", action: "pos.sell", phase: "Phase 6" },
   {
     label: "Customers",

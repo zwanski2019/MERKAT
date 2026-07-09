@@ -18,6 +18,7 @@ import {
 } from "@merkat/core";
 import { getHardware } from "../../hardware/bridge.js";
 import { useBarcodeScanner } from "../../hardware/useBarcodeScanner.js";
+import { useCash } from "../../state/cash.js";
 import { useInventory } from "../../state/inventory.js";
 import { useOrders } from "../../state/orders.js";
 import { usePos, type CartAddition } from "../../state/pos.js";
@@ -43,10 +44,12 @@ export function POS(): JSX.Element {
   const [busy, setBusy] = useState(false);
   const [receipt, setReceipt] = useState<SaleReceipt | null>(null);
   const [scanMsg, setScanMsg] = useState<string | null>(null);
+  const [discount, setDiscount] = useState("");
 
   const fmt = (m: number): string =>
     formatMoney(money(m, branding.currency), branding.locale);
-  const totals = computeTotals(lines, branding.taxConfig);
+  const discountMinor = Math.max(0, Math.round((Number(discount) || 0) * 100));
+  const totals = computeTotals(lines, branding.taxConfig, discountMinor);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -89,13 +92,15 @@ export function POS(): JSX.Element {
         staffId,
         lines,
         taxConfig: branding.taxConfig,
+        discountMinor,
         method: "cash",
         tenderedMinor,
       });
-      // Decrement stock through the ledger (§1.3), persist the order, then
-      // kick the drawer + print.
+      // Decrement stock through the ledger (§1.3), persist the order, feed the
+      // cash shift, then kick the drawer + print.
       applyMovements(sale.movements);
       recordSale(sale);
+      useCash.getState().recordCashSale(sale.order.totalMinor);
       const hardware = getHardware();
       await hardware.openDrawer();
       const built = buildReceipt(
@@ -113,6 +118,7 @@ export function POS(): JSX.Element {
         cut: true,
       });
       clear();
+      setDiscount("");
       setPaying(false);
       setReceipt(built);
     } finally {
@@ -209,6 +215,17 @@ export function POS(): JSX.Element {
         </div>
         <div className="border-t border-border p-4">
           <Row label="Subtotal" value={fmt(totals.subtotalMinor)} />
+          <div className="flex items-center justify-between py-0.5">
+            <span className="text-sm text-muted">Discount</span>
+            <input
+              inputMode="decimal"
+              value={discount}
+              onChange={(e) => setDiscount(e.target.value)}
+              placeholder="0.00"
+              aria-label="Order discount"
+              className="input merkat-num h-7 w-24 py-1 text-right text-sm"
+            />
+          </div>
           <Row label="Tax" value={fmt(totals.taxMinor)} />
           <Row label="Total" value={fmt(totals.totalMinor)} strong />
           <button

@@ -11,9 +11,11 @@ import { NAV } from "./nav.js";
 import { Login } from "./screens/Auth/Login.js";
 import { PinUnlock } from "./screens/Auth/PinUnlock.js";
 import { Assistant } from "./screens/Assistant/Assistant.js";
+import { Cash } from "./screens/Cash/Cash.js";
 import { Customers } from "./screens/Customers/Customers.js";
 import { Dashboard } from "./screens/Dashboard/Dashboard.js";
 import { Orders } from "./screens/Orders/Orders.js";
+import { Purchases } from "./screens/Purchasing/Purchases.js";
 import { Placeholder } from "./screens/Placeholder.js";
 import { Reports } from "./screens/Reports/Reports.js";
 import { POS } from "./screens/POS/POS.js";
@@ -76,6 +78,8 @@ export function App(): JSX.Element {
           <Route path="/" element={<Dashboard />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/assistant" element={<Assistant />} />
+          <Route path="/purchasing" element={<Purchases />} />
+          <Route path="/cash" element={<Cash />} />
           {NAV.filter(
             (item) =>
               ![
@@ -90,6 +94,8 @@ export function App(): JSX.Element {
                 "/menu",
                 "/reports",
                 "/assistant",
+                "/purchasing",
+                "/cash",
               ].includes(item.path),
           ).map((item) => (
             <Route

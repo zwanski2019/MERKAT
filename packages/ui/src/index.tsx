@@ -34,6 +34,16 @@ export {
 } from "./state/restaurant.js";
 export { askAssistant, readReceiptDraft } from "./ai/assistant.js";
 export { UiAiDataSource } from "./ai/datasource.js";
+export {
+  usePurchasing,
+  createPurchasingStore,
+  type PurchasingState,
+} from "./state/purchasing.js";
+export {
+  SeedPurchasingStore,
+  type PurchasingStore,
+} from "./purchasing/store.js";
+export { useCash, type CashState } from "./state/cash.js";
 export { getHardware, setHardware } from "./hardware/bridge.js";
 export { useBarcodeScanner } from "./hardware/useBarcodeScanner.js";
 export { getSyncEngine, setSyncEngine, useSyncStatus } from "./state/sync.js";
