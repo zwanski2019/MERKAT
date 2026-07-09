@@ -3,12 +3,17 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "sideEffects": false,
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./node": {
+      "types": "./dist/node.d.ts",
+      "default": "./dist/node.js"
     }
   },
   "scripts": {
@@ -16,12 +21,18 @@
     "dev": "tsc -p tsconfig.json --watch",
     "lint": "eslint src --max-warnings 0",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "vitest run --passWithNoTests"
+    "test": "vitest run --passWithNoTests",
+    "gen:migrations": "node scripts/gen-migrations.mjs"
   },
   "dependencies": {
-    "@merkat/core": "workspace:*"
+    "@merkat/core": "workspace:*",
+    "better-sqlite3": "^12.11.1",
+    "drizzle-orm": "^0.45.2"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.5.4",
+    "@types/better-sqlite3": "^7.6.13",
+    "drizzle-kit": "^0.31.10",
     "vitest": "^2.1.8"
   }
 }
