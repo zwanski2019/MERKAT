@@ -1,6 +1,11 @@
 @import "tailwindcss";
 @import "@merkat/ui/tokens.css";
 
+/* Tailwind v4 auto-detection skips node_modules, which includes the symlinked
+   @merkat/ui workspace package — where every screen lives. Scan it explicitly
+   or the utilities layer compiles to empty and the app renders unstyled. */
+@source "../../../packages/ui/src";
+
 /* Map the locked design tokens (CLAUDE.md §11) onto Tailwind's theme so utility
    classes resolve to the CSS variables. --accent stays a runtime variable
    (overwritten from tenant.accent_hex), so `bg-accent` recolors live. */
