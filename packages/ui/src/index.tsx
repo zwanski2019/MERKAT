@@ -44,6 +44,10 @@ export {
   type PurchasingStore,
 } from "./purchasing/store.js";
 export { useCash, type CashState } from "./state/cash.js";
+export { usePricing, type PricingState } from "./state/pricing.js";
+export { useLocations, type LocationsState } from "./state/locations.js";
+export { useExpenses, type ExpensesState } from "./state/expenses.js";
+export { useEmployees, type EmployeesState } from "./state/employees.js";
 export { getHardware, setHardware } from "./hardware/bridge.js";
 export { useBarcodeScanner } from "./hardware/useBarcodeScanner.js";
 export { getSyncEngine, setSyncEngine, useSyncStatus } from "./state/sync.js";

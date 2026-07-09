@@ -11,6 +11,7 @@ import {
   computeTotals,
   formatMoney,
   money,
+  promotionDiscountMinor,
   renderReceiptText,
   type Product,
   type ProductListItem,
@@ -20,6 +21,7 @@ import { getHardware } from "../../hardware/bridge.js";
 import { useBarcodeScanner } from "../../hardware/useBarcodeScanner.js";
 import { useCash } from "../../state/cash.js";
 import { useInventory } from "../../state/inventory.js";
+import { usePricing } from "../../state/pricing.js";
 import { useOrders } from "../../state/orders.js";
 import { usePos, type CartAddition } from "../../state/pos.js";
 import { useSession } from "../../state/session.js";
@@ -37,6 +39,7 @@ export function POS(): JSX.Element {
   const clear = usePos((s) => s.clear);
   const branding = useSession((s) => s.branding);
   const staffId = useSession((s) => s.session?.staff.id ?? null);
+  const activePromos = usePricing((s) => s.promotions).filter((p) => p.active);
 
   const [query, setQuery] = useState("");
   const [pickVariantFor, setPickVariantFor] = useState<Product | null>(null);
@@ -215,6 +218,29 @@ export function POS(): JSX.Element {
         </div>
         <div className="border-t border-border p-4">
           <Row label="Subtotal" value={fmt(totals.subtotalMinor)} />
+          {activePromos.length > 0 ? (
+            <div className="flex items-center justify-between py-0.5">
+              <span className="text-sm text-muted">Promotion</span>
+              <select
+                aria-label="Apply promotion"
+                onChange={(e) => {
+                  const promo = activePromos.find((p) => p.id === e.target.value);
+                  const d = promo
+                    ? promotionDiscountMinor(totals.subtotalMinor, promo)
+                    : 0;
+                  setDiscount(d ? (d / 100).toFixed(2) : "");
+                }}
+                className="input h-7 w-32 py-1 text-sm"
+              >
+                <option value="">None</option>
+                {activePromos.map((p) => (
+                  <option key={p.id} value={p.id}>
+                    {p.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          ) : null}
           <div className="flex items-center justify-between py-0.5">
             <span className="text-sm text-muted">Discount</span>
             <input

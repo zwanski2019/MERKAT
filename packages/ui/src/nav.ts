@@ -53,13 +53,43 @@ export const NAV: readonly NavItem[] = [
     action: "products.manage",
     phase: "Extra",
   },
+  {
+    label: "Transfers",
+    path: "/transfers",
+    action: "products.manage",
+    phase: "Extra",
+  },
   { label: "Cash", path: "/cash", action: "pos.sell", phase: "Extra" },
+  {
+    label: "Expenses",
+    path: "/expenses",
+    action: "reports.view",
+    phase: "Extra",
+  },
   { label: "Orders", path: "/orders", action: "pos.sell", phase: "Phase 6" },
   {
     label: "Customers",
     path: "/customers",
     action: "pos.sell",
     phase: "Phase 6",
+  },
+  {
+    label: "Promotions",
+    path: "/promotions",
+    action: "products.manage",
+    phase: "Extra",
+  },
+  {
+    label: "Loyalty",
+    path: "/loyalty",
+    action: "products.manage",
+    phase: "Extra",
+  },
+  {
+    label: "Employees",
+    path: "/employees",
+    action: "team.manage",
+    phase: "Extra",
   },
   {
     label: "Reports",

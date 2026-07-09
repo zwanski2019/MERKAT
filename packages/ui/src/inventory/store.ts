@@ -29,6 +29,8 @@ export interface InventoryStore {
   /** Append pre-built movements, e.g. the `sale` movements from a POS charge. */
   applyMovements(movements: readonly StockMovement[]): void;
   listMovements(productId?: string): StockMovement[];
+  /** Derived on-hand for a product at a specific location (multi-location). */
+  onHandAt(productId: string, locationId: string): number;
 }
 
 const DEMO_LOCATION = "0191a000-0000-7000-8000-0000000000f0";
@@ -106,6 +108,12 @@ export class SeedInventoryStore implements InventoryStore {
 
   applyMovements(movements: readonly StockMovement[]): void {
     this.movements = [...this.movements, ...movements];
+  }
+
+  onHandAt(productId: string, locationId: string): number {
+    return this.movements
+      .filter((m) => m.productId === productId && m.locationId === locationId)
+      .reduce((sum, m) => sum + m.delta, 0);
   }
 
   listMovements(productId?: string): StockMovement[] {

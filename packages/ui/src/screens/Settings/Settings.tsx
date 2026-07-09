@@ -7,6 +7,7 @@ import { useState } from "react";
 import { BrandingSettings } from "./BrandingSettings.js";
 import { PermissionMatrix } from "./PermissionMatrix.js";
 import { SyncSettings } from "./SyncSettings.js";
+import { TaxSettings } from "./TaxSettings.js";
 
 type Tab =
   "Branding" | "Team" | "Tax" | "Receipt" | "Hardware" | "Payments" | "Sync";
@@ -22,7 +23,6 @@ const TABS: readonly Tab[] = [
 ];
 
 const PHASE: Partial<Record<Tab, string>> = {
-  Tax: "Phase 6",
   Receipt: "Phase 4",
   Hardware: "Phase 4",
   Payments: "Phase 6",
@@ -53,6 +53,7 @@ export function Settings(): JSX.Element {
 
       {tab === "Branding" ? <BrandingSettings /> : null}
       {tab === "Team" ? <PermissionMatrix /> : null}
+      {tab === "Tax" ? <TaxSettings /> : null}
       {tab === "Sync" ? <SyncSettings /> : null}
       {PHASE[tab] ? (
         <p className="text-sm text-muted">
