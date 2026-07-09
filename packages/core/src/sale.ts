@@ -85,12 +85,16 @@ export interface OrderLine {
   readonly lineTotalMinor: number;
 }
 
+export type PaymentStatus = "pending" | "paid" | "failed" | "refunded";
+
 export interface Payment {
   readonly id: string;
   readonly orderId: string;
   readonly method: PaymentMethod;
-  readonly amountMinor: number;
-  readonly status: "paid";
+  readonly amountMinor: number; // negative for a refund
+  readonly status: PaymentStatus;
+  /** External processor reference (Stripe PaymentIntent id, §10). */
+  readonly providerRef?: string | null;
 }
 
 /** A sale's minted rows: the order, its lines, the payment, and stock movements. */
@@ -206,6 +210,7 @@ export interface SaleReceipt {
   readonly method: PaymentMethod;
   readonly tenderedMinor: number;
   readonly changeMinor: number;
+  readonly kind?: "sale" | "refund";
 }
 
 export function buildReceipt(
@@ -250,6 +255,7 @@ export function renderReceiptText(receipt: SaleReceipt): string[] {
     formatMoney(money(minor, receipt.currency), receipt.locale);
   const out: string[] = [];
   out.push(receipt.businessName);
+  if (receipt.kind === "refund") out.push("*** REFUND ***");
   out.push(new Date(receipt.createdAt).toLocaleString(receipt.locale));
   out.push(`Order ${receipt.orderId.slice(0, 8)}`);
   out.push("-".repeat(WIDTH));

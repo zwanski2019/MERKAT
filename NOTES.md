@@ -1,5 +1,43 @@
 # Build notes
 
+## Phase 6 — Orders + customers + payments (complete)
+
+Gate (`CLAUDE.md §12`): a refund creates reversing rows and reprints; a Stripe
+charge reconciles via webhook. Verified:
+
+- **Refund = reversing rows (§1.4).** A refund never destroys the sale: it
+  appends a negative payment, positive stock movements that return the goods to
+  the ledger (§1.3, reason `adjustment`), and reprints a refund receipt; the
+  original order is marked `refunded`. A component test drives the real Orders
+  screen — a recorded sale (serum 40 → 38) is refunded → stock returns to 40,
+  order shows `refunded`, and a `*** REFUND ***` receipt prints. Refunding the
+  same order twice is refused.
+- **Stripe reconciles via webhook (§10).** `POST /payments/intent` creates a
+  PaymentIntent; `POST /payments/webhook` reconciles by `provider_ref` on
+  `payment_intent.succeeded`. Smoke-tested over HTTP: intent
+  `requires_payment` → webhook → `succeeded`; unknown ref → 404. Uses a
+  simulated gateway (real Stripe SDK path is env-gated on `STRIPE_SECRET_KEY` /
+  `STRIPE_WEBHOOK_SECRET` — no keys here).
+- **Orders (§5):** POS now persists each sale (`useOrders.recordSale`); Orders
+  screen shows history + a detail slide-over with reprint + refund.
+- **Customers / CRM (§5):** list, add (Zod-validated), and a detail panel with
+  loyalty + lifetime spend. AI customer summary is Phase 8.
+
+Same iface+mock pattern (`OrderStore`, `CustomerStore`, in-memory seeds); the
+synced SQLite backs them later. Payment DTOs/webhook schema live in
+`@merkat/core`.
+
+### Deferred from Phase 6 (intentional)
+
+- **Card-present UI (Stripe Terminal) in POS.** The provider abstraction + API
+  are in place and the webhook reconcile is proven; the in-POS card confirmation
+  flow (Terminal SDK, connectivity degradation to cash-only) and a real Stripe
+  account are deferred. Cash remains the offline path (§10).
+- **Partial refunds, loyalty accrual on sale, POS↔customer linkage** — full
+  refund + CRM basics ship now; these are incremental.
+- **Persisted orders across reload** — recorded in the in-memory store like the
+  rest; durable via the synced SQLite (Phase 5 terminal path).
+
 ## Phase 5 — Sync (complete)
 
 Gate (`CLAUDE.md §12`, **release-blocker e2e §13**): two offline terminals each

@@ -19,6 +19,7 @@ import {
 import { getHardware } from "../../hardware/bridge.js";
 import { useBarcodeScanner } from "../../hardware/useBarcodeScanner.js";
 import { useInventory } from "../../state/inventory.js";
+import { useOrders } from "../../state/orders.js";
 import { usePos, type CartAddition } from "../../state/pos.js";
 import { useSession } from "../../state/session.js";
 import { CashPaymentDialog } from "./CashPaymentDialog.js";
@@ -28,6 +29,7 @@ export function POS(): JSX.Element {
   const items = useInventory((s) => s.items);
   const applyMovements = useInventory((s) => s.applyMovements);
   const locationId = useInventory((s) => s.locationId);
+  const recordSale = useOrders((s) => s.recordSale);
   const lines = usePos((s) => s.lines);
   const add = usePos((s) => s.add);
   const setQty = usePos((s) => s.setQty);
@@ -90,8 +92,10 @@ export function POS(): JSX.Element {
         method: "cash",
         tenderedMinor,
       });
-      // Decrement stock through the ledger (§1.3), then kick drawer + print.
+      // Decrement stock through the ledger (§1.3), persist the order, then
+      // kick the drawer + print.
       applyMovements(sale.movements);
+      recordSale(sale);
       const hardware = getHardware();
       await hardware.openDrawer();
       const built = buildReceipt(

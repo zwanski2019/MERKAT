@@ -10,6 +10,8 @@ import { AppShell } from "./AppShell.js";
 import { NAV } from "./nav.js";
 import { Login } from "./screens/Auth/Login.js";
 import { PinUnlock } from "./screens/Auth/PinUnlock.js";
+import { Customers } from "./screens/Customers/Customers.js";
+import { Orders } from "./screens/Orders/Orders.js";
 import { Placeholder } from "./screens/Placeholder.js";
 import { POS } from "./screens/POS/POS.js";
 import { Products } from "./screens/Products/Products.js";
@@ -60,11 +62,17 @@ export function App(): JSX.Element {
           <Route path="/settings" element={<Settings />} />
           <Route path="/products" element={<Products />} />
           <Route path="/pos" element={<POS />} />
+          <Route path="/orders" element={<Orders />} />
+          <Route path="/customers" element={<Customers />} />
           {NAV.filter(
             (item) =>
-              item.path !== "/settings" &&
-              item.path !== "/products" &&
-              item.path !== "/pos",
+              ![
+                "/settings",
+                "/products",
+                "/pos",
+                "/orders",
+                "/customers",
+              ].includes(item.path),
           ).map((item) => (
             <Route
               key={item.path}
