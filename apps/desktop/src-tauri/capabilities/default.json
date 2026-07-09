@@ -9,6 +9,7 @@
     {
       "identifier": "sql:allow-execute",
       "allow": [{ "url": "sqlite:merkat.db" }]
-    }
+    },
+    "updater:default"
   ]
 }

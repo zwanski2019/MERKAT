@@ -17,12 +17,19 @@ pub fn run() {
         kind: MigrationKind::Up,
     }];
 
-    tauri::Builder::default()
-        .plugin(
-            tauri_plugin_sql::Builder::default()
-                .add_migrations("sqlite:merkat.db", migrations)
-                .build(),
-        )
+    let mut builder = tauri::Builder::default().plugin(
+        tauri_plugin_sql::Builder::default()
+            .add_migrations("sqlite:merkat.db", migrations)
+            .build(),
+    );
+
+    // Auto-update on desktop (CLAUDE.md §12 Phase 9); not applicable on mobile.
+    #[cfg(desktop)]
+    {
+        builder = builder.plugin(tauri_plugin_updater::Builder::new().build());
+    }
+
+    builder
         .run(tauri::generate_context!())
         .expect("error while running MERKAT desktop");
 }

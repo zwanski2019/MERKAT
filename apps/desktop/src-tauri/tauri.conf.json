@@ -26,6 +26,29 @@
   "bundle": {
     "active": true,
     "targets": "all",
-    "icon": ["icons/icon.png"]
+    "icon": [
+      "icons/icon.png"
+    ],
+    "publisher": "MERKAT",
+    "category": "Business",
+    "shortDescription": "Operator-grade POS for retail and restaurant",
+    "longDescription": "MERKAT is a white-label, offline-first point-of-sale operating system for retail and restaurant merchants.",
+    "createUpdaterArtifacts": true,
+    "windows": {
+      "nsis": {
+        "installMode": "both",
+        "languages": [
+          "English"
+        ]
+      }
+    }
+  },
+  "plugins": {
+    "updater": {
+      "endpoints": [
+        "https://releases.merkat.example/{{target}}/{{arch}}/{{current_version}}"
+      ],
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IERGN0M5QUEyRjQzQTE5QjEKUldTeEdUcjBvcHA4MzhUUkdPMjZFdFZ2aUx1TG9HOXJJcVFNRHJobHl4YVFLbWRxcEpUQzBpMUsK"
+    }
   }
 }

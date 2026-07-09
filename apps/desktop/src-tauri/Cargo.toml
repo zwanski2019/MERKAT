@@ -18,6 +18,11 @@ tauri-plugin-sql = { version = "2", features = ["sqlite"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 
+# Auto-update channel (CLAUDE.md §12 Phase 9). Signatures verify against the
+# updater pubkey in tauri.conf.json; release artifacts are signed in CI.
+[target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
+tauri-plugin-updater = "2"
+
 [profile.release]
 opt-level = "s"
 lto = true

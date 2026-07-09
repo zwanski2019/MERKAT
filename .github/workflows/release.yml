@@ -1,0 +1,72 @@
+name: Release
+
+# Phase 9 (CLAUDE.md §12): signed Windows installer + auto-update artifacts.
+# Tag a version to cut a release, e.g. `git tag v0.1.0 && git push --tags`.
+#
+# Required repository secrets:
+#   TAURI_SIGNING_PRIVATE_KEY           updater private key (from `tauri signer generate`)
+#   TAURI_SIGNING_PRIVATE_KEY_PASSWORD  its password (empty string if none)
+#   WINDOWS_CERTIFICATE                 base64 of the code-signing .pfx (Authenticode)
+#   WINDOWS_CERTIFICATE_PASSWORD        the .pfx password
+# The updater PUBLIC key is committed in tauri.conf.json and must match the
+# private key above.
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    # Windows runner produces the signed .exe/.msi + updater artifacts (§9).
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache cargo
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: apps/desktop/src-tauri
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Regenerate DB migrations (single-sourced, §1.7)
+        run: |
+          pnpm --filter @merkat/db build
+          pnpm --filter @merkat/db gen:migrations
+
+      - name: Build web SPA
+        run: pnpm --filter @merkat/web build
+
+      - name: Build, sign, and publish the desktop app
+        uses: tauri-apps/tauri-action@v0
+        env:
+          # Updater signing (verifies against the pubkey in tauri.conf.json).
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+          # Windows Authenticode code-signing of the installer.
+          TAURI_WINDOWS_CERTIFICATE: ${{ secrets.WINDOWS_CERTIFICATE }}
+          TAURI_WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
+        with:
+          projectPath: apps/desktop
+          tagName: ${{ github.ref_name }}
+          releaseName: "MERKAT ${{ github.ref_name }}"
+          releaseBody: "Signed installer + auto-update artifacts. See NOTES.md."
+          releaseDraft: true
+          prerelease: false

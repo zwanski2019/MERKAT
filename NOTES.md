@@ -1,5 +1,40 @@
 # Build notes
 
+## Phase 9 — Windows build + signing (scaffolded; needs a Windows CI runner)
+
+Gate (`CLAUDE.md §12`): a signed installer produces a launching offline-capable
+POS on a clean Windows box. This gate **cannot be executed or verified on the
+Linux dev box** — it needs a Windows runner and a code-signing certificate. What
+ships is the complete, valid release infrastructure:
+
+- **Auto-update channel.** `tauri-plugin-updater` added to `Cargo.toml`,
+  registered in `lib.rs` (desktop-only), permitted in `capabilities`, and
+  configured in `tauri.conf.json` (`plugins.updater` with endpoints + a real
+  minisign **public** key). `bundle.createUpdaterArtifacts: true`.
+- **Windows installer.** `bundle.windows.nsis` (per-machine + per-user), bundle
+  metadata (publisher/category/descriptions).
+- **Release CI.** `.github/workflows/release.yml` — on a `v*` tag, a
+  `windows-latest` runner installs Rust + deps, regenerates the DB migration
+  from the model (§1.7), builds the SPA, then `tauri-action` builds + signs
+  (updater signature + Windows Authenticode) + uploads a draft GitHub Release
+  with the installer and updater artifacts.
+- **Docs.** `apps/desktop/RELEASE.md` — keypair generation, the four required CI
+  secrets, and how to cut a release.
+
+All JSON/YAML validated; the non-desktop graph stays green (the desktop crate is
+not compiled by the JS build). The Rust changes compile on the CI Windows/Linux
+toolchain but not here (no `webkit2gtk-4.1`), consistent with the Phase 0
+desktop-compile deferral.
+
+### What a maintainer must still do (needs a Windows box + cert)
+
+- Generate a fresh updater keypair and replace the committed **public** key +
+  add the **private** key as a CI secret (the repo's pubkey is a placeholder
+  whose private key is intentionally not retained).
+- Obtain an Authenticode code-signing certificate and add it + its password as
+  CI secrets, then tag a release and verify the signed installer launches an
+  offline-capable POS on a clean Windows machine.
+
 ## Phase 8 — AI (complete)
 
 Gate (`CLAUDE.md §12`): a NL query returns real data via tool-use; no tool can
