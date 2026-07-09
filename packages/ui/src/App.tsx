@@ -15,6 +15,9 @@ import { Orders } from "./screens/Orders/Orders.js";
 import { Placeholder } from "./screens/Placeholder.js";
 import { POS } from "./screens/POS/POS.js";
 import { Products } from "./screens/Products/Products.js";
+import { FloorPlan } from "./screens/Restaurant/FloorPlan.js";
+import { KDS } from "./screens/Restaurant/KDS.js";
+import { MenuBuilder } from "./screens/Restaurant/MenuBuilder.js";
 import { Settings } from "./screens/Settings/Settings.js";
 import { useSession } from "./state/session.js";
 import { applyBranding } from "./theme/accent.js";
@@ -64,6 +67,9 @@ export function App(): JSX.Element {
           <Route path="/pos" element={<POS />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/customers" element={<Customers />} />
+          <Route path="/floor" element={<FloorPlan />} />
+          <Route path="/kds" element={<KDS />} />
+          <Route path="/menu" element={<MenuBuilder />} />
           {NAV.filter(
             (item) =>
               ![
@@ -72,6 +78,9 @@ export function App(): JSX.Element {
                 "/pos",
                 "/orders",
                 "/customers",
+                "/floor",
+                "/kds",
+                "/menu",
               ].includes(item.path),
           ).map((item) => (
             <Route

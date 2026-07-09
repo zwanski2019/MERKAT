@@ -2,7 +2,8 @@
  * Vertical feature flags (CLAUDE.md §4, §13).
  * UI reads these flags; never branch on raw `business_type` strings in components.
  */
-export type BusinessType = "retail" | "restaurant" | "general";
+export const BUSINESS_TYPES = ["retail", "restaurant", "general"] as const;
+export type BusinessType = (typeof BUSINESS_TYPES)[number];
 
 export interface FeatureFlags {
   variants: boolean; // shade/size, batch/expiry

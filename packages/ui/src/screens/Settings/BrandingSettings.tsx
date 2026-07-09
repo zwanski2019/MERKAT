@@ -4,7 +4,12 @@
  * PIN screen. White-label: every tenant sets its own name, logo, and accent.
  */
 import { useState, type ReactNode } from "react";
-import { isValidAccentHex, type TenantBranding } from "@merkat/core";
+import {
+  BUSINESS_TYPES,
+  isValidAccentHex,
+  type BusinessType,
+  type TenantBranding,
+} from "@merkat/core";
 import { useSession } from "../../state/session.js";
 import { applyAccent } from "../../theme/accent.js";
 
@@ -57,6 +62,23 @@ export function BrandingSettings(): JSX.Element {
           placeholder="https://…"
           className="w-full rounded-[--radius-control] border border-border bg-canvas px-3 py-2 text-fg"
         />
+      </Field>
+
+      <Field label="Business type">
+        <select
+          value={draft.businessType}
+          onChange={(e) => set("businessType", e.target.value as BusinessType)}
+          className="w-full rounded-[--radius-control] border border-border bg-canvas px-3 py-2 capitalize text-fg"
+        >
+          {BUSINESS_TYPES.map((t) => (
+            <option key={t} value={t}>
+              {t}
+            </option>
+          ))}
+        </select>
+        <span className="mt-1 block text-xs text-muted">
+          Switches the vertical — restaurant unlocks Floor, Kitchen, and Menu.
+        </span>
       </Field>
 
       <Field label="Accent color">

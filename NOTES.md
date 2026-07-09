@@ -1,5 +1,41 @@
 # Build notes
 
+## Phase 7 — Restaurant vertical (complete)
+
+Gate (`CLAUDE.md §12`): a restaurant tenant can seat a table, send to the
+kitchen, bump, and close a check. Verified:
+
+- **Full table lifecycle.** A component test drives the real FloorPlan: seat T1
+  → its check opens → add an item → **Send to kitchen** (a KDS ticket appears) →
+  **Close check** (cash payment → receipt, order recorded, table freed). A
+  second test renders the KDS and **bumps** a sent ticket. A store test runs the
+  whole seat → add(+modifier) → send → bump → close cycle and checks the priced
+  cart lines (burger + Double = 1750).
+- **Vertical gating (§4).** `business_type` drives `featuresFor()`; the shell
+  hides Floor/Kitchen/Menu unless `tables`/`kitchenDisplay`/`menuModifiers` are
+  on. Settings→Branding has a **business-type switch** so the demo flips
+  retail↔restaurant and those screens light up (no separate build, §4).
+- **FloorPlan (§5):** tables positioned + colored by status (§11), tap to open a
+  check, edit-layout mode drags tables (`moveTable`).
+- **KDS (§5):** live aging timers, color escalates by age (fresh→aging→late),
+  Bump moves tickets to a done strip.
+- **MenuBuilder (§5):** categories + items + modifier groups; add menu items.
+  The check's modifier picker (required radio / optional multi) prices into the
+  line via `checkLineUnitMinor`.
+
+A restaurant check is just an open order (§4); closing it reuses the Phase 4/6
+sale + receipt path. Same iface pattern — `useRestaurant` (Zustand) holds floor/
+menu/checks/tickets; the synced SQLite tables back it later.
+
+### Deferred from Phase 7 (intentional)
+
+- **Combos** (§4) — modifier groups ship; combo bundles are a later pass.
+- **Per-station routing + partial ticket bump, seat/course management** — tickets
+  go to `all` and bump whole; finer KDS routing is incremental.
+- **`table.status` sync (sticky-occupied LWW, §6)** and restaurant menu items in
+  the synced store — the vertical runs on the in-memory `useRestaurant` store
+  like the other Phase 2–6 stores; persistence is the Phase 5 terminal path.
+
 ## Phase 6 — Orders + customers + payments (complete)
 
 Gate (`CLAUDE.md §12`): a refund creates reversing rows and reprints; a Stripe

@@ -9,4 +9,5 @@ export * from "./payment.js";
 export * from "./permissions.js";
 export * from "./pin.js";
 export * from "./refund.js";
+export * from "./restaurant.js";
 export * from "./sale.js";

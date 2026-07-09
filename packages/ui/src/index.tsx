@@ -27,6 +27,11 @@ export {
   type CustomersState,
 } from "./state/customers.js";
 export { SeedCustomerStore, type CustomerStore } from "./customers/store.js";
+export {
+  useRestaurant,
+  createRestaurantStore,
+  type RestaurantState,
+} from "./state/restaurant.js";
 export { getHardware, setHardware } from "./hardware/bridge.js";
 export { useBarcodeScanner } from "./hardware/useBarcodeScanner.js";
 export { getSyncEngine, setSyncEngine, useSyncStatus } from "./state/sync.js";

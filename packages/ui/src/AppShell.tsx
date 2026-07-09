@@ -5,7 +5,7 @@
  */
 import { useEffect, useRef, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import { can } from "@merkat/core";
+import { can, featuresFor } from "@merkat/core";
 import type { SyncStatus } from "@merkat/db";
 import { NAV } from "./nav.js";
 import { useSession } from "./state/session.js";
@@ -17,7 +17,12 @@ export function AppShell(): JSX.Element {
   const sync = useSyncStatus();
 
   const role = session?.staff.role ?? "cashier";
-  const items = NAV.filter((item) => !item.action || can(role, item.action));
+  const features = featuresFor(branding.businessType);
+  const items = NAV.filter(
+    (item) =>
+      (!item.action || can(role, item.action)) &&
+      (!item.feature || features[item.feature]),
+  );
 
   return (
     <div className="flex h-full">
