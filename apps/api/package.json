@@ -11,6 +11,7 @@
     "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
+    "@merkat/ai": "workspace:*",
     "@merkat/core": "workspace:*",
     "@merkat/db": "workspace:*",
     "@nestjs/common": "^10.4.15",

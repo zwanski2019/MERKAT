@@ -1,5 +1,29 @@
 # Build notes
 
+## Follow-ups — closing spec gaps that were doable here
+
+After Phases 0–9, these previously-deferred items that need **no external
+credentials** were implemented and verified:
+
+- **AI proxy + rate-limit + audit (§3, §9).** `POST /ai/assistant` (NestJS) runs
+  the assistant server-side so the key never reaches the browser and
+  `tenant_id`/`location_id` are request-bound. Per-tenant token-bucket
+  `RateLimiter` (in `@merkat/ai`, unit-tested); every tool call is written to
+  `audit_log`. Smoke-tested over HTTP: tool-use answer + `audit/count` rises +
+  429 after the burst + 400 on bad input.
+- **Real Anthropic client (§2).** `AnthropicModelClient` (Messages API tool-use)
+  behind the same `ModelClient` interface, in the node-only `@merkat/ai/node`
+  entry so the SDK never enters the web bundle (verified 0 leakage). Env-gated on
+  `ANTHROPIC_API_KEY`; the API uses it when present, else the mock. Compiles/
+  typechecks; only the live path needs a key.
+- **Recharts on Reports (§2, §5).** Themed (single-accent) top-products bar
+  chart, **code-split** (`React.lazy`) into its own 356 kB chunk so the
+  offline-first boot bundle stays ~365 kB and Recharts loads only on Reports.
+
+Still deferred (genuinely need external resources / hardware, all behind
+interfaces): PowerSync + real Postgres, `TauriHardware` ESC/POS, a real Stripe
+account, the browser wasm-SQLite store, and the Windows signed installer.
+
 ## Phase 9 — Windows build + signing (scaffolded; needs a Windows CI runner)
 
 Gate (`CLAUDE.md §12`): a signed installer produces a launching offline-capable

@@ -5,4 +5,5 @@ export * from "./guards.js";
 export * from "./registry.js";
 export * from "./model.js";
 export * from "./agent.js";
+export * from "./ratelimit.js";
 export { SYSTEM_PROMPT_V1, SYSTEM_PROMPT_VERSION } from "./prompts/system.js";

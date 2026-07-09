@@ -17,12 +17,7 @@ import {
 } from "@nestjs/common";
 import { z } from "zod";
 import type { PullResponse, PushResponse } from "@merkat/db";
-import { SyncServer, migrateLocal, openLocalDb } from "@merkat/db/node";
-
-// One server projection per API process. SYNC_DB may point at a file to persist.
-const handle = openLocalDb(process.env.SYNC_DB ?? ":memory:");
-migrateLocal(handle);
-const server = new SyncServer(handle);
+import { syncServer as server } from "../store";
 
 const opSchema = z.object({
   opId: z.string(),

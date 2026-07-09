@@ -1,14 +1,21 @@
 /**
- * Reports (CLAUDE.md §5): data cards with a per-card AI takeaway (§9, via
- * tool-use) and a recent-transactions table. Chart grid (Recharts) is a later
- * pass; the takeaways are advisory.
+ * Reports (CLAUDE.md §5): a Recharts bar chart + per-card AI takeaway (§9, via
+ * tool-use) + a recent-transactions table. The chart is code-split (lazy) so
+ * Recharts never weighs down the offline-first boot bundle (§2 keeps the app
+ * fast); it loads only when Reports opens.
  */
-import { useEffect, useState } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 import { formatMoney, money } from "@merkat/core";
 import { askAssistant } from "../../ai/assistant.js";
 import { UiAiDataSource } from "../../ai/datasource.js";
 import { useOrders } from "../../state/orders.js";
 import { useSession } from "../../state/session.js";
+
+const TopProductsChart = lazy(() =>
+  import("./TopProductsChart.js").then((m) => ({
+    default: m.TopProductsChart,
+  })),
+);
 
 const data = new UiAiDataSource();
 const RANGE = {
@@ -49,19 +56,24 @@ export function Reports(): JSX.Element {
         {top.length === 0 ? (
           <p className="text-sm text-muted">No sales yet.</p>
         ) : (
-          <div className="divide-y divide-border">
-            {top.map((p) => (
-              <div
-                key={p.productId}
-                className="flex justify-between py-2 text-sm"
-              >
-                <span className="text-fg">{p.name}</span>
-                <span className="merkat-num text-fg">
-                  {fmt(p.revenueMinor)} · {p.units} units
-                </span>
-              </div>
-            ))}
-          </div>
+          <>
+            <Suspense fallback={<div className="h-56" />}>
+              <TopProductsChart products={top} branding={branding} />
+            </Suspense>
+            <div className="divide-y divide-border">
+              {top.map((p) => (
+                <div
+                  key={p.productId}
+                  className="flex justify-between py-2 text-sm"
+                >
+                  <span className="text-fg">{p.name}</span>
+                  <span className="merkat-num text-fg">
+                    {fmt(p.revenueMinor)} · {p.units} units
+                  </span>
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </div>
 
