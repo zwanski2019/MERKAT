@@ -1,5 +1,52 @@
 # Build notes
 
+## Phase 2 — Shell + auth (complete)
+
+Gate (`CLAUDE.md §12`): PIN unlock works offline; accent recolors the app.
+Verified:
+
+- **Offline PIN unlock (§8).** Staff pick an avatar and enter a 4-digit PIN,
+  validated on-device against the synced hash via **argon2id** (`hash-wasm`,
+  pure WASM — same primitive in browser, Tauri, and the API). No network. Tests
+  cover correct PIN, wrong PIN, lock/relock, and a full `<App>` render that goes
+  locked → PIN screen → shell after unlocking.
+- **Accent recolors live (§11).** The tenant accent is the one per-tenant color,
+  injected as the `--accent` CSS variable; Tailwind's `--color-accent` maps to
+  it, so Settings→Branding recolors the whole app as you type. Tested at the
+  store level (updateBranding sets `--accent`) and via `applyAccent`.
+- **Tailwind wired (was deferred from Phase 0).** Tailwind v4 via
+  `@tailwindcss/vite`; design tokens (§11) mapped in `apps/web/src/index.css`.
+  Purged CSS is ~4.6 kB.
+- **Routing + shell.** react-router-dom; sidebar/topbar, account menu
+  (lock/sign-out), calm sync pill. Nav is **permission-filtered** by role
+  (`can()`, §8) — e.g. a cashier doesn't see Settings/Reports.
+- **Login → JWT (§8).** `POST /auth/login` (NestJS) verifies argon2id creds and
+  signs a tenant-scoped JWT; bad/malformed → 400. Verified over HTTP.
+- **Permission matrix (§8).** Settings→Team renders the role × action grid from
+  `ROLES`/`ACTIONS` in `@merkat/core`; a test asserts the matrix + overrides.
+
+The UI talks only to an injected `AuthStore` (iface+mock pattern, like
+SyncEngine/HardwareBridge). Phase 2 ships `SeedAuthStore`, an in-memory demo
+tenant with staff carrying real argon2id hashes; Phase 5 swaps in the
+synced-SQLite-backed store with no UI change. Demo PINs: Amira (owner) 4821,
+Sofia (cashier) 1234; owner email login `amira@lumiere.example` /
+`lumiere-owner`.
+
+### Deferred from Phase 2 (intentional)
+
+- **Browser-backed local store** — `SeedAuthStore` is in-memory; the real
+  offline staff data flows from the synced local SQLite in Phase 5. (The Node
+  SQLite path already exists from Phase 1, but the browser store is Phase 5.)
+- **API JWT verification middleware / refresh tokens** — the login endpoint
+  issues a JWT; guards that verify it on protected routes come with the sync +
+  data endpoints (Phase 5–6). Client hides UI by role now; server-side
+  enforcement per route lands with those endpoints.
+- **Team editing / per-tenant permission overrides** — matrix is read-only in
+  Phase 2; `can()` already supports overrides.
+- **Couldn't drive the app in a real browser here** (Claude-in-Chrome extension
+  not connected); verified via jsdom render of the real components + the live
+  API check instead.
+
 ## Phase 0 — Scaffold (complete)
 
 Gate (`CLAUDE.md §12`): `pnpm build` green across the graph; empty web + desktop
@@ -49,9 +96,9 @@ derives from movements. Verified:
 
 ## Deferred from Phase 0 (intentional, tracked here)
 
-1. **Tailwind wiring** — `CLAUDE.md §2` pins Tailwind. The Phase 0 empty shell
-   uses `packages/ui/src/tokens.css` (the §11 design tokens) with inline styles.
-   Wire Tailwind + the accent CSS variable in **Phase 2** when real screens land.
+1. ~~**Tailwind wiring**~~ — RESOLVED in Phase 2. Tailwind v4 is wired via
+   `@tailwindcss/vite`; `tokens.css` design tokens are mapped in
+   `apps/web/src/index.css`, with `--accent` as a runtime variable.
 2. **Desktop native compile** — this dev box is missing `webkit2gtk-4.1` /
    `javascriptcoregtk-4.1`, so `tauri dev|build` can't compile here. The Tauri v2
    shell is fully scaffolded (`apps/desktop/src-tauri`) and loads the web SPA.

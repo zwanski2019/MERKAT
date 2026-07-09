@@ -1,109 +1,155 @@
-import { useEffect, useState } from "react";
-import { PRODUCT_NAME } from "@merkat/core";
-import { NoopSyncEngine, type SyncStatus, type SyncEngine } from "@merkat/db";
-
-const NAV = [
-  "Dashboard",
-  "POS",
-  "Products",
-  "Orders",
-  "Customers",
-  "Reports",
-  "Assistant",
-  "Settings",
-] as const;
+/**
+ * Operator shell (CLAUDE.md §5, §11): left sidebar nav, top bar (search + AI
+ * spark + account), and the calm sync indicator (§6). Nav is filtered by the
+ * signed-in role's permissions (§8). Renders the active screen via <Outlet>.
+ */
+import { useEffect, useRef, useState } from "react";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { can } from "@merkat/core";
+import { NoopSyncEngine, type SyncEngine, type SyncStatus } from "@merkat/db";
+import { NAV } from "./nav.js";
+import { useSession } from "./state/session.js";
 
 const engine: SyncEngine = new NoopSyncEngine();
 
-/** Empty operator shell for the Phase 0 gate: left sidebar nav, top bar
- *  (search + AI spark + account), and the calm sync indicator (§6, §11). */
 export function AppShell(): JSX.Element {
-  const [active, setActive] = useState<string>("Dashboard");
+  const branding = useSession((s) => s.branding);
+  const session = useSession((s) => s.session);
   const [sync, setSync] = useState<SyncStatus>(engine.status());
 
   useEffect(() => engine.onStatusChange(setSync), []);
 
+  const role = session?.staff.role ?? "cashier";
+  const items = NAV.filter((item) => !item.action || can(role, item.action));
+
   return (
-    <div style={{ display: "flex", height: "100%" }}>
-      <aside
-        style={{
-          width: 220,
-          background: "var(--surface)",
-          borderRight: "1px solid var(--border)",
-          padding: 16,
-          display: "flex",
-          flexDirection: "column",
-          gap: 4,
-        }}
-      >
-        <div style={{ fontWeight: 700, fontSize: 18, padding: "8px 12px 16px" }}>
-          {PRODUCT_NAME}
+    <div className="flex h-full">
+      <aside className="flex w-56 flex-col gap-1 border-r border-border bg-surface p-4">
+        <div className="flex items-center gap-2 px-3 pb-4 pt-2">
+          <TenantMark name={branding.name} logoUrl={branding.logoUrl} />
+          <span className="truncate font-semibold text-fg">
+            {branding.name}
+          </span>
         </div>
-        {NAV.map((item) => (
-          <button
-            key={item}
-            onClick={() => setActive(item)}
-            style={{
-              textAlign: "left",
-              padding: "10px 12px",
-              borderRadius: "var(--radius-control)",
-              border: "none",
-              cursor: "pointer",
-              font: "inherit",
-              background:
-                active === item ? "var(--accent)" : "transparent",
-              color: active === item ? "#fff" : "var(--text)",
-            }}
+        {items.map((item) => (
+          <NavLink
+            key={item.path}
+            to={item.path}
+            end={item.path === "/"}
+            className={({ isActive }) =>
+              [
+                "rounded-[--radius-control] px-3 py-2.5 text-left text-sm",
+                isActive ? "bg-accent text-white" : "text-fg hover:bg-canvas",
+              ].join(" ")
+            }
           >
-            {item}
-          </button>
+            {item.label}
+          </NavLink>
         ))}
       </aside>
 
-      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-        <header
-          style={{
-            height: 56,
-            borderBottom: "1px solid var(--border)",
-            background: "var(--surface)",
-            display: "flex",
-            alignItems: "center",
-            gap: 12,
-            padding: "0 16px",
-          }}
-        >
+      <div className="flex flex-1 flex-col">
+        <header className="flex h-14 items-center gap-3 border-b border-border bg-surface px-4">
           <input
             placeholder="Search or scan…"
-            style={{
-              flex: 1,
-              maxWidth: 420,
-              padding: "8px 12px",
-              borderRadius: "var(--radius-control)",
-              border: "1px solid var(--border)",
-              background: "var(--canvas)",
-              color: "var(--text)",
-            }}
+            className="w-full max-w-md rounded-[--radius-control] border border-border bg-canvas px-3 py-2 text-sm text-fg"
           />
-          <span title="AI assistant">✦</span>
+          <span title="AI assistant" className="text-accent">
+            ✦
+          </span>
           <SyncPill status={sync} />
-          <div
-            aria-label="Account"
-            style={{
-              width: 32,
-              height: 32,
-              borderRadius: "50%",
-              background: "var(--border)",
-            }}
-          />
+          <AccountMenu />
         </header>
 
-        <main style={{ flex: 1, padding: 24, overflow: "auto" }}>
-          <h1 style={{ marginTop: 0 }}>{active}</h1>
-          <p style={{ color: "var(--text-muted)" }}>
-            {PRODUCT_NAME} shell is running. Screens land in later phases.
-          </p>
+        <main className="flex-1 overflow-auto p-6">
+          <Outlet />
         </main>
       </div>
+    </div>
+  );
+}
+
+function TenantMark({
+  name,
+  logoUrl,
+}: {
+  name: string;
+  logoUrl: string | null;
+}): JSX.Element {
+  if (logoUrl) {
+    return (
+      <img
+        src={logoUrl}
+        alt={name}
+        className="size-7 rounded-[--radius-control] object-contain"
+      />
+    );
+  }
+  return (
+    <span className="flex size-7 items-center justify-center rounded-[--radius-control] bg-accent text-sm font-bold text-white">
+      {name.slice(0, 1)}
+    </span>
+  );
+}
+
+function AccountMenu(): JSX.Element {
+  const navigate = useNavigate();
+  const session = useSession((s) => s.session);
+  const lock = useSession((s) => s.lock);
+  const logout = useSession((s) => s.logout);
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function onDocClick(e: MouseEvent): void {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", onDocClick);
+    return () => document.removeEventListener("mousedown", onDocClick);
+  }, []);
+
+  const name = session?.staff.name ?? "";
+
+  return (
+    <div className="relative" ref={ref}>
+      <button
+        onClick={() => setOpen((o) => !o)}
+        aria-label="Account"
+        className="flex size-8 items-center justify-center rounded-full bg-border text-xs font-semibold text-fg"
+      >
+        {name.slice(0, 2).toUpperCase()}
+      </button>
+      {open ? (
+        <div className="absolute right-0 top-10 z-10 w-44 rounded-[--radius-control] border border-border bg-surface py-1 shadow-md">
+          <div className="px-3 py-2 text-sm">
+            <div className="font-medium text-fg">{name}</div>
+            <div className="text-xs capitalize text-muted">
+              {session?.staff.role}
+            </div>
+          </div>
+          <div className="my-1 border-t border-border" />
+          <button
+            onClick={() => {
+              lock();
+              navigate("/unlock");
+            }}
+            className="block w-full px-3 py-2 text-left text-sm text-fg hover:bg-canvas"
+          >
+            Lock terminal
+          </button>
+          <button
+            onClick={() => {
+              logout();
+              navigate("/login");
+            }}
+            className="block w-full px-3 py-2 text-left text-sm text-fg hover:bg-canvas"
+          >
+            Sign out
+          </button>
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -116,16 +162,7 @@ function SyncPill({ status }: { status: SyncStatus }): JSX.Element {
       : "online"
     : "offline";
   return (
-    <span
-      className="merkat-num"
-      style={{
-        fontSize: 12,
-        color: "var(--text-muted)",
-        border: "1px solid var(--border)",
-        borderRadius: 999,
-        padding: "4px 10px",
-      }}
-    >
+    <span className="merkat-num whitespace-nowrap rounded-full border border-border px-2.5 py-1 text-xs text-muted">
       {label}
       {status.pending > 0 ? ` · ${status.pending} pending` : ""}
     </span>

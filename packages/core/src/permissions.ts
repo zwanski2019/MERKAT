@@ -51,3 +51,33 @@ export function can(
   }
   return MATRIX[role].has(action);
 }
+
+// Ordered lists + metadata for rendering the permission matrix (§8). Actions
+// are grouped by area for the Team screen.
+export const ROLES: readonly Role[] = [
+  "owner",
+  "manager",
+  "cashier",
+  "kitchen",
+];
+
+export type PermissionArea =
+  "POS" | "Refunds" | "Products" | "Reports" | "Settings" | "Team" | "Kitchen";
+
+export interface ActionMeta {
+  readonly action: Action;
+  readonly area: PermissionArea;
+  readonly label: string;
+}
+
+export const ACTIONS: readonly ActionMeta[] = [
+  { action: "pos.sell", area: "POS", label: "Sell" },
+  { action: "pos.discount", area: "POS", label: "Apply discounts" },
+  { action: "refunds.issue", area: "Refunds", label: "Issue refunds" },
+  { action: "orders.void", area: "Refunds", label: "Void orders" },
+  { action: "products.manage", area: "Products", label: "Manage products" },
+  { action: "reports.view", area: "Reports", label: "View reports" },
+  { action: "settings.manage", area: "Settings", label: "Manage settings" },
+  { action: "team.manage", area: "Team", label: "Manage team" },
+  { action: "kds.bump", area: "Kitchen", label: "Bump tickets" },
+];

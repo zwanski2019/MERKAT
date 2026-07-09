@@ -21,15 +21,20 @@
   },
   "dependencies": {
     "@merkat/core": "workspace:*",
-    "@merkat/db": "workspace:*"
+    "@merkat/db": "workspace:*",
+    "react-router-dom": "^7.18.1",
+    "zustand": "^5.0.14"
   },
   "peerDependencies": {
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/react": "^16.3.2",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
+    "jsdom": "^29.1.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "vitest": "^2.1.8"
